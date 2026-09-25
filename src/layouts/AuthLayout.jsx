@@ -8,9 +8,7 @@ export function AuthLayout({ children }) {
     <div className="min-h-screen bg-background flex flex-col justify-between font-sans selection:bg-primary/20 selection:text-primary-dark">
       {/* Top Header with Back Link & Logo */}
       <header className="w-full px-4 py-5 sm:px-8">
-        <div className="mx-auto flex max-w-6xl items-center justify-between">
-          <Logo size="md" />
-
+        <div className="mx-auto flex w-full max-w-md items-center justify-between gap-4">
           <Link
             to="/"
             className="inline-flex items-center gap-1.5 rounded p-1 text-xs font-semibold text-text-secondary transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
@@ -18,6 +16,8 @@ export function AuthLayout({ children }) {
             <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
             <span>Back to Home</span>
           </Link>
+
+          <Logo size="md" />
         </div>
       </header>
 
