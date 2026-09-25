@@ -8,7 +8,7 @@ export function AuthCard({ title, description, children, footer, className = '' 
     <section
       aria-labelledby={titleId}
       className={cn(
-        'rounded-2xl border border-border bg-surface p-6 shadow-xs sm:p-8',
+        'rounded-2xl border border-border bg-surface/90 p-6 shadow-[0_18px_50px_rgba(18,55,42,0.12)] backdrop-blur-md sm:p-8',
         className
       )}
     >

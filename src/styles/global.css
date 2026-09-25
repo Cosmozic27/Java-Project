@@ -46,6 +46,10 @@ body { overflow-x: hidden; }
 
 .glass-surface { background: rgba(247, 246, 241, 0.72); border: 1px solid rgba(18, 55, 42, 0.10); box-shadow: 0 18px 45px rgba(18, 55, 42, 0.08); backdrop-filter: blur(18px); }
 .soft-grid { background-image: linear-gradient(rgba(22, 138, 69, 0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(22, 138, 69, 0.055) 1px, transparent 1px); background-size: 28px 28px; mask-image: linear-gradient(to bottom, black, transparent 82%); }
+@property --button-glow-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+.button-glow { --button-glow-angle: 0deg; isolation: isolate; }
+.button-glow::after { content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; border-radius: inherit; padding: 1px; background: conic-gradient(from var(--button-glow-angle), transparent 0deg, transparent 250deg, rgba(221, 233, 223, 0.18) 275deg, rgba(221, 233, 223, 0.95) 300deg, rgba(22, 138, 69, 0.95) 322deg, transparent 350deg); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; animation: button-border-trace 3.8s linear infinite; }
+@keyframes button-border-trace { to { --button-glow-angle: 360deg; } }
 
 .has-custom-cursor, .has-custom-cursor a, .has-custom-cursor button, .has-custom-cursor [role='button'] { cursor: none; }
 .has-custom-cursor input, .has-custom-cursor textarea, .has-custom-cursor select, .has-custom-cursor [contenteditable='true'] { cursor: text; }
@@ -59,6 +63,7 @@ body { overflow-x: hidden; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .button-glow::after { animation: none; background: linear-gradient(90deg, rgba(221, 233, 223, 0.7), rgba(22, 138, 69, 0.7), rgba(221, 233, 223, 0.7)); }
 }
 @media (pointer: coarse) { .fb-cursor-dot, .fb-cursor-ring { display: none; } }
 

@@ -38,7 +38,7 @@ function setRef(ref, node) {
   }
 }
 
-function buttonClassName({ variant, size, fullWidth, className, isDisabled }) {
+function buttonClassName({ variant, size, fullWidth, className, isDisabled, glow }) {
   return cn(
     'inline-flex items-center justify-center select-none transition-all duration-200 ease-out active:scale-[0.985]',
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1',
@@ -47,6 +47,7 @@ function buttonClassName({ variant, size, fullWidth, className, isDisabled }) {
     buttonSizes[size] || buttonSizes.md,
     fullWidth && 'w-full',
     isDisabled && 'cursor-not-allowed opacity-55 pointer-events-none',
+    glow && !isDisabled && 'button-glow',
     className
   );
 }
@@ -125,13 +126,14 @@ export const Button = forwardRef(function Button(
     leftIcon,
     rightIcon,
     fullWidth = false,
+    glow = variant === 'primary',
     asChild = false,
     ...props
   },
   forwardedRef
 ) {
   const isDisabled = disabled || isLoading;
-  const classes = buttonClassName({ variant, size, fullWidth, className, isDisabled });
+  const classes = buttonClassName({ variant, size, fullWidth, className, isDisabled, glow });
 
   if (asChild) {
     if (!isValidElement(children)) {
