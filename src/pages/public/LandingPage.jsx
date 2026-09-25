@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   HeroSection,
   HowItWorksSection,
@@ -9,6 +10,22 @@ import {
 } from '@/components/landing';
 
 export function LandingPage() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const targetId = location.hash.replace(/^#/, '');
+    if (!targetId) return undefined;
+
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById(targetId)?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [location.hash]);
+
   return (
     <div className="flex flex-col w-full">
       {/* Hero Section */}

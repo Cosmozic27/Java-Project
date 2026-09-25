@@ -1,17 +1,20 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthCard } from '@/components/auth';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/forms/Input';
 import { ArrowRight, Lock, Mail } from 'lucide-react';
+import { findDemoAccount, setPrototypeAuth } from '@/constants/authData';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function LoginPage() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: 'onTouched',
@@ -22,8 +25,19 @@ export function LoginPage() {
     },
   });
 
-  const handleLogin = () => {
-    // Frontend-only validation foundation. Authentication comes in a later phase.
+  const handleLogin = ({ email, password }) => {
+    const account = findDemoAccount(email, password);
+
+    if (!account) {
+      setError('root', {
+        type: 'credentials',
+        message: 'Invalid demo credentials. Please check your email and password.',
+      });
+      return;
+    }
+
+    setPrototypeAuth(account);
+    navigate(account.redirectTo, { replace: true });
   };
 
   return (
@@ -72,6 +86,12 @@ export function LoginPage() {
             required: 'Password is required.',
           })}
         />
+
+        {errors.root?.message && (
+          <p role="alert" className="rounded-lg border border-danger/20 bg-danger/5 px-3 py-2 text-xs font-medium text-danger">
+            {errors.root.message}
+          </p>
+        )}
 
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 pt-1 text-xs">
           <label className="inline-flex min-h-8 cursor-pointer select-none items-center gap-2 text-text-secondary">

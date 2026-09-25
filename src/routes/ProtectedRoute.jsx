@@ -1,25 +1,18 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { PORTAL_ROLES } from '@/constants/navigation';
+import { getPrototypeAuth } from '@/constants/authData';
 
 /**
- * Structural wrapper for future role-based access.
- *
- * Does not authenticate. `allowedRoles` is reserved for donor | ngo | admin
- * checks once a real session exists. Until then this always renders the
- * protected tree so layout and navigation can be verified.
- *
- * Future integration:
- *   const { user, isAuthenticated } = useAuth();
- *   if (!isAuthenticated) return <Navigate to="/auth/login" replace />;
- *   if (allowedRoles?.length && !allowedRoles.includes(user.role)) {
- *     return <Navigate to="/unauthorized" replace />;
- *   }
+ * Lightweight frontend-only guard for the current demo accounts.
+ * Replace this with the real auth provider once backend authentication exists.
  */
 export function ProtectedRoute({ allowedRoles, children }) {
+  const location = useLocation();
   const roles = Array.isArray(allowedRoles)
     ? allowedRoles.map((role) => String(role).toLowerCase())
     : [];
+  const prototypeAuth = getPrototypeAuth();
 
   if (import.meta.env.DEV) {
     const unknown = roles.filter((role) => !PORTAL_ROLES.includes(role));
@@ -28,6 +21,14 @@ export function ProtectedRoute({ allowedRoles, children }) {
         `ProtectedRoute: unknown role id(s): ${unknown.join(', ')}. Expected ${PORTAL_ROLES.join(', ')}.`
       );
     }
+  }
+
+  if (!prototypeAuth) {
+    return <Navigate to="/auth/login" replace state={{ from: location.pathname }} />;
+  }
+
+  if (roles.length > 0 && !roles.includes(prototypeAuth.role)) {
+    return <Navigate to={`/${prototypeAuth.role}`} replace />;
   }
 
   return children ?? <Outlet />;

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Sidebar } from '@/components/navigation/Sidebar';
 import { MobileNav } from '@/components/navigation/MobileNav';
 import { DashboardHeader } from '@/components/navigation/DashboardHeader';
 import { getNavigationForRole, resolvePortalId } from '@/constants/navigation';
 import { useToast } from '@/components/feedback';
 import { cn } from '@/utils/cn';
+import { clearPrototypeAuth } from '@/constants/authData';
 
 export function DashboardLayout({
   role: explicitRole,
@@ -16,6 +17,7 @@ export function DashboardLayout({
   children,
 }) {
   const location = useLocation();
+  const navigate = useNavigate();
   const toast = useToast();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -51,7 +53,9 @@ export function DashboardLayout({
   const currentUser = explicitUser || roleUserMap[derivedRole] || roleUserMap.donor;
 
   const handleLogout = () => {
+    clearPrototypeAuth();
     toast.info('Logged out from dashboard', 'Session Ended');
+    navigate('/auth/login', { replace: true });
   };
 
   return (
