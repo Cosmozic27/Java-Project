@@ -1,69 +1,40 @@
 import React from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import { Logo } from '@/components/common/Logo';
 import { ShieldCheck, ArrowLeft, HeartHandshake } from 'lucide-react';
 
-const AUTH_COPY = {
-  register: {
-    title: 'Join FoodBridge',
-    subtitle: 'Register your organization as a food donor or NGO partner.',
-  },
-  login: {
-    title: 'Welcome to FoodBridge',
-    subtitle: 'Sign in to access your surplus food redistribution portal.',
-  },
-};
-
-export function AuthLayout({ children, title, subtitle }) {
-  const location = useLocation();
-  const isRegister = location.pathname.endsWith('/register');
-  const copy = isRegister ? AUTH_COPY.register : AUTH_COPY.login;
-  const heading = title ?? copy.title;
-  const supportingText = subtitle ?? copy.subtitle;
+export function AuthLayout({ children }) {
   return (
     <div className="min-h-screen bg-background flex flex-col justify-between font-sans selection:bg-primary/20 selection:text-primary-dark">
       {/* Top Header with Back Link & Logo */}
-      <header className="w-full px-4 sm:px-8 py-5 flex items-center justify-between">
-        <Logo size="md" />
+      <header className="w-full px-4 py-5 sm:px-8">
+        <div className="mx-auto flex max-w-6xl items-center justify-between">
+          <Logo size="md" />
 
-        <Link
-          to="/"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-text-secondary hover:text-text-primary transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded p-1"
-        >
-          <ArrowLeft className="h-3.5 w-3.5" />
-          <span>Back to Home</span>
-        </Link>
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 rounded p-1 text-xs font-semibold text-text-secondary transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>Back to Home</span>
+          </Link>
+        </div>
       </header>
 
       {/* Main Centered Content Container */}
-      <main className="flex-1 flex items-center justify-center p-4 sm:p-6 my-auto">
-        <div className="w-full max-w-md space-y-6">
-          {/* Header titles */}
-          <div className="text-center space-y-1.5">
-            <h1 className="text-2xl font-bold tracking-tight text-text-primary sm:text-3xl">
-              {heading}
-            </h1>
-            {supportingText && (
-              <p className="text-xs sm:text-sm text-text-secondary max-w-sm mx-auto leading-relaxed">
-                {supportingText}
-              </p>
-            )}
-          </div>
-
-          {/* Form Card Slot */}
-          <div className="rounded-2xl border border-border bg-surface p-6 sm:p-8 shadow-xs">
-            {children || <Outlet />}
-          </div>
+      <main className="flex flex-1 items-center justify-center px-4 py-8 sm:px-6 sm:py-10">
+        <div className="w-full max-w-md">
+          {children || <Outlet />}
 
           {/* Trust Banner */}
-          <div className="flex items-center justify-center gap-4 text-xs text-text-secondary pt-2">
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 pt-6 text-center text-xs text-text-secondary">
             <div className="flex items-center gap-1.5">
-              <ShieldCheck className="h-4 w-4 text-primary" />
+              <ShieldCheck className="h-4 w-4 text-primary" aria-hidden="true" />
               <span>Verified Non-Profits</span>
             </div>
-            <span>•</span>
+            <span aria-hidden="true">•</span>
             <div className="flex items-center gap-1.5">
-              <HeartHandshake className="h-4 w-4 text-primary" />
+              <HeartHandshake className="h-4 w-4 text-primary" aria-hidden="true" />
               <span>Safe Food Redistribution</span>
             </div>
           </div>
@@ -71,7 +42,7 @@ export function AuthLayout({ children, title, subtitle }) {
       </main>
 
       {/* Minimal Footer */}
-      <footer className="w-full px-4 py-4 text-center text-xs text-text-secondary border-t border-border/40">
+      <footer className="w-full border-t border-border/40 px-4 py-4 text-center text-xs text-text-secondary">
         <p>© {new Date().getFullYear()} FoodBridge Network. Protected under national food safety redistribution acts.</p>
       </footer>
     </div>

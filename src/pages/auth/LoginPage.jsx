@@ -1,66 +1,109 @@
 import React from 'react';
+import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { Input } from '@/components/forms/Input';
+import { AuthCard } from '@/components/auth';
 import { Button } from '@/components/common/Button';
-import { Mail, Lock, ArrowRight } from 'lucide-react';
+import { Input } from '@/components/forms/Input';
+import { ArrowRight, Lock, Mail } from 'lucide-react';
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function LoginPage() {
-  return (
-    <div className="space-y-4">
-      <div className="space-y-1 text-left">
-        <h2 className="text-lg font-bold text-text-primary">Sign In</h2>
-        <p className="text-xs text-text-secondary">
-          Enter your organization credentials to access your FoodBridge portal.
-        </p>
-      </div>
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    mode: 'onTouched',
+    defaultValues: {
+      email: '',
+      password: '',
+      rememberMe: false,
+    },
+  });
 
-      <form onSubmit={(e) => e.preventDefault()} className="space-y-3.5 pt-2">
+  const handleLogin = () => {
+    // Frontend-only validation foundation. Authentication comes in a later phase.
+  };
+
+  return (
+    <AuthCard
+      title="Welcome back"
+      description="Sign in to continue coordinating surplus food with your FoodBridge network."
+      footer={
+        <>
+          <span>Don't have an account? </span>
+          <Link
+            to="/auth/register"
+            className="font-semibold text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+          >
+            Create an account
+          </Link>
+        </>
+      }
+    >
+      <form onSubmit={handleSubmit(handleLogin)} className="space-y-4" noValidate>
         <Input
-          label="Email Address"
+          id="login-email"
+          label="Organization Email"
           type="email"
           placeholder="name@organization.org"
-          leftIcon={<Mail className="h-4 w-4" />}
-          required
-        />
-        <Input
-          label="Password"
-          type="password"
-          placeholder="••••••••"
-          leftIcon={<Lock className="h-4 w-4" />}
-          required
+          autoComplete="email"
+          leftIcon={<Mail className="h-4 w-4" aria-hidden="true" />}
+          error={errors.email?.message}
+          {...register('email', {
+            required: 'Organization email is required.',
+            pattern: {
+              value: EMAIL_PATTERN,
+              message: 'Enter a valid organization email.',
+            },
+          })}
         />
 
-        <div className="flex items-center justify-between text-xs pt-1">
-          <label className="flex items-center gap-1.5 cursor-pointer text-text-secondary select-none">
-            <input type="checkbox" className="rounded border-border text-primary focus:ring-primary/20" />
+        <Input
+          id="login-password"
+          label="Password"
+          type="password"
+          placeholder="Enter your password"
+          autoComplete="current-password"
+          leftIcon={<Lock className="h-4 w-4" aria-hidden="true" />}
+          error={errors.password?.message}
+          {...register('password', {
+            required: 'Password is required.',
+          })}
+        />
+
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 pt-1 text-xs">
+          <label className="inline-flex min-h-8 cursor-pointer select-none items-center gap-2 text-text-secondary">
+            <input
+              type="checkbox"
+              className="h-4 w-4 rounded border-border text-primary accent-primary focus:ring-2 focus:ring-primary/20"
+              {...register('rememberMe')}
+            />
             <span>Remember me</span>
           </label>
-          <button
-            type="button"
-            className="text-primary hover:underline cursor-pointer bg-transparent border-0 p-0 font-inherit"
+
+          <Link
+            to="/auth/forgot-password"
+            className="inline-flex min-h-8 items-center font-semibold text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
           >
             Forgot password?
-          </button>
+          </Link>
         </div>
 
         <Button
           type="submit"
           variant="primary"
+          size="lg"
           fullWidth
-          rightIcon={<ArrowRight className="h-4 w-4" />}
-          className="mt-2"
+          disabled={isSubmitting}
+          rightIcon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}
+          className="mt-1"
         >
           Sign In
         </Button>
       </form>
-
-      <div className="pt-3 text-center text-xs text-text-secondary border-t border-border/70">
-        <span>Don't have an account yet? </span>
-        <Link to="/auth/register" className="font-semibold text-primary hover:underline">
-          Register Organization
-        </Link>
-      </div>
-    </div>
+    </AuthCard>
   );
 }
 

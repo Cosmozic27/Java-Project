@@ -16,6 +16,7 @@ import AppShell from '@/pages/AppShell';
 // Auth pages
 import { LoginPage } from '@/pages/auth/LoginPage';
 import { RegisterPage } from '@/pages/auth/RegisterPage';
+import { ForgotPasswordPage } from '@/pages/auth/ForgotPasswordPage';
 
 // Portal placeholder pages
 import { DonorDashboardPlaceholder } from '@/pages/donor/DonorDashboardPlaceholder';
@@ -61,6 +62,7 @@ export const router = createBrowserRouter([
       { index: true, element: <LoginPage /> },
       { path: 'login', element: <LoginPage /> },
       { path: 'register', element: <RegisterPage /> },
+      { path: 'forgot-password', element: <ForgotPasswordPage /> },
     ],
   },
 
