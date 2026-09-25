@@ -35,7 +35,12 @@ export function LoginPage() {
             <input type="checkbox" className="rounded border-border text-primary focus:ring-primary/20" />
             <span>Remember me</span>
           </label>
-          <span className="text-primary hover:underline cursor-pointer">Forgot password?</span>
+          <button
+            type="button"
+            className="text-primary hover:underline cursor-pointer bg-transparent border-0 p-0 font-inherit"
+          >
+            Forgot password?
+          </button>
         </div>
 
         <Button

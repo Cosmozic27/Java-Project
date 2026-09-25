@@ -16,14 +16,31 @@ import {
 } from 'lucide-react';
 
 /**
- * Public navigation links
+ * Public chrome links.
+ *
+ * Until Phase 4 introduces dedicated public routes, these point at in-page
+ * section hashes on `/` so Navbar/Footer do not 404. Phase 4 can promote
+ * each `hash` to a real path (e.g. `/surplus`) without changing consumers.
  */
 export const PUBLIC_NAV = [
-  { label: 'Available Surplus', to: '/surplus' },
-  { label: 'For Donors', to: '/donors' },
-  { label: 'For NGOs', to: '/ngos' },
-  { label: 'Platform Impact', to: '/impact' },
+  { label: 'Available Surplus', to: { pathname: '/', hash: 'surplus' } },
+  { label: 'For Donors', to: { pathname: '/', hash: 'donors' } },
+  { label: 'For NGOs', to: { pathname: '/', hash: 'ngos' } },
+  { label: 'Platform Impact', to: { pathname: '/', hash: 'impact' } },
 ];
+
+export const PUBLIC_FOOTER_NAV = [
+  { label: 'Available Surplus', to: { pathname: '/', hash: 'surplus' } },
+  { label: 'Impact Metrics', to: { pathname: '/', hash: 'impact' } },
+  { label: 'Mission & Team', to: { pathname: '/', hash: 'about' } },
+];
+
+export const PORTAL_ROLES = ['donor', 'ngo', 'admin'];
+
+export function resolvePortalId(value, fallback = 'donor') {
+  const normalized = String(value || '').toLowerCase();
+  return PORTAL_ROLES.includes(normalized) ? normalized : fallback;
+}
 
 /**
  * Donor Portal Navigation
@@ -176,7 +193,7 @@ export const ADMIN_NAV = [
  * Helper to fetch navigation configuration by role
  */
 export function getNavigationForRole(role = 'donor') {
-  switch (role.toLowerCase()) {
+  switch (resolvePortalId(role)) {
     case 'admin':
       return ADMIN_NAV;
     case 'ngo':
@@ -189,8 +206,11 @@ export function getNavigationForRole(role = 'donor') {
 
 export default {
   PUBLIC_NAV,
+  PUBLIC_FOOTER_NAV,
+  PORTAL_ROLES,
   DONOR_NAV,
   NGO_NAV,
   ADMIN_NAV,
   getNavigationForRole,
+  resolvePortalId,
 };

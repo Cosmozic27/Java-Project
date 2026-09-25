@@ -1,18 +1,36 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+import { PORTAL_ROLES } from '@/constants/navigation';
 
 /**
- * Route protection wrapper placeholder for role-based access.
- * Authentication logic will be attached here in a future phase.
- * Currently permits all access to facilitate layout/navigation architecture verification.
+ * Structural wrapper for future role-based access.
  *
- * Future integration pattern:
+ * Does not authenticate. `allowedRoles` is reserved for donor | ngo | admin
+ * checks once a real session exists. Until then this always renders the
+ * protected tree so layout and navigation can be verified.
+ *
+ * Future integration:
  *   const { user, isAuthenticated } = useAuth();
  *   if (!isAuthenticated) return <Navigate to="/auth/login" replace />;
- *   if (_allowedRoles && !_allowedRoles.includes(user.role)) return <Navigate to="/unauthorized" replace />;
+ *   if (allowedRoles?.length && !allowedRoles.includes(user.role)) {
+ *     return <Navigate to="/unauthorized" replace />;
+ *   }
  */
-export function ProtectedRoute({ allowedRoles: _allowedRoles, children }) {
-  return children || <Outlet />;
+export function ProtectedRoute({ allowedRoles, children }) {
+  const roles = Array.isArray(allowedRoles)
+    ? allowedRoles.map((role) => String(role).toLowerCase())
+    : [];
+
+  if (import.meta.env.DEV) {
+    const unknown = roles.filter((role) => !PORTAL_ROLES.includes(role));
+    if (unknown.length > 0) {
+      console.warn(
+        `ProtectedRoute: unknown role id(s): ${unknown.join(', ')}. Expected ${PORTAL_ROLES.join(', ')}.`
+      );
+    }
+  }
+
+  return children ?? <Outlet />;
 }
 
 export default ProtectedRoute;

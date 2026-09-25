@@ -1,13 +1,25 @@
 import React from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Logo } from '@/components/common/Logo';
 import { ShieldCheck, ArrowLeft, HeartHandshake } from 'lucide-react';
 
-export function AuthLayout({
-  children,
-  title = 'Welcome to FoodBridge',
-  subtitle = 'Sign in or register your organization to join the surplus food redistribution network.',
-}) {
+const AUTH_COPY = {
+  register: {
+    title: 'Join FoodBridge',
+    subtitle: 'Register your organization as a food donor or NGO partner.',
+  },
+  login: {
+    title: 'Welcome to FoodBridge',
+    subtitle: 'Sign in to access your surplus food redistribution portal.',
+  },
+};
+
+export function AuthLayout({ children, title, subtitle }) {
+  const location = useLocation();
+  const isRegister = location.pathname.endsWith('/register');
+  const copy = isRegister ? AUTH_COPY.register : AUTH_COPY.login;
+  const heading = title ?? copy.title;
+  const supportingText = subtitle ?? copy.subtitle;
   return (
     <div className="min-h-screen bg-background flex flex-col justify-between font-sans selection:bg-primary/20 selection:text-primary-dark">
       {/* Top Header with Back Link & Logo */}
@@ -29,11 +41,11 @@ export function AuthLayout({
           {/* Header titles */}
           <div className="text-center space-y-1.5">
             <h1 className="text-2xl font-bold tracking-tight text-text-primary sm:text-3xl">
-              {title}
+              {heading}
             </h1>
-            {subtitle && (
+            {supportingText && (
               <p className="text-xs sm:text-sm text-text-secondary max-w-sm mx-auto leading-relaxed">
-                {subtitle}
+                {supportingText}
               </p>
             )}
           </div>

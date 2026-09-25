@@ -3,7 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { Sidebar } from '@/components/navigation/Sidebar';
 import { MobileNav } from '@/components/navigation/MobileNav';
 import { DashboardHeader } from '@/components/navigation/DashboardHeader';
-import { getNavigationForRole } from '@/constants/navigation';
+import { getNavigationForRole, resolvePortalId } from '@/constants/navigation';
 import { useToast } from '@/components/feedback';
 import { cn } from '@/utils/cn';
 
@@ -21,12 +21,9 @@ export function DashboardLayout({
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   // Derive role automatically from route path if not passed explicitly: /donor, /ngo, /admin
-  const derivedRole = (() => {
-    if (explicitRole) return explicitRole.toLowerCase();
-    const firstSegment = location.pathname.split('/')[1]?.toLowerCase();
-    if (['admin', 'ngo', 'donor'].includes(firstSegment)) return firstSegment;
-    return 'donor';
-  })();
+  const derivedRole = resolvePortalId(
+    explicitRole || location.pathname.split('/')[1]
+  );
 
   const activeNav = explicitNav || getNavigationForRole(derivedRole);
 
@@ -34,16 +31,19 @@ export function DashboardLayout({
     donor: {
       name: 'Central Hostel & Canteen',
       role: 'Food Donor',
+      portal: 'donor',
       email: 'canteen@campus.edu',
     },
     ngo: {
       name: 'Hope Community Kitchen',
       role: 'NGO Partner',
+      portal: 'ngo',
       email: 'contact@hopekitchen.org',
     },
     admin: {
       name: 'System Governance',
       role: 'Platform Administrator',
+      portal: 'admin',
       email: 'admin@foodbridge.org',
     },
   };
@@ -83,6 +83,7 @@ export function DashboardLayout({
           title={headerTitle}
           description={headerDescription}
           userInfo={currentUser}
+          portal={derivedRole}
           onMenuClick={() => setMobileNavOpen(true)}
           onNotificationClick={() => toast.info('You have 2 pending notifications')}
           notificationCount={2}

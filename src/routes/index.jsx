@@ -32,8 +32,12 @@ import { AdminDashboardPlaceholder } from '@/pages/admin/AdminDashboardPlacehold
  *   /ngo/*              → DashboardLayout (role=ngo)   → NGO portal
  *   /admin/*            → DashboardLayout (role=admin) → Admin portal
  *
- * ProtectedRoute is a pass-through placeholder;
+ * ProtectedRoute is a structural pass-through;
  * real auth guards will be wired in a future phase.
+ *
+ * Public marketing paths (/surplus, /donors, /ngos, /impact, /about)
+ * are not registered yet. Navbar/footer use in-page hashes on `/`
+ * until Phase 4 promotes them to routes.
  */
 export const router = createBrowserRouter([
   // ── PUBLIC ROUTES ────────────────────────────────────────────────
@@ -42,7 +46,7 @@ export const router = createBrowserRouter([
     element: <PublicLayout />,
     children: [
       { index: true, element: <AppShell /> },
-      // Phase 4 will add: /surplus, /donors, /ngos, /impact, /about
+      // Phase 4: promote PUBLIC_NAV hashes to dedicated public routes.
     ],
   },
 

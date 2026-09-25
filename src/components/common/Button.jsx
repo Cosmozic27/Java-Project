@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { cloneElement, forwardRef, isValidElement } from 'react';
 import { Loader2 } from 'lucide-react';
 import { cn } from '@/utils/cn';
 
@@ -29,6 +29,90 @@ const buttonSizes = {
   icon: 'h-9 w-9 p-0 rounded-lg justify-center',
 };
 
+function setRef(ref, node) {
+  if (!ref) return;
+  if (typeof ref === 'function') {
+    ref(node);
+  } else {
+    ref.current = node;
+  }
+}
+
+function buttonClassName({ variant, size, fullWidth, className, isDisabled }) {
+  return cn(
+    'inline-flex items-center justify-center select-none transition-all duration-150 ease-in-out',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1',
+    'cursor-pointer disabled:cursor-not-allowed disabled:opacity-55 disabled:pointer-events-none',
+    buttonVariants[variant] || buttonVariants.primary,
+    buttonSizes[size] || buttonSizes.md,
+    fullWidth && 'w-full',
+    isDisabled && 'cursor-not-allowed opacity-55 pointer-events-none',
+    className
+  );
+}
+
+function ButtonInner({ isLoading, leftIcon, rightIcon, children }) {
+  if (isLoading) {
+    return (
+      <>
+        <Loader2 className="h-4 w-4 animate-spin text-current shrink-0" aria-hidden="true" />
+        <span>{children}</span>
+      </>
+    );
+  }
+
+  return (
+    <>
+      {leftIcon && <span className="shrink-0 inline-flex items-center">{leftIcon}</span>}
+      {children && <span>{children}</span>}
+      {rightIcon && <span className="shrink-0 inline-flex items-center">{rightIcon}</span>}
+    </>
+  );
+}
+
+function SlotClone({
+  element,
+  forwardedRef,
+  classes,
+  isLoading,
+  isDisabled,
+  leftIcon,
+  rightIcon,
+  ...props
+}) {
+  const childProps = element.props ?? {};
+  const childRef = element.ref ?? childProps.ref;
+
+  return cloneElement(
+    element,
+    {
+      ...props,
+      className: cn(classes, childProps.className),
+      'aria-busy': isLoading || undefined,
+      'aria-disabled': isDisabled || undefined,
+      tabIndex: isDisabled ? -1 : childProps.tabIndex,
+      onClick: (event) => {
+        if (isDisabled) {
+          event.preventDefault();
+          event.stopPropagation();
+          return;
+        }
+        childProps.onClick?.(event);
+        if (!event.defaultPrevented) {
+          props.onClick?.(event);
+        }
+      },
+      ref: (node) => {
+        setRef(forwardedRef, node);
+        setRef(childRef, node);
+      },
+    },
+    <ButtonInner isLoading={isLoading} leftIcon={leftIcon} rightIcon={rightIcon}>
+      {childProps.children}
+    </ButtonInner>
+  );
+}
+
 export const Button = forwardRef(function Button(
   {
     children,
@@ -41,43 +125,45 @@ export const Button = forwardRef(function Button(
     leftIcon,
     rightIcon,
     fullWidth = false,
+    asChild = false,
     ...props
   },
-  ref
+  forwardedRef
 ) {
   const isDisabled = disabled || isLoading;
+  const classes = buttonClassName({ variant, size, fullWidth, className, isDisabled });
+
+  if (asChild) {
+    if (!isValidElement(children)) {
+      return null;
+    }
+
+    return (
+      <SlotClone
+        element={children}
+        forwardedRef={forwardedRef}
+        classes={classes}
+        isLoading={isLoading}
+        isDisabled={isDisabled}
+        leftIcon={leftIcon}
+        rightIcon={rightIcon}
+        {...props}
+      />
+    );
+  }
 
   return (
     <button
-      ref={ref}
+      ref={forwardedRef}
       type={type}
       disabled={isDisabled}
       aria-busy={isLoading}
-      className={cn(
-        // Base styles
-        'inline-flex items-center justify-center select-none transition-all duration-150 ease-in-out',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1',
-        'cursor-pointer disabled:cursor-not-allowed disabled:opacity-55 disabled:pointer-events-none',
-        // Variants & Sizes
-        buttonVariants[variant] || buttonVariants.primary,
-        buttonSizes[size] || buttonSizes.md,
-        fullWidth && 'w-full',
-        className
-      )}
+      className={classes}
       {...props}
     >
-      {isLoading ? (
-        <>
-          <Loader2 className="h-4 w-4 animate-spin text-current shrink-0" aria-hidden="true" />
-          <span>{children}</span>
-        </>
-      ) : (
-        <>
-          {leftIcon && <span className="shrink-0 inline-flex items-center">{leftIcon}</span>}
-          {children && <span>{children}</span>}
-          {rightIcon && <span className="shrink-0 inline-flex items-center">{rightIcon}</span>}
-        </>
-      )}
+      <ButtonInner isLoading={isLoading} leftIcon={leftIcon} rightIcon={rightIcon}>
+        {children}
+      </ButtonInner>
     </button>
   );
 });

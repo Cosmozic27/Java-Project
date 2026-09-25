@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { Navbar } from '@/components/navigation/Navbar';
 import { Logo } from '@/components/common/Logo';
+import { PUBLIC_FOOTER_NAV } from '@/constants/navigation';
 import { Heart, Globe } from 'lucide-react';
 
 export function PublicLayout({ children }) {
@@ -66,21 +67,13 @@ export function PublicLayout({ children }) {
                 Platform
               </h3>
               <ul className="space-y-2 text-xs text-text-secondary">
-                <li>
-                  <Link to="/surplus" className="hover:text-primary transition-colors">
-                    Available Surplus
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/impact" className="hover:text-primary transition-colors">
-                    Impact Metrics
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/about" className="hover:text-primary transition-colors">
-                    Mission & Team
-                  </Link>
-                </li>
+                {PUBLIC_FOOTER_NAV.map((link) => (
+                  <li key={link.label}>
+                    <Link to={link.to} className="hover:text-primary transition-colors">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
                 <li>
                   <span className="text-text-muted">Security & Compliance</span>
                 </li>

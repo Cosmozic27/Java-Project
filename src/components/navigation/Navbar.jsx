@@ -1,19 +1,60 @@
 import React, { useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import { Logo } from '@/components/common/Logo';
 import { Button } from '@/components/common/Button';
+import { PUBLIC_NAV } from '@/constants/navigation';
 import { cn } from '@/utils/cn';
 
-const defaultNavLinks = [
-  { label: 'Available Surplus', to: '/surplus' },
-  { label: 'For Donors', to: '/donors' },
-  { label: 'For NGOs', to: '/ngos' },
-  { label: 'Platform Impact', to: '/impact' },
-];
+function isHashDestination(to) {
+  if (typeof to === 'string') return to.includes('#');
+  return Boolean(to?.hash);
+}
+
+function hashValue(to) {
+  if (typeof to === 'string') {
+    const index = to.indexOf('#');
+    return index >= 0 ? to.slice(index + 1) : '';
+  }
+  return String(to?.hash || '').replace(/^#/, '');
+}
+
+function PublicNavItem({ link, className, onClick }) {
+  const location = useLocation();
+  const usesHash = isHashDestination(link.to);
+  const currentHash = location.hash.replace(/^#/, '');
+  const isSectionActive =
+    usesHash && location.pathname === '/' && currentHash === hashValue(link.to);
+
+  const styles = (active) =>
+    cn(
+      className,
+      active
+        ? 'text-primary bg-primary-light/40 font-semibold'
+        : 'text-text-secondary hover:text-text-primary hover:bg-background-subtle'
+    );
+
+  if (usesHash) {
+    return (
+      <Link to={link.to} onClick={onClick} className={styles(isSectionActive)}>
+        {link.label}
+      </Link>
+    );
+  }
+
+  return (
+    <NavLink
+      to={link.to}
+      onClick={onClick}
+      className={({ isActive }) => styles(isActive)}
+    >
+      {link.label}
+    </NavLink>
+  );
+}
 
 export function Navbar({
-  navLinks = defaultNavLinks,
+  navLinks = PUBLIC_NAV,
   onLoginClick,
   onRegisterClick,
   user,
@@ -40,20 +81,11 @@ export function Navbar({
             {/* Desktop Navigation Links */}
             <div className="hidden md:flex items-center gap-1">
               {navLinks.map((link, idx) => (
-                <NavLink
+                <PublicNavItem
                   key={idx}
-                  to={link.to}
-                  className={({ isActive }) =>
-                    cn(
-                      'px-3 py-2 text-sm font-medium rounded-lg transition-colors select-none',
-                      isActive
-                        ? 'text-primary bg-primary-light/40 font-semibold'
-                        : 'text-text-secondary hover:text-text-primary hover:bg-background-subtle'
-                    )
-                  }
-                >
-                  {link.label}
-                </NavLink>
+                  link={link}
+                  className="px-3 py-2 text-sm font-medium rounded-lg transition-colors select-none"
+                />
               ))}
             </div>
           </div>
@@ -114,21 +146,12 @@ export function Navbar({
         <div className="md:hidden border-t border-border bg-surface px-4 pt-3 pb-6 space-y-4 shadow-lg animate-in slide-in-from-top duration-200">
           <div className="space-y-1">
             {navLinks.map((link, idx) => (
-              <NavLink
+              <PublicNavItem
                 key={idx}
-                to={link.to}
+                link={link}
                 onClick={() => setMobileMenuOpen(false)}
-                className={({ isActive }) =>
-                  cn(
-                    'block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
-                    isActive
-                      ? 'bg-primary-light text-primary-dark font-semibold'
-                      : 'text-text-secondary hover:text-text-primary hover:bg-background-subtle'
-                  )
-                }
-              >
-                {link.label}
-              </NavLink>
+                className="block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors"
+              />
             ))}
           </div>
 

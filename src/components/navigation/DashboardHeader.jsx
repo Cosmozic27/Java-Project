@@ -4,6 +4,7 @@ import { Avatar } from '@/components/data-display/Avatar';
 import { Dropdown } from '@/components/common/Dropdown';
 import { SearchBar } from '@/components/forms/SearchBar';
 import { Breadcrumbs } from '@/components/navigation/Breadcrumbs';
+import { resolvePortalId } from '@/constants/navigation';
 import { cn } from '@/utils/cn';
 
 export function DashboardHeader({
@@ -19,20 +20,24 @@ export function DashboardHeader({
   userInfo = {
     name: 'FoodBridge User',
     role: 'Partner',
+    portal: 'donor',
     email: 'user@foodbridge.org',
   },
+  portal,
   userMenuItems,
   onLogout,
   actions,
   className = '',
 }) {
+  const portalId = resolvePortalId(portal ?? userInfo.portal ?? userInfo.roleId);
+
   const defaultUserMenu = [
     { label: userInfo.name, disabled: true },
     { label: userInfo.email, disabled: true },
     { divider: true },
-    { label: 'My Profile', icon: <User className="h-4 w-4" />, to: `/${userInfo.role.toLowerCase()}/profile` },
-    { label: 'Settings', icon: <Settings className="h-4 w-4" />, to: `/${userInfo.role.toLowerCase()}/settings` },
-    { label: 'Help & FAQs', icon: <HelpCircle className="h-4 w-4" />, to: `/${userInfo.role.toLowerCase()}/support` },
+    { label: 'My Profile', icon: <User className="h-4 w-4" />, to: `/${portalId}/profile` },
+    { label: 'Settings', icon: <Settings className="h-4 w-4" />, to: `/${portalId}/settings` },
+    { label: 'Help & FAQs', icon: <HelpCircle className="h-4 w-4" />, to: `/${portalId}/support` },
     { divider: true },
     { label: 'Sign Out', icon: <LogOut className="h-4 w-4" />, danger: true, onClick: onLogout },
   ];
