@@ -1,2 +1,1 @@
-// NGO pages module (NgoDashboard, AvailableDonations, ClaimedDonations, Distribution)
-export {};
+export { NgoDashboardPlaceholder, default as NgoDashboard } from './NgoDashboardPlaceholder';

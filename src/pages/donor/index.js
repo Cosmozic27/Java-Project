@@ -1,2 +1,1 @@
-// Donor pages module (DonorDashboard, CreateDonation, DonationHistory, ActiveRequests)
-export {};
+export { DonorDashboardPlaceholder, default as DonorDashboard } from './DonorDashboardPlaceholder';

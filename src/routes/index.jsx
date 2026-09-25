@@ -1,21 +1,101 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import MainLayout from '@/layouts/MainLayout';
+
+// Layouts
+import { PublicLayout } from '@/layouts/PublicLayout';
+import { AuthLayout } from '@/layouts/AuthLayout';
+import { DashboardLayout } from '@/layouts/DashboardLayout';
+
+// Route guards
+import { ProtectedRoute } from '@/routes/ProtectedRoute';
+
+// Public pages
 import AppShell from '@/pages/AppShell';
 
+// Auth pages
+import { LoginPage } from '@/pages/auth/LoginPage';
+import { RegisterPage } from '@/pages/auth/RegisterPage';
+
+// Portal placeholder pages
+import { DonorDashboardPlaceholder } from '@/pages/donor/DonorDashboardPlaceholder';
+import { NgoDashboardPlaceholder } from '@/pages/ngo/NgoDashboardPlaceholder';
+import { AdminDashboardPlaceholder } from '@/pages/admin/AdminDashboardPlaceholder';
+
 /**
- * Primary routing configuration for FoodBridge.
- * Future routes (auth, donor, ngo, admin) will be plugged in modularly.
+ * FoodBridge — centralized router configuration.
+ *
+ * Route structure:
+ *   /                   → PublicLayout  → AppShell (Phase 2 component showcase)
+ *   /auth/login         → AuthLayout    → LoginPage
+ *   /auth/register      → AuthLayout    → RegisterPage
+ *   /donor/*            → DashboardLayout (role=donor) → Donor portal
+ *   /ngo/*              → DashboardLayout (role=ngo)   → NGO portal
+ *   /admin/*            → DashboardLayout (role=admin) → Admin portal
+ *
+ * ProtectedRoute is a pass-through placeholder;
+ * real auth guards will be wired in a future phase.
  */
 export const router = createBrowserRouter([
+  // ── PUBLIC ROUTES ────────────────────────────────────────────────
   {
     path: '/',
-    element: <MainLayout />,
+    element: <PublicLayout />,
     children: [
-      {
-        index: true,
-        element: <AppShell />,
-      },
+      { index: true, element: <AppShell /> },
+      // Phase 4 will add: /surplus, /donors, /ngos, /impact, /about
+    ],
+  },
+
+  // ── AUTH ROUTES ──────────────────────────────────────────────────
+  {
+    path: '/auth',
+    element: <AuthLayout />,
+    children: [
+      { index: true, element: <LoginPage /> },
+      { path: 'login', element: <LoginPage /> },
+      { path: 'register', element: <RegisterPage /> },
+    ],
+  },
+
+  // ── DONOR PORTAL ─────────────────────────────────────────────────
+  {
+    path: '/donor',
+    element: (
+      <ProtectedRoute allowedRoles={['donor']}>
+        <DashboardLayout role="donor" />
+      </ProtectedRoute>
+    ),
+    children: [
+      { index: true, element: <DonorDashboardPlaceholder /> },
+      // Phase 5 will expand: /donor/donations, /donor/available-food, /donor/history, /donor/profile
+    ],
+  },
+
+  // ── NGO PORTAL ───────────────────────────────────────────────────
+  {
+    path: '/ngo',
+    element: (
+      <ProtectedRoute allowedRoles={['ngo']}>
+        <DashboardLayout role="ngo" />
+      </ProtectedRoute>
+    ),
+    children: [
+      { index: true, element: <NgoDashboardPlaceholder /> },
+      // Phase 6 will expand: /ngo/available-food, /ngo/claimed, /ngo/pickups, /ngo/history, /ngo/profile
+    ],
+  },
+
+  // ── ADMIN PORTAL ─────────────────────────────────────────────────
+  {
+    path: '/admin',
+    element: (
+      <ProtectedRoute allowedRoles={['admin']}>
+        <DashboardLayout role="admin" />
+      </ProtectedRoute>
+    ),
+    children: [
+      { index: true, element: <AdminDashboardPlaceholder /> },
+      // Phase 7 will expand: /admin/users, /admin/ngos, /admin/donations, /admin/reports, /admin/settings
     ],
   },
 ]);

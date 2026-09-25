@@ -1,2 +1,1 @@
-// Admin pages module (AdminDashboard, UserManagement, AuditLogs, SystemSettings)
-export {};
+export { AdminDashboardPlaceholder, default as AdminDashboard } from './AdminDashboardPlaceholder';
