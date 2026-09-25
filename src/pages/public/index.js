@@ -1,2 +1,3 @@
 // Public pages module (Landing, About, Contact, Impact)
-export {};
+export { LandingPage } from './LandingPage';
+export default { LandingPage };

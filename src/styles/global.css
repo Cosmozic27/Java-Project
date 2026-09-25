@@ -41,6 +41,10 @@
 }
 
 /* Base typography and body reset */
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body {
   font-family: var(--font-sans);

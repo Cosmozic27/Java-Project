@@ -10,6 +10,7 @@ import { DashboardLayout } from '@/layouts/DashboardLayout';
 import { ProtectedRoute } from '@/routes/ProtectedRoute';
 
 // Public pages
+import { LandingPage } from '@/pages/public';
 import AppShell from '@/pages/AppShell';
 
 // Auth pages
@@ -25,7 +26,8 @@ import { AdminDashboardPlaceholder } from '@/pages/admin/AdminDashboardPlacehold
  * FoodBridge — centralized router configuration.
  *
  * Route structure:
- *   /                   → PublicLayout  → AppShell (Phase 2 component showcase)
+ *   /                   → PublicLayout  → LandingPage (Hero & public landing shell)
+ *   /showcase           → PublicLayout  → AppShell (Phase 2 component showcase)
  *   /auth/login         → AuthLayout    → LoginPage
  *   /auth/register      → AuthLayout    → RegisterPage
  *   /donor/*            → DashboardLayout (role=donor) → Donor portal
@@ -45,7 +47,8 @@ export const router = createBrowserRouter([
     path: '/',
     element: <PublicLayout />,
     children: [
-      { index: true, element: <AppShell /> },
+      { index: true, element: <LandingPage /> },
+      { path: 'showcase', element: <AppShell /> },
       // Phase 4: promote PUBLIC_NAV hashes to dedicated public routes.
     ],
   },

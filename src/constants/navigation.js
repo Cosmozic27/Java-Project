@@ -23,16 +23,17 @@ import {
  * each `hash` to a real path (e.g. `/surplus`) without changing consumers.
  */
 export const PUBLIC_NAV = [
-  { label: 'Available Surplus', to: { pathname: '/', hash: 'surplus' } },
-  { label: 'For Donors', to: { pathname: '/', hash: 'donors' } },
-  { label: 'For NGOs', to: { pathname: '/', hash: 'ngos' } },
-  { label: 'Platform Impact', to: { pathname: '/', hash: 'impact' } },
+  { label: 'How It Works', to: { pathname: '/', hash: 'how-it-works' } },
+  { label: 'Our Impact', to: { pathname: '/', hash: 'impact' } },
+  { label: 'Who We Serve', to: { pathname: '/', hash: 'audiences' } },
+  { label: 'Food Safety', to: { pathname: '/', hash: 'safety' } },
 ];
 
 export const PUBLIC_FOOTER_NAV = [
-  { label: 'Available Surplus', to: { pathname: '/', hash: 'surplus' } },
-  { label: 'Impact Metrics', to: { pathname: '/', hash: 'impact' } },
-  { label: 'Mission & Team', to: { pathname: '/', hash: 'about' } },
+  { label: 'How It Works', to: { pathname: '/', hash: 'how-it-works' } },
+  { label: 'Platform Impact', to: { pathname: '/', hash: 'impact' } },
+  { label: 'Who We Serve', to: { pathname: '/', hash: 'audiences' } },
+  { label: 'Food Safety Protocol', to: { pathname: '/', hash: 'safety' } },
 ];
 
 export const PORTAL_ROLES = ['donor', 'ngo', 'admin'];
