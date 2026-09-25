@@ -9,7 +9,7 @@ export function AuthLayout({ children }) {
   const showPixelSnow = pathname === '/auth/login' || pathname === '/auth/register';
 
   return (
-    <div className="relative isolate min-h-screen overflow-hidden bg-background flex flex-col justify-between font-sans selection:bg-primary/20 selection:text-primary-dark">
+    <div className="relative isolate min-h-screen overflow-x-hidden bg-background flex flex-col justify-between font-sans selection:bg-primary/20 selection:text-primary-dark">
       {showPixelSnow && (
         <>
           <PixelSnow

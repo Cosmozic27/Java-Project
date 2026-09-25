@@ -14,6 +14,9 @@ export function SmoothScroll({ children }) {
       smoothWheel: true,
       syncTouch: false,
       anchors: true,
+      prevent: (node) => Boolean(
+        node?.closest?.('[data-lenis-prevent], .overflow-x-auto, .overflow-y-auto, textarea, select')
+      ),
     });
     lenisRef.current = lenis;
 

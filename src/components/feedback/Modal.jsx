@@ -53,6 +53,7 @@ export function Modal({
       {isOpen && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
+          data-lenis-prevent
           role="dialog"
           aria-modal="true"
           aria-labelledby={title ? titleId : undefined}
@@ -115,7 +116,7 @@ export function Modal({
             )}
 
             {/* Content Body */}
-            <div className="px-6 py-5 text-sm text-text-primary max-h-[75vh] overflow-y-auto">
+            <div className="px-6 py-5 text-sm text-text-primary max-h-[75vh] overflow-y-auto" data-lenis-prevent>
               {children}
             </div>
 

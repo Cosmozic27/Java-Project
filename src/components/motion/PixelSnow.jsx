@@ -193,6 +193,7 @@ export default function PixelSnow({
   const containerRef = useRef(null);
   const animationRef = useRef(0);
   const isVisibleRef = useRef(true);
+  const pageVisibleRef = useRef(true);
   const rendererRef = useRef(null);
   const materialRef = useRef(null);
   const resizeTimeoutRef = useRef(null);
@@ -232,12 +233,9 @@ export default function PixelSnow({
     const container = containerRef.current;
     if (!container) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        isVisibleRef.current = entry.isIntersecting;
-      },
-      { threshold: 0 }
-    );
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisibleRef.current = entry.isIntersecting;
+    }, { threshold: 0 });
 
     observer.observe(container);
     return () => observer.disconnect();
@@ -260,7 +258,7 @@ export default function PixelSnow({
       depth: false
     });
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 640 ? 1 : 1.25));
     renderer.setSize(container.offsetWidth, container.offsetHeight);
     renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
@@ -292,23 +290,42 @@ export default function PixelSnow({
     const geometry = new PlaneGeometry(2, 2);
     scene.add(new Mesh(geometry, material));
 
-    window.addEventListener('resize', handleResize);
-
     const startTime = performance.now();
     const animate = () => {
-      animationRef.current = requestAnimationFrame(animate);
+      if (!pageVisibleRef.current) {
+        animationRef.current = 0;
+        return;
+      }
 
-      // Only render if visible
       if (isVisibleRef.current) {
         material.uniforms.uTime.value = (performance.now() - startTime) * 0.001;
         renderer.render(scene, camera);
       }
+      animationRef.current = requestAnimationFrame(animate);
     };
-    animate();
+    const startAnimation = () => {
+      if (animationRef.current === 0) animationRef.current = requestAnimationFrame(animate);
+    };
+    const stopAnimation = () => {
+      if (animationRef.current !== 0) {
+        cancelAnimationFrame(animationRef.current);
+        animationRef.current = 0;
+      }
+    };
+    const onVisibilityChange = () => {
+      pageVisibleRef.current = !document.hidden;
+      if (pageVisibleRef.current) startAnimation();
+      else stopAnimation();
+    };
+
+    window.addEventListener('resize', handleResize, { passive: true });
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    startAnimation();
 
     return () => {
-      cancelAnimationFrame(animationRef.current);
+      stopAnimation();
       window.removeEventListener('resize', handleResize);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
       if (resizeTimeoutRef.current) {
         clearTimeout(resizeTimeoutRef.current);
       }

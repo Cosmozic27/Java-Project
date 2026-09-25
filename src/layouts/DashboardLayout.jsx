@@ -59,16 +59,18 @@ export function DashboardLayout({
   };
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-background font-sans text-text-primary">
+    <div className="min-h-screen w-full bg-background font-sans text-text-primary md:flex">
       {/* 1. Desktop Persistent Sidebar */}
-      <div className="hidden md:flex shrink-0 h-full">
-        <Sidebar
-          navigationItems={activeNav}
-          userInfo={currentUser}
-          isCollapsed={sidebarCollapsed}
-          onToggleCollapse={() => setSidebarCollapsed((prev) => !prev)}
-          onLogout={handleLogout}
-        />
+      <div className="hidden shrink-0 md:block">
+        <div className="sticky top-0 h-screen">
+          <Sidebar
+            navigationItems={activeNav}
+            userInfo={currentUser}
+            isCollapsed={sidebarCollapsed}
+            onToggleCollapse={() => setSidebarCollapsed((prev) => !prev)}
+            onLogout={handleLogout}
+          />
+        </div>
       </div>
 
       {/* 2. Mobile Drawer Navigation */}
@@ -81,7 +83,7 @@ export function DashboardLayout({
       />
 
       {/* 3. Main Content Column */}
-      <div className="flex flex-1 flex-col h-full min-w-0 overflow-hidden">
+      <div className="flex min-w-0 flex-1 flex-col">
         {/* Top Dashboard Header */}
         <DashboardHeader
           title={headerTitle}
@@ -97,7 +99,7 @@ export function DashboardLayout({
         {/* Scrollable Main Application Content */}
         <main
           className={cn(
-            'flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8 scrollbar-none',
+            'min-w-0 p-4 sm:p-6 lg:p-8',
             'focus:outline-none'
           )}
         >

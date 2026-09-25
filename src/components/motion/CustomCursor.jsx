@@ -8,13 +8,15 @@ export function CustomCursor() {
 
   useEffect(() => {
     const finePointer = window.matchMedia('(pointer: fine)').matches;
-    if (!finePointer || reducedMotion) return undefined;
+    const lowPower = navigator.hardwareConcurrency ? navigator.hardwareConcurrency <= 2 : false;
+    if (!finePointer || reducedMotion || lowPower || navigator.connection?.saveData) return undefined;
 
     document.body.classList.add('has-custom-cursor');
     let pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     let ring = { ...pointer };
     let active = null;
     let frame;
+    let pageVisible = !document.hidden;
 
     const move = (event) => {
       pointer = { x: event.clientX, y: event.clientY };
@@ -25,6 +27,10 @@ export function CustomCursor() {
     const up = () => document.body.classList.remove('cursor-click');
 
     const render = () => {
+      if (!pageVisible) {
+        frame = undefined;
+        return;
+      }
       ring.x += (pointer.x - ring.x) * 0.16;
       ring.y += (pointer.y - ring.y) * 0.16;
       if (dotRef.current) dotRef.current.style.transform = `translate3d(${pointer.x}px, ${pointer.y}px, 0)`;
@@ -34,10 +40,15 @@ export function CustomCursor() {
       }
       frame = requestAnimationFrame(render);
     };
+    const visibility = () => {
+      pageVisible = !document.hidden;
+      if (pageVisible && frame === undefined) frame = requestAnimationFrame(render);
+    };
 
     window.addEventListener('pointermove', move, { passive: true });
     window.addEventListener('pointerdown', down, { passive: true });
     window.addEventListener('pointerup', up, { passive: true });
+    document.addEventListener('visibilitychange', visibility);
     frame = requestAnimationFrame(render);
 
     return () => {
@@ -45,6 +56,7 @@ export function CustomCursor() {
       window.removeEventListener('pointermove', move);
       window.removeEventListener('pointerdown', down);
       window.removeEventListener('pointerup', up);
+      document.removeEventListener('visibilitychange', visibility);
       document.body.classList.remove('has-custom-cursor', 'cursor-click');
     };
   }, [reducedMotion]);
