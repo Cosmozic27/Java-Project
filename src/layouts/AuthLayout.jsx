@@ -1,33 +1,37 @@
 import React from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Logo } from '@/components/common/Logo';
-import MoltenMetal from '@/components/auth/MoltenMetal';
+import { PixelSnow } from '@/components/motion';
 import { ShieldCheck, ArrowLeft, HeartHandshake } from 'lucide-react';
 
 export function AuthLayout({ children }) {
+  const { pathname } = useLocation();
+  const showPixelSnow = pathname === '/auth/login' || pathname === '/auth/register';
+
   return (
     <div className="relative isolate min-h-screen overflow-hidden bg-background flex flex-col justify-between font-sans selection:bg-primary/20 selection:text-primary-dark">
-      <MoltenMetal
-        color1="#DDE9DF"
-        color2="#168A45"
-        color3="#F7F6F1"
-        backgroundColor="#EEEDE7"
-        colorMode="frost"
-        speed={0.16}
-        scale={3.4}
-        detail={2}
-        glow={0.9}
-        coreSize={0.055}
-        swirl={0.55}
-        fold={-0.12}
-        blackPoint={0.12}
-        brightness={0.72}
-        grain={false}
-        mouseInteraction={false}
-        opacity={0.72}
-        lightMode
-        className="auth-molten-layer"
-      />
+      {showPixelSnow && (
+        <>
+          <PixelSnow
+            className="auth-pixel-snow auth-pixel-snow-green"
+            color="#168A45"
+            density={0.055}
+            speed={0.24}
+            brightness={0.38}
+            pixelResolution={260}
+            direction={100}
+          />
+          <PixelSnow
+            className="auth-pixel-snow auth-pixel-snow-sage"
+            color="#DDE9DF"
+            density={0.04}
+            speed={0.18}
+            brightness={0.26}
+            pixelResolution={300}
+            direction={125}
+          />
+        </>
+      )}
       <div className="auth-background-wash" aria-hidden="true" />
       {/* Top Header with Back Link & Logo */}
       <header className="relative z-10 w-full px-4 py-5 sm:px-8">

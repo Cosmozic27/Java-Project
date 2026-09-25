@@ -15,8 +15,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/common/Button';
 import { Card } from '@/components/cards/Card';
-import { Reveal } from '@/components/motion';
-import PixelSnow from './PixelSnow';
+import { Contour, Reveal } from '@/components/motion';
 
 export function HeroSection() {
   return (
@@ -31,14 +30,9 @@ export function HeroSection() {
       />
       <div className="pointer-events-none absolute -right-24 top-10 -z-10 h-72 w-72 rounded-full bg-primary/10 blur-3xl" aria-hidden="true" />
       <div className="pointer-events-none absolute -left-28 bottom-0 -z-10 h-64 w-64 rounded-full bg-accent/10 blur-3xl" aria-hidden="true" />
-      <PixelSnow
-        className="pixel-snow-layer"
-        color="#168A45"
-        density={0.08}
-        speed={0.34}
-        brightness={0.48}
-        pixelResolution={240}
-        direction={100}
+      <Contour
+        className="landing-contour"
+        colors={['rgba(22, 138, 69, 0.15)', 'rgba(134, 169, 106, 0.13)', 'rgba(18, 55, 42, 0.07)']}
       />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

@@ -4,13 +4,13 @@
   --color-primary: #168A45;
   --color-primary-dark: #12372A;
   --color-primary-light: #DDE9DF;
-  --color-accent: #86A96A;
-  --color-accent-hover: #6F9254;
-  --color-accent-light: #E9EDE2;
-  --color-background: #EEEDE7;
-  --color-background-subtle: #E6E8E1;
-  --color-surface: #F7F6F1;
-  --color-surface-muted: #EFEEE8;
+  --color-accent: #FFF1A8;
+  --color-accent-hover: #F5E58C;
+  --color-accent-light: #FFFBEA;
+  --color-background: #FFF8D6;
+  --color-background-subtle: #FFFBEA;
+  --color-surface: #FFFDF3;
+  --color-surface-muted: #FFFBEA;
   --color-text-primary: #17211C;
   --color-text-secondary: #64756B;
   --color-text-muted: #8A9189;
@@ -18,33 +18,33 @@
   --color-border-strong: rgba(18, 55, 42, 0.18);
   --color-border-subtle: rgba(18, 55, 42, 0.06);
   --color-success: #168A45;
-  --color-warning: #B7791F;
-  --color-danger: #C94B4B;
-  --color-info: #426B65;
+  --color-warning: #D99A22;
+  --color-danger: #D94A45;
+  --color-info: #3F72AF;
   --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Cantarell, sans-serif;
 }
 
 :root {
   --fb-primary: #168A45;
   --fb-primary-dark: #12372A;
-  --fb-accent: #86A96A;
-  --fb-bg: #EEEDE7;
-  --fb-surface: #F7F6F1;
+  --fb-accent: #FFF1A8;
+  --fb-bg: #FFF8D6;
+  --fb-surface: #FFFDF3;
   --fb-text-primary: #17211C;
   --fb-text-secondary: #64756B;
   --fb-border: rgba(18, 55, 42, 0.10);
   --fb-success: #168A45;
-  --fb-warning: #B7791F;
-  --fb-danger: #C94B4B;
-  --fb-info: #426B65;
+  --fb-warning: #D99A22;
+  --fb-danger: #D94A45;
+  --fb-info: #3F72AF;
 }
 
 html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
-html, body { font-family: var(--font-sans); background-color: #EEEDE7; color: #17211C; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; min-height: 100vh; }
+html, body { font-family: var(--font-sans); background-color: #FFF8D6; color: #17211C; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; min-height: 100vh; }
 body { overflow-x: hidden; }
 ::selection { background: rgba(22, 138, 69, 0.18); color: #12372A; }
 
-.glass-surface { background: rgba(247, 246, 241, 0.72); border: 1px solid rgba(18, 55, 42, 0.10); box-shadow: 0 18px 45px rgba(18, 55, 42, 0.08); backdrop-filter: blur(18px); }
+.glass-surface { background: rgba(255, 253, 243, 0.78); border: 1px solid rgba(18, 55, 42, 0.10); box-shadow: 0 18px 45px rgba(18, 55, 42, 0.08); backdrop-filter: blur(18px); }
 .soft-grid { background-image: linear-gradient(rgba(22, 138, 69, 0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(22, 138, 69, 0.055) 1px, transparent 1px); background-size: 28px 28px; mask-image: linear-gradient(to bottom, black, transparent 82%); }
 @property --button-glow-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
 .button-glow { --button-glow-angle: 0deg; isolation: isolate; }
@@ -66,6 +66,10 @@ body { overflow-x: hidden; }
   .button-glow::after { animation: none; background: linear-gradient(90deg, rgba(221, 233, 223, 0.7), rgba(22, 138, 69, 0.7), rgba(221, 233, 223, 0.7)); }
 }
 @media (pointer: coarse) { .fb-cursor-dot, .fb-cursor-ring { display: none; } }
+
+.auth-pixel-snow { position: absolute !important; inset: 0; z-index: 0; pointer-events: none; opacity: 0.18; mix-blend-mode: multiply; }
+.auth-pixel-snow-sage { opacity: 0.12; }
+.auth-background-wash { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(180deg, rgba(255, 248, 214, 0.18), rgba(255, 253, 243, 0.38)); }
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
