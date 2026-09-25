@@ -4,11 +4,3 @@ export { ImpactSection } from './ImpactSection';
 export { AudienceSection } from './AudienceSection';
 export { SafetySection } from './SafetySection';
 export { FinalCTASection } from './FinalCTASection';
-export default {
-  HeroSection,
-  HowItWorksSection,
-  ImpactSection,
-  AudienceSection,
-  SafetySection,
-  FinalCTASection,
-};
