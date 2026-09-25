@@ -28,7 +28,15 @@ import {
   MyDonationsPage,
   ProfilePage,
 } from '@/pages/donor';
-import { NgoDashboardPlaceholder } from '@/pages/ngo/NgoDashboardPlaceholder';
+import {
+  AvailableFoodPage as NgoAvailableFoodPage,
+  ClaimDetailsPage,
+  FoodDetailsPage,
+  HistoryPage as NgoHistoryPage,
+  MyClaimsPage,
+  NgoDashboard,
+  ProfilePage as NgoProfilePage,
+} from '@/pages/ngo';
 import { AdminDashboardPlaceholder } from '@/pages/admin/AdminDashboardPlaceholder';
 
 /**
@@ -102,8 +110,13 @@ export const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
-      { index: true, element: <NgoDashboardPlaceholder /> },
-      // Phase 6 will expand: /ngo/available-food, /ngo/claimed, /ngo/pickups, /ngo/history, /ngo/profile
+      { index: true, element: <NgoDashboard /> },
+      { path: 'available-food', element: <NgoAvailableFoodPage /> },
+      { path: 'food/:donationId', element: <FoodDetailsPage /> },
+      { path: 'claims', element: <MyClaimsPage /> },
+      { path: 'claims/:claimId', element: <ClaimDetailsPage /> },
+      { path: 'history', element: <NgoHistoryPage /> },
+      { path: 'profile', element: <NgoProfilePage /> },
     ],
   },
 

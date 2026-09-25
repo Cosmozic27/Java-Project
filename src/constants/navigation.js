@@ -6,13 +6,10 @@ import {
   History,
   User,
   ShoppingBag,
-  PackageCheck,
-  Truck,
   Users,
   Building2,
   BarChart3,
   Settings,
-  HelpCircle,
 } from 'lucide-react';
 
 /**
@@ -104,18 +101,12 @@ export const NGO_NAV = [
         badge: 'New',
       },
       {
-        label: 'Claimed Food',
-        to: '/ngo/claimed',
-        icon: PackageCheck,
+        label: 'My Claims',
+        to: '/ngo/claims',
+        icon: HeartHandshake,
       },
       {
-        label: 'Pickup Tracking',
-        to: '/ngo/pickups',
-        icon: Truck,
-        badge: '2 Live',
-      },
-      {
-        label: 'Distribution History',
+        label: 'History',
         to: '/ngo/history',
         icon: History,
       },
@@ -125,14 +116,9 @@ export const NGO_NAV = [
     group: 'Account',
     items: [
       {
-        label: 'NGO Profile',
+        label: 'Profile',
         to: '/ngo/profile',
         icon: Building2,
-      },
-      {
-        label: 'Support',
-        to: '/ngo/support',
-        icon: HelpCircle,
       },
     ],
   },

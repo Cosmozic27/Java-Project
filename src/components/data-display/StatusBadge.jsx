@@ -23,6 +23,18 @@ const statusConfig = {
     dotClass: 'bg-blue-500',
     icon: Clock,
   },
+  'Request Submitted': {
+    label: 'Request Submitted',
+    classes: 'bg-slate-50 text-slate-700 border-slate-200',
+    dotClass: 'bg-slate-500',
+    icon: Clock,
+  },
+  'Claim Confirmed': {
+    label: 'Claim Confirmed',
+    classes: 'bg-blue-50 text-blue-700 border-blue-200',
+    dotClass: 'bg-blue-500',
+    icon: CheckCircle2,
+  },
   'Pickup Pending': {
     label: 'Pickup Pending',
     classes: 'bg-amber-50 text-amber-700 border-amber-200',
