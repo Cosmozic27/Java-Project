@@ -10,6 +10,7 @@ import {
   Building2,
   BarChart3,
   Settings,
+  ClipboardList,
 } from 'lucide-react';
 
 /**
@@ -153,6 +154,11 @@ export const ADMIN_NAV = [
         icon: HeartHandshake,
       },
       {
+        label: 'Claims',
+        to: '/admin/claims',
+        icon: ClipboardList,
+      },
+      {
         label: 'Reports & Analytics',
         to: '/admin/reports',
         icon: BarChart3,
@@ -166,6 +172,11 @@ export const ADMIN_NAV = [
         label: 'Platform Settings',
         to: '/admin/settings',
         icon: Settings,
+      },
+      {
+        label: 'Profile',
+        to: '/admin/profile',
+        icon: User,
       },
     ],
   },

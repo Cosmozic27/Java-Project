@@ -37,7 +37,20 @@ import {
   NgoDashboard,
   ProfilePage as NgoProfilePage,
 } from '@/pages/ngo';
-import { AdminDashboardPlaceholder } from '@/pages/admin/AdminDashboardPlaceholder';
+import {
+  AdminDashboard,
+  UsersPage,
+  UserDetailsPage,
+  NGOManagementPage,
+  NGODetailsPage,
+  DonationsPage,
+  DonationDetailsPage as AdminDonationDetailsPage,
+  ClaimsPage,
+  ClaimDetailsPage as AdminClaimDetailsPage,
+  ReportsPage,
+  AdminProfilePage,
+  AdminSettingsPage,
+} from '@/pages/admin';
 
 /**
  * FoodBridge — centralized router configuration.
@@ -129,8 +142,18 @@ export const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
-      { index: true, element: <AdminDashboardPlaceholder /> },
-      // Phase 7 will expand: /admin/users, /admin/ngos, /admin/donations, /admin/reports, /admin/settings
+      { index: true, element: <AdminDashboard /> },
+      { path: 'users', element: <UsersPage /> },
+      { path: 'users/:userId', element: <UserDetailsPage /> },
+      { path: 'ngos', element: <NGOManagementPage /> },
+      { path: 'ngos/:ngoId', element: <NGODetailsPage /> },
+      { path: 'donations', element: <DonationsPage /> },
+      { path: 'donations/:donationId', element: <AdminDonationDetailsPage /> },
+      { path: 'claims', element: <ClaimsPage /> },
+      { path: 'claims/:claimId', element: <AdminClaimDetailsPage /> },
+      { path: 'reports', element: <ReportsPage /> },
+      { path: 'profile', element: <AdminProfilePage /> },
+      { path: 'settings', element: <AdminSettingsPage /> },
     ],
   },
 ]);

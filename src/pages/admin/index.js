@@ -1,1 +1,12 @@
-export { AdminDashboardPlaceholder, default as AdminDashboard } from './AdminDashboardPlaceholder';
+export { default as AdminDashboard } from './AdminDashboard';
+export { default as UsersPage } from './UsersPage';
+export { default as UserDetailsPage } from './UserDetailsPage';
+export { default as NGOManagementPage } from './NGOManagementPage';
+export { default as NGODetailsPage } from './NGODetailsPage';
+export { default as DonationsPage } from './DonationsPage';
+export { default as DonationDetailsPage } from './DonationDetailsPage';
+export { default as ClaimsPage } from './ClaimsPage';
+export { default as ClaimDetailsPage } from './ClaimDetailsPage';
+export { default as ReportsPage } from './ReportsPage';
+export { default as AdminProfilePage } from './AdminProfilePage';
+export { default as AdminSettingsPage } from './AdminSettingsPage';

@@ -65,6 +65,54 @@ const statusConfig = {
     dotClass: 'bg-red-500',
     icon: XCircle,
   },
+  Active: {
+    label: 'Active',
+    classes: 'bg-green-50 text-green-700 border-green-200',
+    dotClass: 'bg-green-500',
+    icon: CheckCircle2,
+  },
+  Pending: {
+    label: 'Pending',
+    classes: 'bg-amber-50 text-amber-700 border-amber-200',
+    dotClass: 'bg-amber-500',
+    icon: Clock,
+  },
+  Inactive: {
+    label: 'Inactive',
+    classes: 'bg-slate-100 text-slate-700 border-slate-200',
+    dotClass: 'bg-slate-400',
+    icon: Clock,
+  },
+  Suspended: {
+    label: 'Suspended',
+    classes: 'bg-red-50 text-red-700 border-red-200',
+    dotClass: 'bg-red-500',
+    icon: XCircle,
+  },
+  'Pending Review': {
+    label: 'Pending Review',
+    classes: 'bg-amber-50 text-amber-700 border-amber-200',
+    dotClass: 'bg-amber-500',
+    icon: Clock,
+  },
+  Verified: {
+    label: 'Verified',
+    classes: 'bg-primary-light text-primary-dark border-primary/30',
+    dotClass: 'bg-primary',
+    icon: CheckCircle2,
+  },
+  Rejected: {
+    label: 'Rejected',
+    classes: 'bg-red-50 text-red-700 border-red-200',
+    dotClass: 'bg-red-500',
+    icon: XCircle,
+  },
+  'Needs Information': {
+    label: 'Needs Information',
+    classes: 'bg-blue-50 text-blue-700 border-blue-200',
+    dotClass: 'bg-blue-500',
+    icon: HelpCircle,
+  },
 };
 
 const sizes = {
