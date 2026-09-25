@@ -5,5 +5,6 @@ export {
   CardDescription,
   CardContent,
   CardFooter,
-  default,
+  default as CardComponent,
 } from './Card';
+export { StatCard, default as StatCardComponent } from './StatCard';

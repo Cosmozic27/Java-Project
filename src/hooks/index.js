@@ -1,2 +1,1 @@
-// Custom hooks module (useAuth, useLocalStorage, useDebounce, etc.)
-export {};
+export { useToast } from './useToast';

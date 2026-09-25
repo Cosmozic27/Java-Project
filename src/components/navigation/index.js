@@ -1,2 +1,1 @@
-// Navigation components module (Navbar, Sidebar, NavLinks, Breadcrumbs)
-export {};
+export { Navbar, default as NavbarComponent } from './Navbar';
