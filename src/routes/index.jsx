@@ -18,8 +18,16 @@ import { LoginPage } from '@/pages/auth/LoginPage';
 import { RegisterPage } from '@/pages/auth/RegisterPage';
 import { ForgotPasswordPage } from '@/pages/auth/ForgotPasswordPage';
 
-// Portal placeholder pages
-import { DonorDashboardPlaceholder } from '@/pages/donor/DonorDashboardPlaceholder';
+// Portal pages
+import {
+  AvailableFoodPage,
+  CreateDonationPage,
+  DonationDetailsPage,
+  DonorDashboard,
+  HistoryPage,
+  MyDonationsPage,
+  ProfilePage,
+} from '@/pages/donor';
 import { NgoDashboardPlaceholder } from '@/pages/ngo/NgoDashboardPlaceholder';
 import { AdminDashboardPlaceholder } from '@/pages/admin/AdminDashboardPlaceholder';
 
@@ -75,8 +83,13 @@ export const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
-      { index: true, element: <DonorDashboardPlaceholder /> },
-      // Phase 5 will expand: /donor/donations, /donor/available-food, /donor/history, /donor/profile
+      { index: true, element: <DonorDashboard /> },
+      { path: 'available-food', element: <AvailableFoodPage /> },
+      { path: 'donations', element: <MyDonationsPage /> },
+      { path: 'donations/new', element: <CreateDonationPage /> },
+      { path: 'donations/:donationId', element: <DonationDetailsPage /> },
+      { path: 'history', element: <HistoryPage /> },
+      { path: 'profile', element: <ProfilePage /> },
     ],
   },
 

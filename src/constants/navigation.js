@@ -67,7 +67,7 @@ export const DONOR_NAV = [
         badge: '3 Active',
       },
       {
-        label: 'Donation History',
+        label: 'History',
         to: '/donor/history',
         icon: History,
       },
@@ -77,14 +77,9 @@ export const DONOR_NAV = [
     group: 'Account',
     items: [
       {
-        label: 'Organization Profile',
+        label: 'Profile',
         to: '/donor/profile',
         icon: User,
-      },
-      {
-        label: 'Support & FAQs',
-        to: '/donor/support',
-        icon: HelpCircle,
       },
     ],
   },
