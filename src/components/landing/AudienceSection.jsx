@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/common/Button';
 import { Card } from '@/components/cards/Card';
+import { Reveal, RevealGroup } from '@/components/motion';
 
 const AUDIENCES = [
   {
@@ -175,7 +176,7 @@ export function AudienceSection() {
       aria-labelledby="audiences-heading"
       className="relative bg-surface py-16 sm:py-20 lg:py-24 border-t border-border-subtle"
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <Reveal as="div" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto">
@@ -196,13 +197,13 @@ export function AudienceSection() {
         </div>
 
         {/* Two Complementary Audience Panels */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12 sm:mt-16 items-stretch">
+        <RevealGroup className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12 sm:mt-16 items-stretch">
           {AUDIENCES.map((panel) => (
             <AudiencePanel key={panel.id} panel={panel} />
           ))}
-        </div>
+        </RevealGroup>
 
-      </div>
+      </Reveal>
     </section>
   );
 }

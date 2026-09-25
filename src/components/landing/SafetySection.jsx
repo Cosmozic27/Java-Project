@@ -7,6 +7,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { Card } from '@/components/cards/Card';
+import { Reveal, RevealGroup } from '@/components/motion';
 
 const SAFETY_ITEMS = [
   {
@@ -78,7 +79,7 @@ export function SafetySection() {
       aria-labelledby="safety-heading"
       className="relative bg-background-subtle py-16 sm:py-20 lg:py-24 border-t border-border"
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <Reveal as="div" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto">
@@ -99,11 +100,11 @@ export function SafetySection() {
         </div>
 
         {/* 4 Information Items Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12 sm:mt-16 items-stretch">
+        <RevealGroup className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12 sm:mt-16 items-stretch">
           {SAFETY_ITEMS.map((item) => (
             <SafetyItem key={item.id} item={item} />
           ))}
-        </div>
+        </RevealGroup>
 
         {/* Responsibility Notice */}
         <div className="mt-10 sm:mt-12 rounded-xl border border-border bg-surface p-5 sm:p-6 text-center max-w-3xl mx-auto shadow-xs">
@@ -116,7 +117,7 @@ export function SafetySection() {
           </div>
         </div>
 
-      </div>
+      </Reveal>
     </section>
   );
 }

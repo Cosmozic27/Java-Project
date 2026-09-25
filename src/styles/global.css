@@ -1,75 +1,68 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #16A34A;
-  --color-primary-dark: #15803D;
-  --color-primary-light: #DCFCE7;
-  --color-accent: #84CC16;
-  --color-accent-hover: #65A30D;
-  --color-accent-light: #ECFCCB;
-  --color-background: #F7FAF8;
-  --color-background-subtle: #F0F5F2;
-  --color-surface: #FFFFFF;
-  --color-surface-muted: #F8FAF9;
+  --color-primary: #168A45;
+  --color-primary-dark: #12372A;
+  --color-primary-light: #DCEFE2;
+  --color-accent: #86B83F;
+  --color-accent-hover: #6E9C31;
+  --color-accent-light: #EEF6DF;
+  --color-background: #F3F6F2;
+  --color-background-subtle: #EAF1EB;
+  --color-surface: #FAFCF9;
+  --color-surface-muted: #F0F5F0;
   --color-text-primary: #17211C;
-  --color-text-secondary: #64748B;
-  --color-text-muted: #94A3B8;
-  --color-border: #E2E8E4;
-  --color-border-strong: #CBD5E1;
-  --color-border-subtle: #EEF2F0;
-  --color-success: #16A34A;
+  --color-text-secondary: #64756B;
+  --color-text-muted: #8A9A90;
+  --color-border: rgba(18, 55, 42, 0.10);
+  --color-border-strong: rgba(18, 55, 42, 0.18);
+  --color-border-subtle: rgba(18, 55, 42, 0.06);
+  --color-success: #168A45;
   --color-warning: #F59E0B;
   --color-danger: #EF4444;
   --color-info: #2563EB;
-
-  --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Cantarell, sans-serif;
 }
 
 :root {
-  --fb-primary: #16A34A;
-  --fb-primary-dark: #15803D;
-  --fb-accent: #84CC16;
-  --fb-bg: #F7FAF8;
-  --fb-surface: #FFFFFF;
+  --fb-primary: #168A45;
+  --fb-primary-dark: #12372A;
+  --fb-accent: #86B83F;
+  --fb-bg: #F3F6F2;
+  --fb-surface: #FAFCF9;
   --fb-text-primary: #17211C;
-  --fb-text-secondary: #64748B;
-  --fb-border: #E2E8E4;
-  --fb-success: #16A34A;
+  --fb-text-secondary: #64756B;
+  --fb-border: rgba(18, 55, 42, 0.10);
+  --fb-success: #168A45;
   --fb-warning: #F59E0B;
   --fb-danger: #EF4444;
   --fb-info: #2563EB;
 }
 
-/* Base typography and body reset */
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+html, body { font-family: var(--font-sans); background-color: #F3F6F2; color: #17211C; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; min-height: 100vh; }
+body { overflow-x: hidden; }
+::selection { background: rgba(22, 138, 69, 0.18); color: #12372A; }
 
-html,
-body {
-  font-family: var(--font-sans);
-  background-color: #F7FAF8;
-  color: #17211C;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  min-height: 100vh;
-}
+.glass-surface { background: rgba(255, 255, 255, 0.72); border: 1px solid rgba(18, 55, 42, 0.10); box-shadow: 0 18px 45px rgba(18, 55, 42, 0.08); backdrop-filter: blur(18px); }
+.soft-grid { background-image: linear-gradient(rgba(22, 138, 69, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(22, 138, 69, 0.06) 1px, transparent 1px); background-size: 28px 28px; mask-image: linear-gradient(to bottom, black, transparent 82%); }
 
-/* Custom subtle scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
+.has-custom-cursor, .has-custom-cursor a, .has-custom-cursor button, .has-custom-cursor [role='button'] { cursor: none; }
+.has-custom-cursor input, .has-custom-cursor textarea, .has-custom-cursor select, .has-custom-cursor [contenteditable='true'] { cursor: text; }
+.fb-cursor-dot, .fb-cursor-ring { position: fixed; left: 0; top: 0; z-index: 100; pointer-events: none; transform: translate3d(-100px, -100px, 0); will-change: transform; }
+.fb-cursor-dot { width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; border-radius: 999px; background: #168A45; box-shadow: 0 0 14px rgba(22, 138, 69, 0.55); }
+.fb-cursor-ring { width: 30px; height: 30px; margin: -15px 0 0 -15px; border: 1px solid rgba(22, 138, 69, 0.48); border-radius: 999px; transition: width 180ms ease, height 180ms ease, margin 180ms ease, background 180ms ease, border-color 180ms ease, box-shadow 180ms ease; }
+.fb-cursor-ring[data-state='interactive'], .fb-cursor-ring[data-state='button'] { width: 44px; height: 44px; margin: -22px 0 0 -22px; background: rgba(22, 138, 69, 0.08); border-color: rgba(22, 138, 69, 0.75); box-shadow: 0 0 22px rgba(22, 138, 69, 0.15); }
+.fb-cursor-ring[data-state='card'] { width: 52px; height: 52px; margin: -26px 0 0 -26px; background: rgba(22, 138, 69, 0.06); }
+.cursor-click .fb-cursor-ring { width: 52px; height: 52px; margin: -26px 0 0 -26px; }
 
-::-webkit-scrollbar-track {
-  background: transparent;
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+@media (pointer: coarse) { .fb-cursor-dot, .fb-cursor-ring { display: none; } }
 
-::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
-  border-radius: 9999px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8;
-}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(18, 55, 42, 0.20); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(22, 138, 69, 0.46); }

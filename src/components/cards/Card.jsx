@@ -2,12 +2,12 @@ import React, { forwardRef } from 'react';
 import { cn } from '@/utils/cn';
 
 const cardVariants = {
-  default: 'bg-surface border-border shadow-xs hover:border-border-strong/80',
+  default: 'bg-surface/90 border-border shadow-[0_10px_30px_rgba(18,55,42,0.035)] hover:border-border-strong/80',
   subtle: 'bg-surface-muted border-border/80 shadow-none',
   flat: 'bg-surface border-border shadow-none',
   interactive:
-    'bg-surface border-border shadow-xs hover:shadow-md hover:border-primary/40 hover:-translate-y-0.5 cursor-pointer transition-all duration-200',
-  elevated: 'bg-surface border-border/60 shadow-md',
+    'bg-surface/90 border-border shadow-[0_10px_30px_rgba(18,55,42,0.05)] hover:shadow-[0_18px_38px_rgba(18,55,42,0.11)] hover:border-primary/40 hover:-translate-y-0.5 cursor-pointer transition-all duration-250',
+  elevated: 'bg-surface/90 border-border/60 shadow-[0_16px_40px_rgba(18,55,42,0.10)]',
 };
 
 const paddingVariants = {
@@ -32,7 +32,7 @@ export const Card = forwardRef(function Card(
     <Component
       ref={ref}
       className={cn(
-        'rounded-xl border transition-colors',
+        'rounded-2xl border transition-all duration-200',
         cardVariants[variant] || cardVariants.default,
         paddingVariants[padding],
         className

@@ -6,6 +6,7 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { Card } from '@/components/cards/Card';
+import { Reveal, RevealGroup } from '@/components/motion';
 
 const STEPS = [
   {
@@ -103,7 +104,7 @@ export function HowItWorksSection() {
       aria-labelledby="how-it-works-heading"
       className="relative bg-surface py-16 sm:py-20 lg:py-24 border-t border-border-subtle"
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <Reveal as="div" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto">
@@ -132,14 +133,14 @@ export function HowItWorksSection() {
             aria-hidden="true"
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          <RevealGroup className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
             {STEPS.map((step) => (
               <StepCard key={step.number} step={step} />
             ))}
-          </div>
+          </RevealGroup>
         </div>
 
-      </div>
+      </Reveal>
     </section>
   );
 }

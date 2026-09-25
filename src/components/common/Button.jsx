@@ -7,7 +7,7 @@ import { cn } from '@/utils/cn';
  */
 const buttonVariants = {
   primary:
-    'bg-primary text-white hover:bg-primary-dark active:bg-primary-dark/95 shadow-sm focus-visible:ring-primary/30',
+    'relative overflow-hidden bg-primary text-white hover:bg-primary-dark active:bg-primary-dark/95 shadow-sm hover:shadow-md focus-visible:ring-primary/30 before:absolute before:inset-y-0 before:-left-1/2 before:w-1/3 before:skew-x-[-20deg] before:bg-white/15 before:transition-transform before:duration-500 hover:before:translate-x-[420%]',
   secondary:
     'bg-primary-light text-primary-dark hover:bg-primary/20 active:bg-primary/25 focus-visible:ring-primary/20',
   outline:
@@ -40,7 +40,7 @@ function setRef(ref, node) {
 
 function buttonClassName({ variant, size, fullWidth, className, isDisabled }) {
   return cn(
-    'inline-flex items-center justify-center select-none transition-all duration-150 ease-in-out',
+    'inline-flex items-center justify-center select-none transition-all duration-200 ease-out active:scale-[0.985]',
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1',
     'cursor-pointer disabled:cursor-not-allowed disabled:opacity-55 disabled:pointer-events-none',
     buttonVariants[variant] || buttonVariants.primary,

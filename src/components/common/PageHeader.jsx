@@ -14,7 +14,7 @@ export function PageHeader({
   return (
     <header
       className={cn(
-        'flex flex-col gap-4 pb-6',
+        'flex flex-col gap-4 pb-6 animate-in fade-in slide-in-from-bottom-2 duration-500',
         divider && 'border-b border-border mb-6',
         className
       )}

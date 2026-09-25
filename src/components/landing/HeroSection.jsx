@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -14,6 +15,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/common/Button';
 import { Card } from '@/components/cards/Card';
+import { Reveal } from '@/components/motion';
 
 export function HeroSection() {
   return (
@@ -23,15 +25,17 @@ export function HeroSection() {
     >
       {/* Subtle Background Pattern Accent */}
       <div
-        className="pointer-events-none absolute inset-0 -z-10 opacity-35 [radial-gradient(#16A34A_1px,transparent_1px)] [background-size:24px_24px]"
+        className="soft-grid pointer-events-none absolute inset-0 -z-10 opacity-80"
         aria-hidden="true"
       />
+      <div className="pointer-events-none absolute -right-24 top-10 -z-10 h-72 w-72 rounded-full bg-primary/10 blur-3xl" aria-hidden="true" />
+      <div className="pointer-events-none absolute -left-28 bottom-0 -z-10 h-64 w-64 rounded-full bg-accent/10 blur-3xl" aria-hidden="true" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           
           {/* Left / Content Column (7 cols on lg) */}
-          <div className="lg:col-span-7 space-y-6 sm:space-y-7 text-left">
+          <Reveal className="lg:col-span-7 space-y-6 sm:space-y-7 text-left">
             {/* Eyebrow */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light/70 border border-primary/20 text-primary-dark text-xs font-semibold tracking-wider uppercase">
               <span className="h-2 w-2 rounded-full bg-primary animate-pulse" aria-hidden="true" />
@@ -92,19 +96,24 @@ export function HeroSection() {
                 <span>Purpose-built for food redistribution</span>
               </div>
             </div>
-          </div>
+          </Reveal>
 
           {/* Right / Visual Column: Food Donation → Connection → Community Impact (5 cols on lg) */}
           <div className="lg:col-span-5 w-full">
-            <div className="relative mx-auto max-w-md lg:max-w-none">
+            <motion.div
+              className="relative mx-auto max-w-md lg:max-w-none"
+              initial={{ opacity: 0, y: 18, rotate: 1 }}
+              animate={{ opacity: 1, y: 0, rotate: 0 }}
+              transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            >
               
               {/* Outer Framed Visual Container */}
-              <div className="relative rounded-2xl border border-border bg-surface p-5 sm:p-6 shadow-sm">
+              <div className="glass-surface relative rounded-2xl p-5 sm:p-6">
                 
                 {/* Visual Header / Live Activity Tag */}
                 <div className="flex items-center justify-between pb-4 border-b border-border-subtle">
                   <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full bg-emerald-500" aria-hidden="true" />
+                    <motion.span className="h-2 w-2 rounded-full bg-primary" aria-hidden="true" animate={{ scale: [1, 1.35, 1], opacity: [1, 0.65, 1] }} transition={{ duration: 2.2, repeat: Infinity }} />
                     <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
                       Redistribution Flow
                     </span>
@@ -154,7 +163,7 @@ export function HeroSection() {
                       <div className="w-0.5 h-full bg-primary/25" />
                     </div>
                     <div className="relative z-10 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface border border-primary/30 text-[11px] font-semibold text-primary shadow-xs">
-                      <ArrowDownUp className="h-3 w-3 animate-bounce" aria-hidden="true" />
+                      <motion.span animate={{ y: [0, 3, 0] }} transition={{ duration: 1.8, repeat: Infinity }}><ArrowDownUp className="h-3 w-3" aria-hidden="true" /></motion.span>
                       <span>Smart Matching • 1.8 km</span>
                     </div>
                   </div>
@@ -223,7 +232,7 @@ export function HeroSection() {
 
               </div>
 
-            </div>
+            </motion.div>
           </div>
 
         </div>

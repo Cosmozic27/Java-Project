@@ -45,7 +45,7 @@ export function DashboardHeader({
   return (
     <header
       className={cn(
-        'sticky top-0 z-30 flex flex-col border-b border-border bg-surface/95 backdrop-blur-md transition-colors',
+        'sticky top-0 z-30 flex flex-col border-b border-border/70 bg-surface/80 backdrop-blur-xl transition-colors shadow-[0_6px_24px_rgba(18,55,42,0.04)]',
         className
       )}
     >
@@ -126,7 +126,7 @@ export function DashboardHeader({
 
       {/* Sub-header title banner (if title provided) */}
       {title && (
-        <div className="px-4 sm:px-6 lg:px-8 py-3.5 bg-surface border-t border-border/40 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <div className="px-4 sm:px-6 lg:px-8 py-3.5 bg-background/60 border-t border-border/40 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-text-primary">
               {title}

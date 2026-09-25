@@ -36,7 +36,7 @@ function PublicNavItem({ link, className, onClick }) {
 
   if (usesHash) {
     return (
-      <Link to={link.to} onClick={onClick} className={styles(isSectionActive)}>
+      <Link to={link.to} onClick={onClick} className={cn(styles(isSectionActive), 'relative after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-primary after:transition-transform after:duration-200 hover:after:scale-x-100', isSectionActive && 'after:scale-x-100')}>
         {link.label}
       </Link>
     );
@@ -46,7 +46,7 @@ function PublicNavItem({ link, className, onClick }) {
     <NavLink
       to={link.to}
       onClick={onClick}
-      className={({ isActive }) => styles(isActive)}
+      className={({ isActive }) => cn(styles(isActive), 'relative after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-primary after:transition-transform after:duration-200 hover:after:scale-x-100', isActive && 'after:scale-x-100')}
     >
       {link.label}
     </NavLink>
@@ -67,7 +67,7 @@ export function Navbar({
   return (
     <nav
       className={cn(
-        'w-full border-b border-border bg-surface/95 backdrop-blur-md transition-all duration-200',
+        'w-full border-b border-border/70 bg-surface/80 backdrop-blur-xl transition-all duration-200 shadow-[0_6px_24px_rgba(18,55,42,0.04)]',
         sticky && 'sticky top-0 z-40',
         className
       )}
