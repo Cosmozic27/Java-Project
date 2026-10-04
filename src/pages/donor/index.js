@@ -6,3 +6,5 @@ export { DonationDetailsPage } from './DonationDetailsPage';
 export { HistoryPage } from './HistoryPage';
 export { ProfilePage } from './ProfilePage';
 export { DonorDashboardPlaceholder } from './DonorDashboardPlaceholder';
+export { default as DonorSettingsPage } from './DonorSettingsPage';
+

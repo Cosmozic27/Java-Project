@@ -1,38 +1,20 @@
 import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Logo } from '@/components/common/Logo';
-import { PixelSnow } from '@/components/motion';
+import { AuthBackground } from '@/components/auth/AuthBackground';
 import { ShieldCheck, ArrowLeft, HeartHandshake } from 'lucide-react';
 
 export function AuthLayout({ children }) {
   const { pathname } = useLocation();
-  const showPixelSnow = pathname === '/auth/login' || pathname === '/auth/register';
+  const showBackground = pathname === '/auth/login' || pathname === '/auth/register';
 
   return (
     <div className="relative isolate min-h-screen overflow-x-hidden bg-background flex flex-col justify-between font-sans selection:bg-primary/20 selection:text-primary-dark">
-      {showPixelSnow && (
-        <>
-          <PixelSnow
-            className="auth-pixel-snow auth-pixel-snow-green"
-            color="#168A45"
-            density={0.055}
-            speed={0.24}
-            brightness={0.38}
-            pixelResolution={260}
-            direction={100}
-          />
-          <PixelSnow
-            className="auth-pixel-snow auth-pixel-snow-sage"
-            color="#DDE9DF"
-            density={0.04}
-            speed={0.18}
-            brightness={0.26}
-            pixelResolution={300}
-            direction={125}
-          />
-        </>
-      )}
+      {/* Lightweight CSS animated background — replaces Three.js PixelSnow */}
+      {showBackground && <AuthBackground />}
+
       <div className="auth-background-wash" aria-hidden="true" />
+
       {/* Top Header with Back Link & Logo */}
       <header className="relative z-10 w-full px-4 py-5 sm:px-8">
         <div className="mx-auto flex w-full items-center justify-between gap-4">

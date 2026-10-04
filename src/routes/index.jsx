@@ -18,7 +18,11 @@ import { LoginPage } from '@/pages/auth/LoginPage';
 import { RegisterPage } from '@/pages/auth/RegisterPage';
 import { ForgotPasswordPage } from '@/pages/auth/ForgotPasswordPage';
 
-// Portal pages
+// Shared pages (work across all portal roles)
+import { HelpFaqPage } from '@/pages/shared/HelpFaqPage';
+import { NotFoundPage } from '@/pages/shared/NotFoundPage';
+
+// Portal pages — Donor
 import {
   AvailableFoodPage,
   CreateDonationPage,
@@ -28,6 +32,9 @@ import {
   MyDonationsPage,
   ProfilePage,
 } from '@/pages/donor';
+import DonorSettingsPage from '@/pages/donor/DonorSettingsPage';
+
+// Portal pages — NGO
 import {
   AvailableFoodPage as NgoAvailableFoodPage,
   ClaimDetailsPage,
@@ -37,6 +44,9 @@ import {
   NgoDashboard,
   ProfilePage as NgoProfilePage,
 } from '@/pages/ngo';
+import NgoSettingsPage from '@/pages/ngo/NgoSettingsPage';
+
+// Portal pages — Admin
 import {
   AdminDashboard,
   UsersPage,
@@ -64,8 +74,10 @@ import {
  *   /ngo/*              → DashboardLayout (role=ngo)   → NGO portal
  *   /admin/*            → DashboardLayout (role=admin) → Admin portal
  *
- * ProtectedRoute is a structural pass-through;
- * real auth guards will be wired in a future phase.
+ * All portals share:
+ *   /[role]/help        → HelpFaqPage (reusable)
+ *   /[role]/settings    → Role-specific settings page
+ *   /[role]/profile     → Role-specific profile page
  *
  * Public marketing paths (/surplus, /donors, /ngos, /impact, /about)
  * are not registered yet. Navbar/footer use in-page hashes on `/`
@@ -76,6 +88,7 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <PublicLayout />,
+    errorElement: <NotFoundPage />,
     children: [
       { index: true, element: <LandingPage /> },
       { path: 'showcase', element: <AppShell /> },
@@ -87,6 +100,7 @@ export const router = createBrowserRouter([
   {
     path: '/auth',
     element: <AuthLayout />,
+    errorElement: <NotFoundPage />,
     children: [
       { index: true, element: <LoginPage /> },
       { path: 'login', element: <LoginPage /> },
@@ -103,6 +117,7 @@ export const router = createBrowserRouter([
         <DashboardLayout role="donor" />
       </ProtectedRoute>
     ),
+    errorElement: <NotFoundPage />,
     children: [
       { index: true, element: <DonorDashboard /> },
       { path: 'available-food', element: <AvailableFoodPage /> },
@@ -111,6 +126,9 @@ export const router = createBrowserRouter([
       { path: 'donations/:donationId', element: <DonationDetailsPage /> },
       { path: 'history', element: <HistoryPage /> },
       { path: 'profile', element: <ProfilePage /> },
+      { path: 'settings', element: <DonorSettingsPage /> },
+      { path: 'help', element: <HelpFaqPage /> },
+      { path: 'support', element: <HelpFaqPage /> },
     ],
   },
 
@@ -122,6 +140,7 @@ export const router = createBrowserRouter([
         <DashboardLayout role="ngo" />
       </ProtectedRoute>
     ),
+    errorElement: <NotFoundPage />,
     children: [
       { index: true, element: <NgoDashboard /> },
       { path: 'available-food', element: <NgoAvailableFoodPage /> },
@@ -130,6 +149,9 @@ export const router = createBrowserRouter([
       { path: 'claims/:claimId', element: <ClaimDetailsPage /> },
       { path: 'history', element: <NgoHistoryPage /> },
       { path: 'profile', element: <NgoProfilePage /> },
+      { path: 'settings', element: <NgoSettingsPage /> },
+      { path: 'help', element: <HelpFaqPage /> },
+      { path: 'support', element: <HelpFaqPage /> },
     ],
   },
 
@@ -141,6 +163,7 @@ export const router = createBrowserRouter([
         <DashboardLayout role="admin" />
       </ProtectedRoute>
     ),
+    errorElement: <NotFoundPage />,
     children: [
       { index: true, element: <AdminDashboard /> },
       { path: 'users', element: <UsersPage /> },
@@ -154,7 +177,15 @@ export const router = createBrowserRouter([
       { path: 'reports', element: <ReportsPage /> },
       { path: 'profile', element: <AdminProfilePage /> },
       { path: 'settings', element: <AdminSettingsPage /> },
+      { path: 'help', element: <HelpFaqPage /> },
+      { path: 'support', element: <HelpFaqPage /> },
     ],
+  },
+
+  // ── CATCH-ALL 404 ─────────────────────────────────────────────────
+  {
+    path: '*',
+    element: <NotFoundPage />,
   },
 ]);
 

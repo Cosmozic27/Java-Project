@@ -64,7 +64,7 @@ export function DashboardHeader({
             </button>
           )}
 
-          <div className="hidden sm:block min-w-0">
+          <div className="min-w-0 flex-1">
             {showBreadcrumbs && (breadcrumbs || <Breadcrumbs />)}
           </div>
         </div>

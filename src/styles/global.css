@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 @theme {
   --color-primary: #168A45;
   --color-primary-dark: #12372A;
@@ -75,3 +77,185 @@ body { overflow-x: hidden; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(18, 55, 42, 0.20); border-radius: 9999px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(22, 138, 69, 0.46); }
+
+.portal-theme.dark,
+.portal-theme-dark {
+  color-scheme: dark;
+  --color-background: #050505;
+  --color-background-subtle: #090D09;
+  --color-surface: #0D120D;
+  --color-surface-muted: #080B08;
+  --color-primary: #39FF14;
+  --color-primary-dark: #66FF4D;
+  --color-primary-light: #10220E;
+  --color-accent: #FFD43B;
+  --color-accent-hover: #FFE36B;
+  --color-accent-light: #211C09;
+  --color-text-primary: #F5FFF5;
+  --color-text-secondary: #A7B3A7;
+  --color-text-muted: #687568;
+  --color-border: #1B2B1B;
+  --color-border-strong: #294329;
+  --color-border-subtle: #172317;
+  --color-success: #39FF14;
+  --color-warning: #FFD43B;
+  --color-danger: #FF4545;
+  --color-info: #8BC8FF;
+  --fb-primary: #39FF14;
+  --fb-primary-dark: #66FF4D;
+  --fb-accent: #FFD43B;
+  --fb-bg: #050505;
+  --fb-surface: #0D120D;
+  --fb-text-primary: #F5FFF5;
+  --fb-text-secondary: #A7B3A7;
+  --fb-border: #1B2B1B;
+  --fb-success: #39FF14;
+  --fb-warning: #FFD43B;
+  --fb-danger: #FF4545;
+  --fb-info: #8BC8FF;
+}
+
+.portal-theme.dark [class~="bg-primary"],
+.portal-theme-dark [class~="bg-primary"] {
+  color: #050505;
+}
+
+.portal-theme.dark .glass-surface,
+.portal-theme-dark .glass-surface {
+  background: rgba(18, 24, 18, 0.96);
+  border-color: #1B2B1B;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+}
+
+.portal-theme.dark [class~="bg-green-50"],
+.portal-theme-dark [class~="bg-green-50"],
+.portal-theme.dark [class~="bg-green-100"],
+.portal-theme-dark [class~="bg-green-100"],
+.portal-theme.dark [class~="bg-green-200"],
+.portal-theme-dark [class~="bg-green-200"],
+.portal-theme.dark [class~="bg-emerald-50"],
+.portal-theme-dark [class~="bg-emerald-50"],
+.portal-theme.dark [class~="bg-emerald-100"],
+.portal-theme-dark [class~="bg-emerald-100"] {
+  background-color: #10220E;
+}
+
+.portal-theme.dark [class*="text-green-"],
+.portal-theme-dark [class*="text-green-"],
+.portal-theme.dark [class*="text-emerald-"],
+.portal-theme-dark [class*="text-emerald-"] {
+  color: #A8FF9A;
+}
+
+.portal-theme.dark [class*="border-green-"],
+.portal-theme-dark [class*="border-green-"],
+.portal-theme.dark [class*="border-emerald-"],
+.portal-theme-dark [class*="border-emerald-"] {
+  border-color: #1B4A1B;
+}
+
+.portal-theme.dark [class~="bg-amber-50"],
+.portal-theme-dark [class~="bg-amber-50"],
+.portal-theme.dark [class~="bg-amber-100"],
+.portal-theme-dark [class~="bg-amber-100"],
+.portal-theme.dark [class~="bg-amber-200"],
+.portal-theme-dark [class~="bg-amber-200"] {
+  background-color: #2A230E;
+}
+
+.portal-theme.dark [class*="text-amber-"],
+.portal-theme-dark [class*="text-amber-"] {
+  color: #FFD43B;
+}
+
+.portal-theme.dark [class*="border-amber-"],
+.portal-theme-dark [class*="border-amber-"] {
+  border-color: #56491B;
+}
+
+.portal-theme.dark [class~="bg-red-50"],
+.portal-theme-dark [class~="bg-red-50"],
+.portal-theme.dark [class~="bg-red-100"],
+.portal-theme-dark [class~="bg-red-100"],
+.portal-theme.dark [class~="bg-red-200"],
+.portal-theme-dark [class~="bg-red-200"] {
+  background-color: #2A1111;
+}
+
+.portal-theme.dark [class*="text-red-"],
+.portal-theme-dark [class*="text-red-"] {
+  color: #FF7777;
+}
+
+.portal-theme.dark [class*="border-red-"],
+.portal-theme-dark [class*="border-red-"] {
+  border-color: #5A2323;
+}
+
+.portal-theme.dark [class~="bg-slate-50"],
+.portal-theme-dark [class~="bg-slate-50"],
+.portal-theme.dark [class~="bg-slate-100"],
+.portal-theme-dark [class~="bg-slate-100"],
+.portal-theme.dark [class~="bg-slate-200"],
+.portal-theme-dark [class~="bg-slate-200"] {
+  background-color: #121812;
+}
+
+.portal-theme.dark [class*="text-slate-"],
+.portal-theme-dark [class*="text-slate-"] {
+  color: #A7B3A7;
+}
+
+.portal-theme.dark [class*="border-slate-"],
+.portal-theme-dark [class*="border-slate-"] {
+  border-color: #1B2B1B;
+}
+
+.portal-theme.dark [class~="bg-blue-50"],
+.portal-theme-dark [class~="bg-blue-50"],
+.portal-theme.dark [class~="bg-indigo-50"],
+.portal-theme-dark [class~="bg-indigo-50"] {
+  background-color: #101C2A;
+}
+
+.portal-theme.dark [class*="text-blue-"],
+.portal-theme-dark [class*="text-blue-"],
+.portal-theme.dark [class*="text-indigo-"],
+.portal-theme-dark [class*="text-indigo-"] {
+  color: #9CCBFF;
+}
+
+.portal-theme.dark [class*="border-blue-"],
+.portal-theme-dark [class*="border-blue-"],
+.portal-theme.dark [class*="border-indigo-"],
+.portal-theme-dark [class*="border-indigo-"] {
+  border-color: #233B55;
+}
+
+.portal-theme.dark aside,
+.portal-theme-dark aside {
+  background-color: #080B08;
+}
+
+.portal-theme.dark [class~="bg-surface/90"],
+.portal-theme-dark [class~="bg-surface/90"] {
+  background-color: #0D120D;
+}
+
+.portal-theme.dark [role="menu"],
+.portal-theme-dark [role="menu"],
+.portal-theme.dark .logout-confirm-card,
+.portal-theme-dark .logout-confirm-card {
+  background-color: #121812;
+  border-color: #1B2B1B;
+}
+
+.portal-theme.dark input:not([type="checkbox"]):not([type="radio"]),
+.portal-theme-dark input:not([type="checkbox"]):not([type="radio"]),
+.portal-theme.dark textarea,
+.portal-theme-dark textarea,
+.portal-theme.dark select,
+.portal-theme-dark select {
+  background-color: #090D09;
+  color: #F5FFF5;
+}

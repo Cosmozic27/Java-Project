@@ -6,3 +6,5 @@ export { ClaimDetailsPage } from './ClaimDetailsPage';
 export { HistoryPage } from './HistoryPage';
 export { ProfilePage } from './ProfilePage';
 export { NgoDashboardPlaceholder } from './NgoDashboardPlaceholder';
+export { default as NgoSettingsPage } from './NgoSettingsPage';
+

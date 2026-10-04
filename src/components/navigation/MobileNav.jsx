@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sidebar } from './Sidebar';
+import { cn } from '@/utils/cn';
 
 export function MobileNav({
   isOpen,
@@ -10,6 +11,8 @@ export function MobileNav({
   navigationItems,
   userInfo,
   onLogout,
+  onLogoClick,
+  isDark = false,
 }) {
   // Handle escape key
   useEffect(() => {
@@ -36,7 +39,7 @@ export function MobileNav({
     <AnimatePresence>
       {isOpen && (
         <div
-          className="fixed inset-0 z-50 flex md:hidden"
+          className={cn('fixed inset-0 z-50 flex md:hidden', isDark && 'portal-theme-dark')}
           role="dialog"
           aria-modal="true"
           aria-label="Mobile Navigation"
@@ -81,6 +84,7 @@ export function MobileNav({
                 onClose();
                 onLogout?.();
               }}
+              onLogoClick={onLogoClick ? (e) => { e.preventDefault(); e.stopPropagation(); onLogoClick(e); } : undefined}
               className="w-full border-r-0"
             />
           </motion.div>

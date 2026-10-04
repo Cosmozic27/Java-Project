@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ChevronRight, Home } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { cn } from '@/utils/cn';
 
 /**
@@ -8,6 +8,7 @@ import { cn } from '@/utils/cn';
  */
 function formatSegment(str) {
   if (!str) return '';
+  if (str.toLowerCase() === 'ngo') return 'NGO';
   return str
     .split('-')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -16,8 +17,6 @@ function formatSegment(str) {
 
 export function Breadcrumbs({
   items,
-  homeHref = '/',
-  showHomeIcon = true,
   className = '',
 }) {
   const location = useLocation();
@@ -30,7 +29,7 @@ export function Breadcrumbs({
       accumPath += `/${seg}`;
       const isLast = idx === segments.length - 1;
       return {
-        label: formatSegment(seg),
+        label: seg === 'support' || seg === 'help' ? 'Help & FAQ' : formatSegment(seg),
         to: isLast ? null : accumPath,
       };
     });
@@ -42,26 +41,17 @@ export function Breadcrumbs({
       className={cn('flex items-center text-xs text-text-secondary overflow-x-auto py-1 scrollbar-none', className)}
     >
       <ol className="flex items-center gap-1.5 whitespace-nowrap">
-        {/* Home / Root Item */}
-        <li className="inline-flex items-center">
-          <Link
-            to={homeHref}
-            className="inline-flex items-center gap-1 text-text-secondary hover:text-text-primary transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded p-0.5"
-            aria-label="Home"
-          >
-            {showHomeIcon ? <Home className="h-3.5 w-3.5" aria-hidden="true" /> : <span>Home</span>}
-          </Link>
-        </li>
-
         {breadcrumbItems.map((item, index) => {
           const isLast = index === breadcrumbItems.length - 1 || !item.to;
 
           return (
             <li key={index} className="inline-flex items-center gap-1.5">
-              <ChevronRight
-                className="h-3.5 w-3.5 shrink-0 text-text-muted"
-                aria-hidden="true"
-              />
+              {index > 0 && (
+                <ChevronRight
+                  className="h-3.5 w-3.5 shrink-0 text-text-muted"
+                  aria-hidden="true"
+                />
+              )}
 
               {item.icon && (
                 <span className="text-text-secondary shrink-0">{item.icon}</span>

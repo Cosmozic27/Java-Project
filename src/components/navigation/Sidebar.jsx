@@ -20,6 +20,7 @@ export function Sidebar({
   onToggleCollapse,
   onItemClick,
   onLogout,
+  onLogoClick,
   footerItems,
   className = '',
 }) {
@@ -38,9 +39,29 @@ export function Sidebar({
       )}
     >
       {/* Sidebar Header: Brand Logo */}
-      <div className="flex h-16 shrink-0 items-center justify-between px-4 border-b border-border/80">
-        <div className="flex items-center min-w-0">
-          <Logo size={isCollapsed ? 'sm' : 'md'} iconOnly={isCollapsed} />
+      <div
+        className={cn(
+          'flex h-16 shrink-0 items-center border-b border-border/80',
+          isCollapsed ? 'justify-center gap-2 px-2' : 'justify-between px-4'
+        )}
+      >
+        <div className={cn('flex items-center', isCollapsed ? 'shrink-0' : 'min-w-0')}>
+          {onLogoClick ? (
+            <button
+              type="button"
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                onLogoClick(event);
+              }}
+              aria-label="FoodBridge home — confirm to leave"
+              className="inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 rounded-lg cursor-pointer"
+            >
+              <Logo size={isCollapsed ? 'sm' : 'md'} iconOnly={isCollapsed} to={null} />
+            </button>
+          ) : (
+            <Logo size={isCollapsed ? 'sm' : 'md'} iconOnly={isCollapsed} />
+          )}
         </div>
 
         {/* Desktop Collapse Toggle Button */}
@@ -49,7 +70,7 @@ export function Sidebar({
             type="button"
             onClick={onToggleCollapse}
             aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            className="hidden md:flex h-7 w-7 items-center justify-center rounded-lg border border-border bg-surface-muted text-text-secondary hover:text-text-primary hover:bg-background-subtle focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary transition-colors cursor-pointer"
+            className="hidden md:flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-border bg-surface-muted text-text-secondary hover:text-text-primary hover:bg-background-subtle focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary transition-colors cursor-pointer"
           >
             {isCollapsed ? (
               <ChevronRight className="h-4 w-4" />
