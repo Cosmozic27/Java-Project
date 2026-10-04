@@ -4,6 +4,7 @@ import {
   Network,
   HeartHandshake,
   CheckCircle2,
+  Truck,
 } from 'lucide-react';
 import { Card } from '@/components/cards/Card';
 import { Reveal, RevealGroup } from '@/components/motion';
@@ -11,8 +12,8 @@ import { Reveal, RevealGroup } from '@/components/motion';
 const STEPS = [
   {
     number: '01',
-    title: 'Donate',
-    subtitle: 'Post Surplus in Minutes',
+    title: 'List Surplus',
+    subtitle: 'Share what is ready',
     description:
       'Donors post available surplus food with important information such as quantity, food type, pickup details, and timing.',
     icon: PackagePlus,
@@ -37,15 +38,28 @@ const STEPS = [
   },
   {
     number: '03',
-    title: 'Redistribute',
-    subtitle: 'Dignified Community Reach',
+    title: 'Pickup',
+    subtitle: 'Coordinate collection',
     description:
-      'The NGO or organization claims the donation, coordinates pickup, and the food reaches the intended community.',
-    icon: HeartHandshake,
+      'A nearby organization collects the donation and confirms the handoff through the existing FoodBridge flow.',
+    icon: Truck,
     highlights: [
       'Tracked pickup coordination',
       'Donation status visibility',
       'Transparent redistribution ledger',
+    ],
+  },
+  {
+    number: '04',
+    title: 'Impact',
+    subtitle: 'Good food, shared well',
+    description:
+      'Surplus moves from a local kitchen to people and programs that can put it to use, with each completed handoff contributing to community impact.',
+    icon: HeartHandshake,
+    highlights: [
+      'Meals redirected to local communities',
+      'Clear donation status visibility',
+      'Less edible food left unused',
     ],
   },
 ];
@@ -59,7 +73,6 @@ function StepCard({ step }) {
       padding="none"
       className="relative z-10 flex flex-col h-full rounded-2xl border border-border bg-surface p-6 sm:p-7 shadow-xs hover:shadow-sm hover:border-primary/40 transition-all duration-200"
     >
-      {/* Top Meta: Icon & Step Number */}
       <div className="flex items-center justify-between">
         <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-primary-light text-primary-dark">
           <IconComponent className="h-6 w-6" aria-hidden="true" />
@@ -69,7 +82,6 @@ function StepCard({ step }) {
         </span>
       </div>
 
-      {/* Title & Subtitle */}
       <div className="mt-5">
         <h3 className="text-xl font-bold tracking-tight text-text-primary">
           {step.title}
@@ -79,15 +91,13 @@ function StepCard({ step }) {
         </p>
       </div>
 
-      {/* Description */}
       <p className="mt-3 text-sm text-text-secondary leading-relaxed">
         {step.description}
       </p>
 
-      {/* Key Highlights */}
       <ul className="mt-6 pt-5 border-t border-border-subtle space-y-2 text-xs text-text-secondary">
-        {step.highlights.map((item, idx) => (
-          <li key={idx} className="flex items-center gap-2">
+        {step.highlights.map((item) => (
+          <li key={item} className="flex items-center gap-2">
             <CheckCircle2 className="h-3.5 w-3.5 text-primary shrink-0" aria-hidden="true" />
             <span>{item}</span>
           </li>
@@ -97,16 +107,14 @@ function StepCard({ step }) {
   );
 }
 
-export function HowItWorksSection() {
+export function HowItWorksSection({ anchorInWrapper = false }) {
   return (
     <section
-      id="how-it-works"
+      id={anchorInWrapper ? undefined : 'how-it-works'}
       aria-labelledby="how-it-works-heading"
       className="relative bg-surface py-16 sm:py-20 lg:py-24 border-t border-border-subtle"
     >
       <Reveal as="div" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light/60 border border-primary/20 text-primary-dark text-xs font-semibold tracking-wider uppercase mb-3">
             <span>How FoodBridge Works</span>
@@ -124,22 +132,17 @@ export function HowItWorksSection() {
           </p>
         </div>
 
-        {/* Steps Grid with Desktop Connector */}
         <div className="relative mt-12 sm:mt-16">
-          
-          {/* Subtle Desktop Connecting Line between cards */}
           <div
-            className="hidden md:block absolute top-[52px] left-[15%] right-[15%] h-px border-t border-dashed border-border-strong/70 z-0"
+            className="fb-step-connector hidden xl:block absolute top-[52px] left-[15%] right-[15%] h-px border-t border-dashed border-border-strong/70 z-0"
             aria-hidden="true"
           />
-
-          <RevealGroup className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          <RevealGroup className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-7">
             {STEPS.map((step) => (
               <StepCard key={step.number} step={step} />
             ))}
           </RevealGroup>
         </div>
-
       </Reveal>
     </section>
   );

@@ -1,15 +1,19 @@
 import React from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Navbar } from '@/components/navigation/Navbar';
 import { Logo } from '@/components/common/Logo';
 import { PUBLIC_FOOTER_NAV } from '@/constants/navigation';
 import { Heart, Globe } from 'lucide-react';
+import { LandingNavbar } from '@/components/landing/LandingNavbar';
+import { LandingFooter } from '@/components/landing/LandingFooter';
 
 export function PublicLayout({ children }) {
+  const { pathname } = useLocation();
+  const isLandingPage = pathname === '/';
   return (
-    <div className="min-h-screen bg-background text-text-primary flex flex-col font-sans">
+    <div className={`min-h-screen bg-background text-text-primary flex flex-col font-sans ${isLandingPage ? 'fb-public-shell' : ''}`}>
       {/* Sticky Top Navbar */}
-      <Navbar sticky />
+      {isLandingPage ? <LandingNavbar /> : <Navbar sticky />}
 
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col">
@@ -17,6 +21,7 @@ export function PublicLayout({ children }) {
       </main>
 
       {/* Professional Footer Structure */}
+      {isLandingPage ? <LandingFooter /> : (
       <footer className="border-t border-border bg-surface mt-auto">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
@@ -90,6 +95,7 @@ export function PublicLayout({ children }) {
           </div>
         </div>
       </footer>
+      )}
     </div>
   );
 }
