@@ -70,7 +70,7 @@ export function FinalCTASection() {
                 className="bg-transparent border-slate-700 text-white hover:bg-white/10 hover:border-slate-500 font-medium"
               >
                 <Link to="/auth/register" className="flex items-center justify-center">
-                  <span>Find Surplus Food</span>
+                  <span>Find Food</span>
                 </Link>
               </Button>
             </div>

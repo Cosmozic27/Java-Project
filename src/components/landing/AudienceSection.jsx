@@ -66,7 +66,7 @@ const AUDIENCES = [
       { step: '2', label: 'Claim' },
       { step: '3', label: 'Collect' },
     ],
-    ctaText: 'Find Surplus Food',
+    ctaText: 'Find Food',
     ctaLink: '/auth/register',
     ctaVariant: 'outline',
     icon: HeartHandshake,
@@ -79,6 +79,7 @@ function AudiencePanel({ panel }) {
 
   return (
     <Card
+      id={panel.id}
       variant="default"
       padding="none"
       className="flex flex-col h-full rounded-2xl border border-border bg-surface p-6 sm:p-8 shadow-xs hover:shadow-sm hover:border-primary/40 transition-all duration-200"

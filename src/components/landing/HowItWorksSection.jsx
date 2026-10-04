@@ -4,6 +4,7 @@ import {
   Network,
   HeartHandshake,
   CheckCircle2,
+  Truck,
 } from 'lucide-react';
 import { Card } from '@/components/cards/Card';
 import { Reveal, RevealGroup } from '@/components/motion';
@@ -11,8 +12,8 @@ import { Reveal, RevealGroup } from '@/components/motion';
 const STEPS = [
   {
     number: '01',
-    title: 'Donate',
-    subtitle: 'Post Surplus in Minutes',
+    title: 'List Surplus',
+    subtitle: 'Share what is ready',
     description:
       'Donors post available surplus food with important information such as quantity, food type, pickup details, and timing.',
     icon: PackagePlus,
@@ -37,15 +38,28 @@ const STEPS = [
   },
   {
     number: '03',
-    title: 'Redistribute',
-    subtitle: 'Dignified Community Reach',
+    title: 'Pickup',
+    subtitle: 'Coordinate collection',
     description:
-      'The NGO or organization claims the donation, coordinates pickup, and the food reaches the intended community.',
-    icon: HeartHandshake,
+      'A nearby organization collects the donation and confirms the handoff through the existing FoodBridge flow.',
+    icon: Truck,
     highlights: [
       'Tracked pickup coordination',
       'Donation status visibility',
       'Transparent redistribution ledger',
+    ],
+  },
+  {
+    number: '04',
+    title: 'Impact',
+    subtitle: 'Good food, shared well',
+    description:
+      'Surplus moves from a local kitchen to people and programs that can put it to use, with each completed handoff contributing to community impact.',
+    icon: HeartHandshake,
+    highlights: [
+      'Meals redirected to local communities',
+      'Clear donation status visibility',
+      'Less edible food left unused',
     ],
   },
 ];
@@ -133,7 +147,7 @@ export function HowItWorksSection() {
             aria-hidden="true"
           />
 
-          <RevealGroup className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          <RevealGroup className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-7">
             {STEPS.map((step) => (
               <StepCard key={step.number} step={step} />
             ))}
