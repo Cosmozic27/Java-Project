@@ -14,9 +14,9 @@ const AUDIENCES = [
   {
     id: 'donors',
     badge: 'Food Providers & Businesses',
-    title: 'For Food Donors',
+    title: 'Have surplus food?',
     description:
-      'Turn edible surplus into meaningful community impact instead of letting safe, nutritious food go to waste.',
+      'Turn safe surplus into meals for local communities, with clear pickup coordination from the start.',
     audiences: [
       'Restaurants',
       'Hotels',
@@ -40,14 +40,14 @@ const AUDIENCES = [
     ctaLink: '/auth/register',
     ctaVariant: 'primary',
     icon: UtensilsCrossed,
-    headerAccentClass: 'bg-primary-light text-primary-dark',
+    headerAccentClass: 'bg-amber-100 text-amber-800',
   },
   {
     id: 'ngos',
     badge: 'Non-Profits & Charities',
-    title: 'For NGOs & Community Organizations',
+    title: 'Need surplus food?',
     description:
-      'Discover fresh surplus food from local businesses, claim donations with a single click, and coordinate safe collection.',
+      'Find suitable food nearby, claim it, and coordinate a safe collection through FoodBridge.',
     audiences: [
       'Registered NGOs',
       'Community Kitchens',
@@ -70,7 +70,7 @@ const AUDIENCES = [
     ctaLink: '/auth/register',
     ctaVariant: 'outline',
     icon: HeartHandshake,
-    headerAccentClass: 'bg-emerald-100 text-emerald-800',
+    headerAccentClass: 'bg-primary-light text-primary-dark',
   },
 ];
 
@@ -82,13 +82,10 @@ function AudiencePanel({ panel }) {
       id={panel.id}
       variant="default"
       padding="none"
-      className="flex flex-col h-full rounded-2xl border border-border bg-surface p-6 sm:p-8 shadow-xs hover:shadow-sm hover:border-primary/40 transition-all duration-200"
+      className="fb-audience-card flex flex-col h-full rounded-2xl border border-border bg-surface p-6 sm:p-8 shadow-xs transition-all duration-200"
     >
-      {/* Top Header: Icon & Badge */}
       <div className="flex items-center justify-between gap-3">
-        <div
-          className={`flex items-center justify-center h-12 w-12 rounded-xl shrink-0 ${panel.headerAccentClass}`}
-        >
+        <div className={`flex items-center justify-center h-12 w-12 rounded-xl shrink-0 ${panel.headerAccentClass}`}>
           <IconComponent className="h-6 w-6" aria-hidden="true" />
         </div>
         <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-background-subtle border border-border text-text-secondary tracking-wide">
@@ -96,7 +93,6 @@ function AudiencePanel({ panel }) {
         </span>
       </div>
 
-      {/* Title & Description */}
       <div className="mt-5">
         <h3 className="text-2xl font-bold tracking-tight text-text-primary">
           {panel.title}
@@ -106,7 +102,6 @@ function AudiencePanel({ panel }) {
         </p>
       </div>
 
-      {/* Target Audience Tags */}
       <div className="mt-4 pt-4 border-t border-border-subtle">
         <p className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-2">
           Who This Serves
@@ -123,7 +118,6 @@ function AudiencePanel({ panel }) {
         </div>
       </div>
 
-      {/* Workflow Process Strip */}
       <div className="rounded-xl bg-background-subtle border border-border p-3.5 my-5">
         <p className="text-[10px] font-bold uppercase tracking-wider text-text-muted mb-2">
           Redistribution Journey
@@ -147,17 +141,15 @@ function AudiencePanel({ panel }) {
         </div>
       </div>
 
-      {/* Key Benefits */}
       <ul className="space-y-2.5 my-2 text-sm text-text-secondary">
-        {panel.benefits.map((benefit, idx) => (
-          <li key={idx} className="flex items-start gap-2.5">
+        {panel.benefits.map((benefit) => (
+          <li key={benefit} className="flex items-start gap-2.5">
             <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mt-0.5" aria-hidden="true" />
             <span className="leading-snug">{benefit}</span>
           </li>
         ))}
       </ul>
 
-      {/* CTA Footer */}
       <div className="mt-auto pt-6 border-t border-border-subtle">
         <Button asChild variant={panel.ctaVariant} size="lg" fullWidth>
           <Link to={panel.ctaLink} className="flex items-center justify-center">
@@ -178,8 +170,6 @@ export function AudienceSection() {
       className="relative bg-surface py-16 sm:py-20 lg:py-24 border-t border-border-subtle"
     >
       <Reveal as="div" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light/60 border border-primary/20 text-primary-dark text-xs font-semibold tracking-wider uppercase mb-3">
             <span>Built for Both Sides</span>
@@ -193,17 +183,15 @@ export function AudienceSection() {
           </h2>
 
           <p className="mt-3.5 text-base text-text-secondary leading-relaxed">
-            FoodBridge connects organizations with surplus food to community organizations that can help redistribute it responsibly.
+            FoodBridge connects food providers with community organizations ready to redistribute surplus safely.
           </p>
         </div>
 
-        {/* Two Complementary Audience Panels */}
         <RevealGroup className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12 sm:mt-16 items-stretch">
           {AUDIENCES.map((panel) => (
             <AudiencePanel key={panel.id} panel={panel} />
           ))}
         </RevealGroup>
-
       </Reveal>
     </section>
   );

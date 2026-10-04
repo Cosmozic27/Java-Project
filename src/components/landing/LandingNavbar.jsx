@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Menu, X } from 'lucide-react';
 import { Logo } from '@/components/common/Logo';
@@ -12,10 +12,30 @@ const NAV_ITEMS = [
 
 export function LandingNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const menuToggleRef = useRef(null);
+
+  useEffect(() => {
+    const updateScrolledState = () => {
+      const nextIsScrolled = window.scrollY > 24;
+      setIsScrolled((current) => current === nextIsScrolled ? current : nextIsScrolled);
+    };
+
+    window.addEventListener('scroll', updateScrolledState, { passive: true });
+    return () => window.removeEventListener('scroll', updateScrolledState);
+  }, []);
+
+  const handleMenuKeyDown = (event) => {
+    if (event.key === 'Escape' && menuOpen) {
+      event.preventDefault();
+      setMenuOpen(false);
+      menuToggleRef.current?.focus();
+    }
+  };
 
   return (
-    <header className="fb-navbar-wrap">
-      <nav className="fb-navbar" aria-label="Main navigation">
+    <header className={`fb-navbar-wrap${isScrolled ? ' is-scrolled' : ''}`}>
+      <nav className="fb-navbar" aria-label="Main navigation" onKeyDown={handleMenuKeyDown}>
         <div className="fb-navbar-inner">
           <Logo size="md" className="fb-navbar-logo" />
           <div className="fb-navbar-links">
@@ -26,6 +46,7 @@ export function LandingNavbar() {
             <Link className="fb-get-started" to="/auth/register">Get Started <ArrowRight size={15} aria-hidden="true" /></Link>
           </div>
           <button
+            ref={menuToggleRef}
             className="fb-menu-toggle"
             type="button"
             aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}

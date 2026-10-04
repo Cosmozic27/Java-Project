@@ -14,9 +14,9 @@ export function HeroSection() {
       <div className="fb-hero-inner">
         <Reveal className="fb-hero-copy" y={12} scale={1}>
           <div className="fb-eyebrow"><span className="fb-eyebrow-pulse" aria-hidden="true" /><Sparkles size={14} aria-hidden="true" /> Food rescue, connected</div>
-          <h1 id="fb-hero-heading">Turn surplus food <span>into lasting impact.</span></h1>
+          <h1 id="fb-hero-heading">Turn surplus food <span>into <em>impact.</em></span></h1>
           <p className="fb-hero-description">
-            FoodBridge connects surplus from restaurants and hostels with organizations ready to get good food where it is needed most.
+            FoodBridge links surplus from local businesses with community organizations ready to collect and share it.
           </p>
           <div className="fb-hero-actions">
             <Link className="fb-cta-primary" to="/auth/register">Donate Surplus Food <ArrowRight size={17} aria-hidden="true" /></Link>
@@ -46,15 +46,15 @@ export function HeroSection() {
 
           <div className="fb-impact-float fb-impact-meals">
             <span className="fb-float-icon"><PackageCheck size={17} aria-hidden="true" /></span>
-            <span><strong>24 meals</strong><small>ready to be shared</small></span>
+            <span><strong>24 meals</strong><small>available for collection</small></span>
             <span className="fb-float-spark" aria-hidden="true">↗</span>
           </div>
           <div className="fb-impact-float fb-impact-partners">
             <span className="fb-partner-dots" aria-hidden="true"><i /><i /><i /></span>
-            <span><strong>Local partners</strong><small>one connected route</small></span>
+            <span><strong>3 NGO partners</strong><small>connected to a community hub</small></span>
           </div>
           <div className="fb-pickup-pill"><span className="fb-pickup-pulse" aria-hidden="true" /> Pickup in progress <span className="fb-pickup-arrow" aria-hidden="true">→</span></div>
-          <figcaption className="sr-only">A stylized miniature 3D neighborhood shows surplus food moving from restaurants and a hostel along green routes to a community organization, with crates and a pickup van.</figcaption>
+          <figcaption className="sr-only">A low-poly miniature neighborhood shows restaurant and hostel donations moving as food parcels along connected routes through a FoodBridge relay to a community hub in collection vans.</figcaption>
         </motion.figure>
       </div>
     </section>
