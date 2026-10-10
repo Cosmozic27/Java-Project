@@ -17,6 +17,7 @@ const materials = {
   asphaltMark: new THREE.MeshStandardMaterial({ color: '#e9dec6', roughness: 0.9 }),
   green: new THREE.MeshStandardMaterial({ color: '#1b8a4b', roughness: 0.64, emissive: '#0b5328', emissiveIntensity: 0.45 }),
   greenGlow: new THREE.MeshBasicMaterial({ color: '#47ed85' }),
+  routeGlow: new THREE.MeshBasicMaterial({ color: '#3edb79', transparent: true, opacity: 0.12, depthWrite: false }),
   glass: new THREE.MeshStandardMaterial({ color: '#8dc4b5', roughness: 0.24, metalness: 0.1, emissive: '#315e55', emissiveIntensity: 0.25 }),
   building: new THREE.MeshStandardMaterial({ color: '#d4b995', roughness: 0.92 }),
   buildingGreen: new THREE.MeshStandardMaterial({ color: '#8eaa8a', roughness: 0.9 }),
@@ -160,10 +161,14 @@ function StreetBuilding({ position, height, material, mobile }) {
       <Box position={[0, 0.12, 3.24]} size={[4.7, 0.24, 0.18]} material={materials.woodDark} />
       {windows.flatMap((z) => floors.map((y) => (
         <React.Fragment key={`${z}-${y}`}>
+          <Box position={[-2.45, y, z]} size={[0.13, 0.98, 0.88]} material={materials.darkSteel} />
+          <Box position={[2.45, y, z]} size={[0.13, 0.98, 0.88]} material={materials.darkSteel} />
           <Box position={[-2.42, y, z]} size={[0.08, 0.82, 0.72]} material={materials.glass} />
           <Box position={[2.42, y, z]} size={[0.08, 0.82, 0.72]} material={materials.glass} />
         </React.Fragment>
       )))}
+      <Box position={[-2.47, height * 0.56, 0]} size={[0.1, height * 0.72, 0.16]} material={materials.darkSteel} />
+      <Box position={[2.47, height * 0.56, 0]} size={[0.1, height * 0.72, 0.16]} material={materials.darkSteel} />
       <Box position={[-2.46, 0.66, 0]} size={[0.12, 1.22, 1.05]} material={materials.dark} />
       <Box position={[2.46, 0.66, 0]} size={[0.12, 1.22, 1.05]} material={materials.dark} />
       <Box position={[0, 0.9, 3.36]} size={[1.15, 1.8, 0.14]} material={materials.woodDark} />
@@ -195,7 +200,9 @@ function RouteNetwork({ mobile, reducedMotion }) {
   const donorRoute = useMemo(() => new THREE.CatmullRomCurve3(DONOR_ROUTE_POINTS.map(v3)), []);
   const particlesRef = useRef([]);
   const geometry = useMemo(() => new THREE.TubeGeometry(route, 90, 0.045, 5, false), [route]);
+  const glowGeometry = useMemo(() => new THREE.TubeGeometry(route, 90, 0.11, 5, false), [route]);
   const sideGeometry = useMemo(() => new THREE.TubeGeometry(donorRoute, 64, 0.028, 5, false), [donorRoute]);
+  const sideGlowGeometry = useMemo(() => new THREE.TubeGeometry(donorRoute, 64, 0.07, 5, false), [donorRoute]);
   const dots = mobile ? 5 : 11;
 
   useFrame(({ clock }) => {
@@ -209,7 +216,9 @@ function RouteNetwork({ mobile, reducedMotion }) {
 
   return (
     <group>
+      <mesh geometry={glowGeometry} material={materials.routeGlow} />
       <mesh geometry={geometry} material={materials.green} />
+      <mesh geometry={sideGlowGeometry} material={materials.routeGlow} />
       <mesh geometry={sideGeometry} material={materials.green} />
       {Array.from({ length: dots }, (_, index) => (
         <mesh key={index} ref={(element) => { particlesRef.current[index] = element; }} scale={index % 3 === 0 ? 0.105 : 0.067} material={materials.greenGlow}>
