@@ -42,11 +42,20 @@ const CAMERA_PATH = [
 
 const SKY_COLORS = ['#31251d', '#74543a', '#3d5245', '#273c38', '#a47b50', '#b9cfad'].map((value) => new THREE.Color(value));
 const v3 = (array) => new THREE.Vector3(array[0], array[1], array[2]);
+const contactShadow = new THREE.MeshBasicMaterial({ color: '#536257', transparent: true, opacity: 0.18, depthWrite: false });
 
 function Box({ position, size, material, rotation }) {
   return (
     <mesh position={position} scale={size} rotation={rotation} material={material} castShadow={false} receiveShadow={false}>
       <boxGeometry args={[1, 1, 1]} />
+    </mesh>
+  );
+}
+
+function ContactShadow({ position = [0, 0.015, 0], scale = [1, 1, 1] }) {
+  return (
+    <mesh position={position} rotation={[-Math.PI / 2, 0, 0]} scale={scale} material={contactShadow} renderOrder={1}>
+      <circleGeometry args={[1, 32]} />
     </mesh>
   );
 }
@@ -64,6 +73,7 @@ function WarmPendant({ position }) {
 function Kitchen() {
   return (
     <group>
+      <ContactShadow position={[0, 0.01, 2.4]} scale={[5.7, 4.5, 1]} />
       <Box position={[0, -0.19, 2.6]} size={[15, 0.35, 18]} material={materials.floor} />
       <Box position={[-6.7, 2.15, 0]} size={[0.34, 4.5, 14]} material={materials.kitchenWall} />
       <Box position={[6.7, 2.15, 0]} size={[0.34, 4.5, 14]} material={materials.kitchenWall} />
@@ -112,6 +122,7 @@ function FoodCrate({ position, large = false }) {
 function CommunityBuilding() {
   return (
     <group position={[0, 0, -40.4]}>
+      <ContactShadow position={[0, 0.02, 1.2]} scale={[5.8, 3.8, 1]} />
       <Box position={[0, 2.1, 0]} size={[9.6, 4.2, 5.7]} material={materials.hub} />
       <Box position={[0, 4.38, 0]} size={[10.2, 0.38, 6.2]} material={materials.green} />
       <Box position={[0, 0.7, 2.89]} size={[9.7, 1.3, 0.16]} material={materials.orange} />
@@ -143,6 +154,7 @@ function StreetBuilding({ position, height, material, mobile }) {
   const floors = mobile ? [1] : Array.from({ length: Math.max(1, Math.floor((height - 1) / 2)) }, (_, i) => 1.2 + i * 1.65);
   return (
     <group position={position}>
+      <ContactShadow position={[0, 0.02, 0]} scale={[2.5, 2.9, 1]} />
       <Box position={[0, height / 2, 0]} size={[4.8, height, 6.4]} material={material} />
       <Box position={[0, height + 0.16, 0]} size={[5.15, 0.32, 6.7]} material={materials.dark} />
       <Box position={[0, 0.12, 3.24]} size={[4.7, 0.24, 0.18]} material={materials.woodDark} />
@@ -163,6 +175,7 @@ function StreetBuilding({ position, height, material, mobile }) {
 function Tree({ position, scale = 1 }) {
   return (
     <group position={position} scale={scale}>
+      <ContactShadow position={[0, 0.02, 0]} scale={[0.75, 0.48, 1]} />
       <mesh position={[0, 0.7, 0]} material={materials.woodDark}><cylinderGeometry args={[0.12, 0.16, 1.4, 6]} /></mesh>
       <mesh position={[0, 1.65, 0]} material={materials.greens}><icosahedronGeometry args={[0.9, 1]} /></mesh>
       <mesh position={[0.42, 1.9, -0.12]} scale={0.55} material={materials.buildingGreen}><dodecahedronGeometry args={[0.75, 0]} /></mesh>
@@ -210,22 +223,24 @@ function RouteNetwork({ mobile, reducedMotion }) {
 function PickupVan({ progressRef, reducedMotion, mobile }) {
   const vanRef = useRef(null);
   const wheelsRef = useRef([]);
-  const point = useMemo(() => new THREE.Vector3(), []);
+  const route = useMemo(() => new THREE.CatmullRomCurve3(ROUTE_POINTS.map(v3)), []);
   useFrame(({ clock }) => {
     if (!vanRef.current) return;
     const progress = progressRef.current;
-    const travel = Math.max(0, Math.min(1, (progress - 0.48) / 0.31));
+    const travel = Math.max(0, Math.min(1, (progress - 0.4) / 0.46));
     const eased = travel * travel * (3 - 2 * travel);
-    const z = -18.5 - eased * (mobile ? 12 : 15);
-    const x = Math.sin(eased * Math.PI * 1.35) * (mobile ? 1.05 : 1.55);
-    vanRef.current.position.set(x, 0.03 + Math.sin(clock.elapsedTime * 7) * (reducedMotion || mobile ? 0 : 0.018), z);
-    vanRef.current.rotation.y = -Math.sin(eased * Math.PI * 1.35) * 0.31;
+    const routeProgress = 0.08 + eased * 0.86;
+    const point = route.getPointAt(routeProgress);
+    const tangent = route.getTangentAt(routeProgress);
+    vanRef.current.visible = progress >= 0.36;
+    vanRef.current.position.set(point.x, 0.03 + Math.sin(clock.elapsedTime * 7) * (reducedMotion || mobile ? 0 : 0.018), point.z);
+    vanRef.current.rotation.y = Math.atan2(-tangent.z, tangent.x);
     if (!reducedMotion) wheelsRef.current.forEach((wheel) => { if (wheel) wheel.rotation.x += 0.085; });
-    point.set(x, 0, z);
   });
 
   return (
     <group ref={vanRef} position={[0, 0.03, -18.5]} scale={mobile ? 0.72 : 0.84}>
+      <ContactShadow position={[0, -0.01, 0]} scale={[1.2, 1.8, 1]} />
       <mesh position={[0, 0.94, 0]} material={materials.van}><boxGeometry args={[1.72, 0.96, 3.22]} /></mesh>
       <mesh position={[0, 1.52, 0.28]} material={materials.van}><boxGeometry args={[1.66, 0.34, 2.2]} /></mesh>
       <mesh position={[0, 1.42, -1.3]} material={materials.glass}><boxGeometry args={[1.48, 0.55, 0.08]} /></mesh>
@@ -239,6 +254,62 @@ function PickupVan({ progressRef, reducedMotion, mobile }) {
       ))}
       <FoodCrate position={[-0.34, 1.48, 0.35]} />
       <pointLight position={[0, 1.7, 0]} color="#4af08a" intensity={1.2} distance={3.5} />
+    </group>
+  );
+}
+
+function MovingFoodCrate({ progressRef, route, startProgress, endProgress, startRoute, endRoute, destination, mobile, reducedMotion, retainAtEnd = false }) {
+  const crateRef = useRef(null);
+  const destinationVector = useMemo(() => v3(destination), [destination]);
+
+  useFrame(() => {
+    if (!crateRef.current) return;
+    const progress = progressRef.current;
+    const normalized = Math.max(0, Math.min(1, (progress - startProgress) / (endProgress - startProgress)));
+    const eased = normalized * normalized * (3 - 2 * normalized);
+    const routePoint = route.getPointAt(THREE.MathUtils.lerp(startRoute, endRoute, eased));
+    const point = normalized < 1 ? routePoint : destinationVector;
+    crateRef.current.visible = normalized > 0 && (normalized < 1 || (retainAtEnd && progress >= endProgress));
+    crateRef.current.position.set(point.x, point.y + 0.16 + (reducedMotion ? 0 : Math.sin(progress * Math.PI * 6) * 0.025), point.z);
+    crateRef.current.rotation.y = reducedMotion ? 0 : eased * Math.PI * 0.8;
+    const scale = (mobile ? 0.72 : 0.92) * (0.72 + Math.sin(normalized * Math.PI) * 0.28);
+    crateRef.current.scale.setScalar(scale);
+  });
+
+  return (
+    <group ref={crateRef} position={destination}>
+      <FoodCrate />
+    </group>
+  );
+}
+
+function FoodTransferSequence({ progressRef, mobile, reducedMotion }) {
+  const route = useMemo(() => new THREE.CatmullRomCurve3(ROUTE_POINTS.map(v3)), []);
+  return (
+    <group>
+      <MovingFoodCrate
+        progressRef={progressRef}
+        route={route}
+        startProgress={0.31}
+        endProgress={0.48}
+        startRoute={0.03}
+        endRoute={0.33}
+        destination={[-2.3, 0.15, -8]}
+        mobile={mobile}
+        reducedMotion={reducedMotion}
+      />
+      <MovingFoodCrate
+        progressRef={progressRef}
+        route={route}
+        startProgress={0.78}
+        endProgress={0.96}
+        startRoute={0.72}
+        endRoute={0.98}
+        destination={[-2.4, 0.15, -37.2]}
+        mobile={mobile}
+        reducedMotion={reducedMotion}
+        retainAtEnd
+      />
     </group>
   );
 }
@@ -280,6 +351,7 @@ function StreetScene({ mobile, reducedMotion, progressRef }) {
       {trees.map(([x, z], index) => <Tree key={index} position={[x, 0, z]} scale={index % 2 === 0 ? 0.9 : 0.74} />)}
       <RouteNetwork mobile={mobile} reducedMotion={reducedMotion} />
       <PickupVan progressRef={progressRef} reducedMotion={reducedMotion} mobile={mobile} />
+      <FoodTransferSequence progressRef={progressRef} mobile={mobile} reducedMotion={reducedMotion} />
       <CommunityBuilding />
     </group>
   );

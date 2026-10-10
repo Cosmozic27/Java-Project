@@ -58,12 +58,12 @@
 .fb-cinematic-canvas canvas { display: block; width: 100% !important; height: 100% !important; outline: none; touch-action: pan-y; }
 .fb-cinematic-shade { position: absolute; z-index: 0; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(11, 20, 16, 0.88) 0%, rgba(13, 22, 17, 0.72) 25%, rgba(13, 22, 17, 0.26) 51%, rgba(13, 22, 17, 0.02) 75%), linear-gradient(0deg, rgba(12, 20, 16, 0.44), transparent 25%, transparent 82%, rgba(12, 20, 16, 0.1)); transition: opacity 500ms ease, background 700ms ease; }
 .fb-cinematic-experience[data-chapter='impact'] .fb-cinematic-shade { background: linear-gradient(90deg, rgba(11, 25, 17, 0.56), rgba(11, 25, 17, 0.1) 55%, transparent 80%), linear-gradient(0deg, rgba(12, 20, 16, 0.32), transparent 38%); }
-.fb-story-overlay { position: absolute; z-index: 3; top: 49%; left: clamp(24px, 8.2vw, 132px); width: min(560px, 46vw); transform: translateY(-50%); color: #fff9ec; pointer-events: none; }
+.fb-story-overlay { position: absolute; z-index: 3; top: 49%; left: clamp(24px, 8.2vw, 132px); right: clamp(70px, 13vw, 190px); width: auto; max-width: 560px; box-sizing: border-box; transform: translateY(-50%); color: #fff9ec; pointer-events: none; }
 .fb-story-copy { max-width: 620px; animation: fb-story-enter 320ms cubic-bezier(0.22, 1, 0.36, 1) both; }
 @keyframes fb-story-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 .fb-story-eyebrow { display: flex; align-items: center; gap: 11px; margin-bottom: 22px; color: #c2e5c4; font-size: 10px; font-weight: 780; letter-spacing: 0.19em; text-transform: uppercase; }
 .fb-story-eyebrow span { width: 7px; height: 7px; border-radius: 50%; background: #55e887; box-shadow: 0 0 0 5px rgba(77, 226, 129, 0.16), 0 0 18px rgba(77, 226, 129, 0.65); }
-.fb-story-copy h1 { margin: 0; max-width: 610px; color: #fff9ec; font-size: clamp(2.9rem, 4.55vw, 4.8rem); font-weight: 650; line-height: 1.01; letter-spacing: -0.064em; text-wrap: balance; text-shadow: 0 8px 34px rgba(8, 16, 11, 0.23); }
+.fb-story-copy h1 { margin: 0; max-width: 100%; color: #fff9ec; font-size: clamp(2.9rem, 4.55vw, 4.8rem); font-weight: 650; line-height: 1.01; letter-spacing: -0.064em; text-wrap: balance; overflow-wrap: normal; text-shadow: 0 8px 34px rgba(8, 16, 11, 0.23); }
 .fb-story-copy h1 em { color: #95e6a7; font-family: Georgia, 'Times New Roman', serif; font-weight: 500; letter-spacing: -0.07em; }
 .fb-story-copy p { max-width: 410px; margin: 22px 0 0; color: rgba(255, 249, 236, 0.82); font-size: clamp(14px, 1.2vw, 17px); line-height: 1.72; text-wrap: pretty; }
 .fb-story-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 13px; margin-top: 28px; pointer-events: auto; }
@@ -125,7 +125,7 @@
   .fb-mobile-menu-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 7px; padding-top: 11px; border-top: 1px solid rgba(16, 32, 24, 0.08); }
   .fb-mobile-menu-actions > a:first-child { display: grid; place-items: center; border: 1px solid rgba(16, 32, 24, 0.12); border-radius: 999px; color: #102018; font-size: 12px; font-weight: 700; text-decoration: none; }
   .fb-mobile-menu-actions .fb-get-started { font-size: 11px; padding-inline: 10px; }
-  .fb-story-overlay { left: clamp(22px, 6vw, 54px); width: min(560px, 68vw); }
+  .fb-story-overlay { left: clamp(22px, 6vw, 54px); right: clamp(70px, 16vw, 132px); width: auto; }
   .fb-story-copy h1 { font-size: clamp(2.9rem, 6.5vw, 4.5rem); }
   .fb-cinematic-shade { background: linear-gradient(90deg, rgba(11, 20, 16, 0.8), rgba(13, 22, 17, 0.42) 56%, rgba(13, 22, 17, 0.03)), linear-gradient(0deg, rgba(12, 20, 16, 0.38), transparent 35%); }
   .fb-progress-nav { right: 15px; }
@@ -134,7 +134,7 @@
 }
 @media (max-width: 600px) {
   .fb-cinematic-stage { height: 100svh; }
-  .fb-story-overlay { top: 52%; left: 22px; width: calc(100% - 70px); }
+  .fb-story-overlay { top: 52%; left: 22px; right: 70px; width: auto; }
   .fb-story-eyebrow { gap: 9px; margin-bottom: 15px; font-size: 8px; letter-spacing: 0.15em; }
   .fb-story-copy h1 { max-width: 390px; font-size: clamp(2.45rem, 10.7vw, 3.65rem); line-height: 1.02; }
   .fb-story-copy p { max-width: 330px; margin-top: 15px; font-size: 13px; line-height: 1.6; }
