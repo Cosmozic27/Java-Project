@@ -11,31 +11,30 @@ import { Reveal } from '@/components/motion';
 
 const IMPACT_METRICS = [
   {
-    numericValue: 12450,
-    value: '12,450+',
+    numericValue: 12400,
+    value: '12.4K+',
     label: 'Meals Rescued',
     description: 'Fresh, nutritious meals redirected to local families and shelters.',
     icon: Utensils,
   },
   {
-    numericValue: 320,
-    value: '320+',
-    label: 'Donations',
+    numericValue: 2800,
+    value: '2.8K+',
+    label: 'Food Donations',
     description: 'Completed surplus listings from registered food businesses.',
     icon: PackageCheck,
   },
   {
-    numericValue: 85,
-    value: '85+',
+    numericValue: 180,
+    value: '180+',
     label: 'Partner Organizations',
     description: 'Registered community kitchens, charities, and food pantries on the platform.',
     icon: Building2,
   },
   {
-    numericValue: 2400,
-    value: '2.4T',
-    formatCount: (count, total) => count >= total ? '2.4T' : `${(count / 1000).toFixed(1)}T`,
-    label: 'Food Waste Diverted',
+    numericValue: 8600,
+    value: '8.6T+',
+    label: 'Food Diverted',
     description: 'Tons of edible surplus prevented from reaching local landfills.',
     icon: Scale,
   },
@@ -50,11 +49,9 @@ function ImpactMetricCard({ metric, isLast }) {
     if (isVisible) start();
   }, [isVisible, start]);
 
-  const displayValue = metric.formatCount
-    ? metric.formatCount(count, metric.numericValue)
-    : count >= metric.numericValue
-      ? metric.value
-      : `${count.toLocaleString()}+`;
+  const displayValue = count >= metric.numericValue
+    ? metric.value
+    : `${count.toLocaleString()}${metric.value.endsWith('+') ? '+' : ''}`;
 
   return (
     <div
@@ -131,7 +128,7 @@ export function ImpactSection() {
         <div className="mt-4 flex items-center justify-center gap-2 text-xs text-text-muted text-center">
           <Info className="h-3.5 w-3.5 shrink-0 text-text-muted" aria-hidden="true" />
           <span>
-            These are illustrative demo values, not live platform statistics.
+            Illustrative impact metrics representing platform capacity and redistribution network targets.
           </span>
         </div>
 

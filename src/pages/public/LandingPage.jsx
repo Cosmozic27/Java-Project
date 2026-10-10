@@ -1,7 +1,13 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { FoodBridgeJourney } from '@/components/landing/FoodBridgeJourney';
-import '@/components/landing/landing.css';
+import {
+  HeroSection,
+  HowItWorksSection,
+  ImpactSection,
+  AudienceSection,
+  SafetySection,
+  FinalCTASection,
+} from '@/components/landing';
 
 export function LandingPage() {
   const location = useLocation();
@@ -12,7 +18,7 @@ export function LandingPage() {
 
     const frame = window.requestAnimationFrame(() => {
       document.getElementById(targetId)?.scrollIntoView({
-        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+        behavior: 'smooth',
         block: 'start',
       });
     });
@@ -21,8 +27,24 @@ export function LandingPage() {
   }, [location.hash]);
 
   return (
-    <div className="fb-landing fb-cinematic-page">
-      <FoodBridgeJourney />
+    <div className="flex flex-col w-full">
+      {/* Hero Section */}
+      <HeroSection />
+
+      {/* How FoodBridge Works Section */}
+      <HowItWorksSection />
+
+      {/* Illustrative Platform Impact Section */}
+      <ImpactSection />
+
+      {/* Audience Section: For Donors & For NGOs */}
+      <AudienceSection />
+
+      {/* Trust & Food Safety Section */}
+      <SafetySection />
+
+      {/* Ready to Make a Difference Final CTA */}
+      <FinalCTASection />
     </div>
   );
 }
