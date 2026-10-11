@@ -1,22 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthCard } from '@/components/auth';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/forms/Input';
-import { ArrowRight, Building2, HeartHandshake, Lock, Mail } from 'lucide-react';
+import { apiClient } from '@/services/api';
+import {
+  ArrowRight,
+  Building2,
+  HeartHandshake,
+  Lock,
+  Mail,
+} from 'lucide-react';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const ROLE_OPTIONS = [
   {
-    value: 'donor',
+    value: 'DONOR',
     label: 'Food Donor',
     description: 'Share surplus food from your organization.',
     icon: Building2,
   },
   {
-    value: 'ngo',
+    value: 'NGO',
     label: 'NGO / Organization',
     description: 'Discover and collect available surplus food.',
     icon: HeartHandshake,
@@ -24,6 +31,10 @@ const ROLE_OPTIONS = [
 ];
 
 export function RegisterPage() {
+  const navigate = useNavigate();
+  const [serverError, setServerError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
   const {
     register,
     handleSubmit,
@@ -39,8 +50,43 @@ export function RegisterPage() {
     },
   });
 
-  const handleRegister = () => {
-    // Frontend-only validation foundation. Account creation comes in a later phase.
+  const handleRegister = async (formValues) => {
+    setServerError('');
+    setSuccessMessage('');
+
+    const registrationData = {
+      name: formValues.organizationName.trim(),
+      email: formValues.email.trim(),
+      password: formValues.password,
+      role: formValues.organizationType,
+    };
+
+    try {
+      const response = await apiClient.post(
+        '/auth/register',
+        registrationData
+      );
+
+      setSuccessMessage(
+        response.data?.message || 'Registration successful!'
+      );
+
+      // Give the user time to read the success message.
+      setTimeout(() => {
+        navigate('/auth/login', {
+          state: { email: registrationData.email },
+        });
+      }, 1500);
+    } catch (error) {
+      const message =
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        (error.response
+          ? `Registration failed (HTTP ${error.response.status}).`
+          : 'Cannot connect to the server. Please check that the backend is running.');
+
+      setServerError(message);
+    }
   };
 
   return (
@@ -59,7 +105,11 @@ export function RegisterPage() {
         </>
       }
     >
-      <form onSubmit={handleSubmit(handleRegister)} className="space-y-4" noValidate>
+      <form
+        onSubmit={handleSubmit(handleRegister)}
+        className="space-y-4"
+        noValidate
+      >
         <Input
           id="register-organization-name"
           label="Organization Name"
@@ -69,40 +119,65 @@ export function RegisterPage() {
           error={errors.organizationName?.message}
           {...register('organizationName', {
             required: 'Organization name is required.',
+            validate: (value) =>
+              value.trim().length > 0 || 'Organization name is required.',
           })}
         />
 
         <fieldset
           className="space-y-2"
-          aria-describedby={errors.organizationType ? 'organization-type-error' : undefined}
+          aria-describedby={
+            errors.organizationType ? 'organization-type-error' : undefined
+          }
         >
           <legend className="text-xs font-semibold text-text-primary">
-            Organization Type<span className="ml-0.5 text-danger" aria-hidden="true">*</span>
+            Organization Type
+            <span className="ml-0.5 text-danger" aria-hidden="true">
+              *
+            </span>
           </legend>
+
           <div className="grid gap-2 sm:grid-cols-2">
-            {ROLE_OPTIONS.map(({ value, label, description, icon: Icon }) => (
-              <label key={value} className="group relative cursor-pointer">
-                <input
-                  type="radio"
-                  value={value}
-                  className="peer sr-only"
-                  aria-invalid={Boolean(errors.organizationType)}
-                  {...register('organizationType', {
-                    required: 'Select an organization type.',
-                  })}
-                />
-                <span className="flex min-h-[104px] flex-col gap-2 rounded-xl border border-border bg-surface p-3 transition-colors hover:border-border-strong peer-checked:border-primary peer-checked:bg-primary/5 peer-focus-visible:ring-2 peer-focus-visible:ring-primary/30">
-                  <span className="flex items-center gap-2 text-sm font-semibold text-text-primary">
-                    <Icon className="h-4 w-4 text-primary" aria-hidden="true" />
-                    {label}
+            {ROLE_OPTIONS.map(
+              ({ value, label, description, icon: Icon }) => (
+                <label
+                  key={value}
+                  className="group relative cursor-pointer"
+                >
+                  <input
+                    type="radio"
+                    value={value}
+                    className="peer sr-only"
+                    aria-invalid={Boolean(errors.organizationType)}
+                    {...register('organizationType', {
+                      required: 'Select an organization type.',
+                    })}
+                  />
+
+                  <span className="flex min-h-[104px] flex-col gap-2 rounded-xl border border-border bg-surface p-3 transition-colors hover:border-border-strong peer-checked:border-primary peer-checked:bg-primary/5 peer-focus-visible:ring-2 peer-focus-visible:ring-primary/30">
+                    <span className="flex items-center gap-2 text-sm font-semibold text-text-primary">
+                      <Icon
+                        className="h-4 w-4 text-primary"
+                        aria-hidden="true"
+                      />
+                      {label}
+                    </span>
+
+                    <span className="text-xs leading-relaxed text-text-secondary">
+                      {description}
+                    </span>
                   </span>
-                  <span className="text-xs leading-relaxed text-text-secondary">{description}</span>
-                </span>
-              </label>
-            ))}
+                </label>
+              )
+            )}
           </div>
+
           {errors.organizationType && (
-            <p id="organization-type-error" role="alert" className="text-xs font-medium text-danger">
+            <p
+              id="organization-type-error"
+              role="alert"
+              className="text-xs font-medium text-danger"
+            >
               {errors.organizationType.message}
             </p>
           )}
@@ -158,6 +233,24 @@ export function RegisterPage() {
           })}
         />
 
+        {serverError && (
+          <p
+            role="alert"
+            className="rounded-lg bg-danger/10 p-3 text-sm text-danger"
+          >
+            {serverError}
+          </p>
+        )}
+
+        {successMessage && (
+          <p
+            role="status"
+            className="rounded-lg bg-green-50 p-3 text-sm text-green-700"
+          >
+            {successMessage}
+          </p>
+        )}
+
         <Button
           type="submit"
           variant="primary"
@@ -167,7 +260,7 @@ export function RegisterPage() {
           rightIcon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}
           className="mt-1"
         >
-          Create Account
+          {isSubmitting ? 'Creating Account...' : 'Create Account'}
         </Button>
       </form>
     </AuthCard>

@@ -1,34 +1,50 @@
 import React from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { PORTAL_ROLES } from '@/constants/navigation';
-import { getPrototypeAuth } from '@/constants/authData';
 
-/**
- * Lightweight frontend-only guard for the current demo accounts.
- * Replace this with the real auth provider once backend authentication exists.
- */
 export function ProtectedRoute({ allowedRoles, children }) {
   const location = useLocation();
+
+  const isLoggedIn =
+    sessionStorage.getItem('foodbridgeLoggedIn') === 'true';
+
+  let user = null;
+
+  try {
+    const storedUser = sessionStorage.getItem('foodbridgeUser');
+    user = storedUser ? JSON.parse(storedUser) : null;
+  } catch {
+    user = null;
+  }
+
+  if (!isLoggedIn || !user || !user.role) {
+    return (
+      <Navigate
+        to="/auth/login"
+        replace
+        state={{ from: location.pathname }}
+      />
+    );
+  }
+
+  const userRole = String(user.role).toUpperCase();
+
   const roles = Array.isArray(allowedRoles)
-    ? allowedRoles.map((role) => String(role).toLowerCase())
+    ? allowedRoles.map((role) => String(role).toUpperCase())
     : [];
-  const prototypeAuth = getPrototypeAuth();
 
-  if (import.meta.env.DEV) {
-    const unknown = roles.filter((role) => !PORTAL_ROLES.includes(role));
-    if (unknown.length > 0) {
-      console.warn(
-        `ProtectedRoute: unknown role id(s): ${unknown.join(', ')}. Expected ${PORTAL_ROLES.join(', ')}.`
-      );
-    }
-  }
+  if (roles.length > 0 && !roles.includes(userRole)) {
+    const dashboardPath = {
+      DONOR: '/donor',
+      NGO: '/ngo',
+      ADMIN: '/admin',
+    }[userRole];
 
-  if (!prototypeAuth) {
-    return <Navigate to="/auth/login" replace state={{ from: location.pathname }} />;
-  }
-
-  if (roles.length > 0 && !roles.includes(prototypeAuth.role)) {
-    return <Navigate to={`/${prototypeAuth.role}`} replace />;
+    return (
+      <Navigate
+        to={dashboardPath || '/auth/login'}
+        replace
+      />
+    );
   }
 
   return children ?? <Outlet />;

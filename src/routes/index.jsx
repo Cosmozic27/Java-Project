@@ -120,6 +120,7 @@ export const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       { index: true, element: <DonorDashboard /> },
+{ path: 'dashboard', element: <DonorDashboard /> },
       { path: 'available-food', element: <AvailableFoodPage /> },
       { path: 'donations', element: <MyDonationsPage /> },
       { path: 'donations/new', element: <CreateDonationPage /> },
