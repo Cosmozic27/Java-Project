@@ -1,13 +1,13 @@
 /**
  * AuthBackground.css
  *
- * Local SVG/CSS topographic contour background for FoodBridge Auth pages (Login & Register).
+ * Topographic Contour Animated Background for FoodBridge Authentication Pages (Login & Register).
  * Provides a rich, organic topographic contour effect with smooth undulating ambient drift.
- * Completely self-contained: no external third-party scripts, zero watermarks.
+ * Completely self-contained: no third-party scripts, zero watermarks.
  *
  * Color palette:
- *   Light: Warm cream base (#FFFDF3) with pale/mid sage green contour lines (#4E8855, #7AAB80).
- *   Dark:  Deep forest-black base (#060D06) with emerald/forest green contour lines (#2A6E30, #3BA044).
+ *   Light: Warm cream base (#FFFDF3) with subtle sage/forest-green contour lines (#4A7C52, #275333).
+ *   Dark:  Near-black base (#050705 / #050505) with restrained fluorescent-green contour lines (#22C55E, #39FF14).
  */
 
 /* ── Root container ──────────────────────────────────────────────── */
@@ -17,31 +17,26 @@
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-  --topo-line-base: #4E8855;
-  --topo-line-subtle: #7AAB80;
-  --topo-glow: rgba(122, 171, 128, 0.14);
 }
 
-/* ── Light Mode Base Gradient ────────────────────────────────────── */
-.auth-bg-gradient {
+/* ── WebGL Canvas ────────────────────────────────────────────────── */
+.auth-topo-canvas {
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    ellipse at 50% 25%,
-    rgba(255, 253, 243, 0.98) 0%,
-    rgba(247, 251, 247, 0.90) 50%,
-    rgba(223, 236, 225, 0.65) 100%
-  );
-  transition: background 300ms ease;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
 }
 
-/* ── Topographic Contour SVG Layers ──────────────────────────────── */
+/* ── SVG Fallback Layer ──────────────────────────────────────────── */
 .auth-topo-layer {
   position: absolute;
   inset: -5%;
   width: 110%;
   height: 110%;
   pointer-events: none;
+  contain: layout paint;
 }
 
 .auth-topo-svg {
@@ -50,223 +45,66 @@
   display: block;
 }
 
-/* Contour line properties */
 .auth-contour {
   fill: none;
   vector-effect: non-scaling-stroke;
-  stroke: var(--topo-line-base);
+  stroke: #4A7C52;
   transition: stroke 300ms ease, opacity 300ms ease;
 }
 
 .contour-lvl-1 {
   stroke-width: 1.1px;
-  opacity: 0.22;
+  opacity: 0.20;
 }
 
 .contour-lvl-2 {
-  stroke-width: 1.2px;
-  opacity: 0.32;
+  stroke-width: 1.25px;
+  opacity: 0.30;
 }
 
 .contour-lvl-3 {
-  stroke-width: 1.4px;
-  opacity: 0.42;
-}
-
-.contour-lvl-4 {
-  stroke-width: 1.6px;
-  opacity: 0.50;
-}
-
-.contour-ring {
-  stroke-dasharray: 6 3;
-}
-
-.contour-ring-1 {
-  stroke-width: 1.1px;
-  opacity: 0.25;
-}
-
-.contour-ring-2 {
-  stroke-width: 1.2px;
-  opacity: 0.35;
-}
-
-.contour-ring-3 {
-  stroke-width: 1.4px;
-  opacity: 0.45;
-}
-
-.contour-ring-4 {
-  stroke-width: 1.6px;
-  stroke-dasharray: none;
-  opacity: 0.55;
-}
-
-.contour-subtle {
-  stroke: var(--topo-line-subtle);
-  stroke-width: 1px;
-  opacity: 0.16;
-  stroke-dasharray: 3 6;
-}
-
-/* ── Undulating Organic Drift Animations ─────────────────────────── */
-.auth-topo-group {
-  animation: auth-topo-drift 24s ease-in-out infinite alternate;
-  transform-origin: 50% 50%;
-}
-
-.auth-topo-group-secondary {
-  animation: auth-topo-drift-counter 30s ease-in-out infinite alternate;
-  transform-origin: 50% 50%;
-}
-
-@keyframes auth-topo-drift {
-  0% {
-    transform: translate(0px, 0px) scale(1) rotate(0deg);
-  }
-  50% {
-    transform: translate(14px, -10px) scale(1.02) rotate(0.4deg);
-  }
-  100% {
-    transform: translate(-10px, 12px) scale(0.99) rotate(-0.3deg);
-  }
-}
-
-@keyframes auth-topo-drift-counter {
-  0% {
-    transform: translate(0px, 0px) scale(1) rotate(0deg);
-  }
-  50% {
-    transform: translate(-16px, 12px) scale(1.015) rotate(-0.5deg);
-  }
-  100% {
-    transform: translate(12px, -8px) scale(0.985) rotate(0.3deg);
-  }
-}
-
-/* ── Ambient Illumination Glows ──────────────────────────────────── */
-.auth-bg-glow {
-  position: absolute;
-  top: -15%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 750px;
-  height: 550px;
-  background: radial-gradient(
-    circle,
-    var(--topo-glow) 0%,
-    rgba(168, 201, 171, 0.06) 45%,
-    transparent 72%
-  );
-  filter: blur(60px);
-  transition: background 300ms ease;
-  animation: auth-glow-pulse 14s ease-in-out infinite alternate;
-}
-
-.auth-bg-glow-secondary {
-  position: absolute;
-  bottom: -10%;
-  right: 10%;
-  width: 500px;
-  height: 400px;
-  background: radial-gradient(
-    circle,
-    rgba(78, 136, 85, 0.08) 0%,
-    transparent 68%
-  );
-  filter: blur(50px);
-  transition: background 300ms ease;
-}
-
-@keyframes auth-glow-pulse {
-  0% {
-    opacity: 0.8;
-    transform: translateX(-50%) scale(0.95);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(-50%) scale(1.05);
-  }
-}
-
-/* ── DARK MODE PALETTE ───────────────────────────────────────────── */
-.auth-bg-root--dark {
-  --topo-line-base: #3BA044;
-  --topo-line-subtle: #22c55e;
-  --topo-glow: rgba(34, 197, 94, 0.16);
-}
-
-.auth-bg-root--dark .auth-bg-gradient {
-  background: radial-gradient(
-    ellipse at 50% 25%,
-    #060D06 0%,
-    #091309 52%,
-    #0E2010 100%
-  );
-}
-
-.auth-bg-root--dark .contour-lvl-1 {
-  opacity: 0.26;
-}
-
-.auth-bg-root--dark .contour-lvl-2 {
-  opacity: 0.38;
-}
-
-.auth-bg-root--dark .contour-lvl-3 {
-  opacity: 0.48;
-}
-
-.auth-bg-root--dark .contour-lvl-4 {
-  opacity: 0.58;
-}
-
-.auth-bg-root--dark .contour-ring-1 {
-  opacity: 0.28;
-}
-
-.auth-bg-root--dark .contour-ring-2 {
+  stroke-width: 1.45px;
   opacity: 0.40;
 }
 
-.auth-bg-root--dark .contour-ring-3 {
+.contour-lvl-4 {
+  stroke-width: 1.65px;
+  opacity: 0.48;
+}
+
+.contour-ring-3 {
+  stroke-width: 1.45px;
+  stroke-dasharray: 6 3;
+  opacity: 0.42;
+}
+
+.contour-ring-4 {
+  stroke-width: 1.65px;
   opacity: 0.52;
 }
 
-.auth-bg-root--dark .contour-ring-4 {
-  opacity: 0.65;
+.auth-bg-root--dark .auth-contour {
+  stroke: #39FF14;
 }
 
-.auth-bg-root--dark .auth-bg-glow-secondary {
-  background: radial-gradient(
-    circle,
-    rgba(34, 197, 94, 0.10) 0%,
-    transparent 68%
-  );
+.auth-bg-root--dark .contour-lvl-1 {
+  opacity: 0.15;
 }
 
-/* Document-level class response */
-:is(.auth-theme, .portal-theme, .public-theme).dark .auth-bg-root {
-  --topo-line-base: #3BA044;
-  --topo-line-subtle: #22c55e;
-  --topo-glow: rgba(34, 197, 94, 0.16);
+.auth-bg-root--dark .contour-lvl-2 {
+  opacity: 0.22;
 }
 
-:is(.auth-theme, .portal-theme, .public-theme).dark .auth-bg-gradient {
-  background: radial-gradient(
-    ellipse at 50% 25%,
-    #060D06 0%,
-    #091309 52%,
-    #0E2010 100%
-  );
+.auth-bg-root--dark .contour-lvl-3 {
+  opacity: 0.30;
 }
 
-/* ── Accessibility: Reduced Motion Support ───────────────────────── */
-@media (prefers-reduced-motion: reduce) {
-  .auth-topo-group,
-  .auth-topo-group-secondary,
-  .auth-bg-glow {
-    animation: none !important;
-  }
+.auth-bg-root--dark .contour-lvl-4 {
+  opacity: 0.40;
+}
+
+/* Ensure background wash in dark mode doesn't wash out with light cream */
+:is(.auth-theme, .portal-theme, .public-theme).dark .auth-background-wash,
+.dark .auth-background-wash {
+  background: linear-gradient(180deg, rgba(5, 10, 6, 0.25), rgba(5, 5, 5, 0.45));
 }

@@ -3,13 +3,13 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-primary: #168A45;
+  --color-primary: #2F8F46;
   --color-primary-dark: #12372A;
-  --color-primary-light: #DDE9DF;
-  --color-accent: #FFF1A8;
-  --color-accent-hover: #F5E58C;
+  --color-primary-light: #DCE8D8;
+  --color-accent: #F8E99B;
+  --color-accent-hover: #F0DC78;
   --color-accent-light: #FFFBEA;
-  --color-background: #FFF8D6;
+  --color-background: #FFFDF3;
   --color-background-subtle: #FFFBEA;
   --color-surface: #FFFDF3;
   --color-surface-muted: #FFFBEA;
@@ -19,7 +19,7 @@
   --color-border: rgba(18, 55, 42, 0.10);
   --color-border-strong: rgba(18, 55, 42, 0.18);
   --color-border-subtle: rgba(18, 55, 42, 0.06);
-  --color-success: #168A45;
+  --color-success: #2F8F46;
   --color-warning: #D99A22;
   --color-danger: #D94A45;
   --color-info: #3F72AF;
@@ -27,57 +27,227 @@
 }
 
 :root {
-  --fb-primary: #168A45;
+  --fb-primary: #2F8F46;
   --fb-primary-dark: #12372A;
-  --fb-accent: #FFF1A8;
-  --fb-bg: #FFF8D6;
+  --fb-accent: #F8E99B;
+  --fb-bg: #FFFDF3;
   --fb-surface: #FFFDF3;
   --fb-text-primary: #17211C;
   --fb-text-secondary: #64756B;
   --fb-border: rgba(18, 55, 42, 0.10);
-  --fb-success: #168A45;
+  --fb-success: #2F8F46;
   --fb-warning: #D99A22;
   --fb-danger: #D94A45;
   --fb-info: #3F72AF;
 }
 
-html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
-html, body { font-family: var(--font-sans); background-color: #FFF8D6; color: #17211C; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; min-height: 100vh; }
-html.dark, body.dark { background-color: #050505; color: #F5FFF5; }
-body { overflow-x: hidden; }
-::selection { background: rgba(22, 138, 69, 0.18); color: #12372A; }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
 
-.glass-surface { background: rgba(255, 253, 243, 0.78); border: 1px solid rgba(18, 55, 42, 0.10); box-shadow: 0 18px 45px rgba(18, 55, 42, 0.08); backdrop-filter: blur(18px); }
-.soft-grid { background-image: linear-gradient(rgba(22, 138, 69, 0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(22, 138, 69, 0.055) 1px, transparent 1px); background-size: 28px 28px; mask-image: linear-gradient(to bottom, black, transparent 82%); }
-@property --button-glow-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
-.button-glow { --button-glow-angle: 0deg; isolation: isolate; }
-.button-glow::after { content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; border-radius: inherit; padding: 1px; background: conic-gradient(from var(--button-glow-angle), transparent 0deg, transparent 250deg, rgba(221, 233, 223, 0.18) 275deg, rgba(221, 233, 223, 0.95) 300deg, rgba(22, 138, 69, 0.95) 322deg, transparent 350deg); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; animation: button-border-trace 3.8s linear infinite; }
-@keyframes button-border-trace { to { --button-glow-angle: 360deg; } }
+html,
+body {
+  font-family: var(--font-sans);
+  background-color: #FFFDF3;
+  color: #17211C;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
 
-.has-custom-cursor, .has-custom-cursor a, .has-custom-cursor button, .has-custom-cursor [role='button'] { cursor: none; }
-.has-custom-cursor input, .has-custom-cursor textarea, .has-custom-cursor select, .has-custom-cursor [contenteditable='true'] { cursor: text; }
-.fb-cursor-dot, .fb-cursor-ring { position: fixed; left: 0; top: 0; z-index: 100; pointer-events: none; transform: translate3d(-100px, -100px, 0); will-change: transform; }
-.fb-cursor-dot { width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; border-radius: 999px; background: #168A45; box-shadow: 0 0 14px rgba(22, 138, 69, 0.55); }
-.fb-cursor-ring { width: 30px; height: 30px; margin: -15px 0 0 -15px; border: 1px solid rgba(22, 138, 69, 0.48); border-radius: 999px; transition: width 180ms ease, height 180ms ease, margin 180ms ease, background 180ms ease, border-color 180ms ease, box-shadow 180ms ease; }
-.fb-cursor-ring[data-state='interactive'], .fb-cursor-ring[data-state='button'] { width: 44px; height: 44px; margin: -22px 0 0 -22px; background: rgba(22, 138, 69, 0.08); border-color: rgba(22, 138, 69, 0.75); box-shadow: 0 0 22px rgba(22, 138, 69, 0.15); }
-.fb-cursor-ring[data-state='card'] { width: 52px; height: 52px; margin: -26px 0 0 -26px; background: rgba(22, 138, 69, 0.06); }
-.cursor-click .fb-cursor-ring { width: 52px; height: 52px; margin: -26px 0 0 -26px; }
+html.dark,
+body.dark {
+  background-color: #050505;
+  color: #F5FFF5;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(22, 138, 69, 0.18);
+  color: #12372A;
+}
+
+.glass-surface {
+  background: rgba(255, 253, 243, 0.78);
+  border: 1px solid rgba(18, 55, 42, 0.10);
+  box-shadow: 0 18px 45px rgba(18, 55, 42, 0.08);
+  backdrop-filter: blur(18px);
+}
+
+.soft-grid {
+  background-image: linear-gradient(rgba(22, 138, 69, 0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(22, 138, 69, 0.055) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(to bottom, black, transparent 82%);
+}
+
+@property --button-glow-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.button-glow {
+  --button-glow-angle: 0deg;
+  isolation: isolate;
+}
+
+.button-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from var(--button-glow-angle), transparent 0deg, transparent 250deg, rgba(221, 233, 223, 0.18) 275deg, rgba(221, 233, 223, 0.95) 300deg, rgba(22, 138, 69, 0.95) 322deg, transparent 350deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: button-border-trace 3.8s linear infinite;
+}
+
+@keyframes button-border-trace {
+  to {
+    --button-glow-angle: 360deg;
+  }
+}
+
+.has-custom-cursor,
+.has-custom-cursor a,
+.has-custom-cursor button,
+.has-custom-cursor [role='button'] {
+  cursor: none;
+}
+
+.has-custom-cursor input,
+.has-custom-cursor textarea,
+.has-custom-cursor select,
+.has-custom-cursor [contenteditable='true'] {
+  cursor: text;
+}
+
+.fb-cursor-dot,
+.fb-cursor-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  pointer-events: none;
+  transform: translate3d(-100px, -100px, 0);
+  will-change: transform;
+}
+
+.fb-cursor-dot {
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 999px;
+  background: #2F8F46;
+  box-shadow: 0 0 14px rgba(22, 138, 69, 0.55);
+}
+
+.fb-cursor-ring {
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
+  border: 1px solid rgba(22, 138, 69, 0.48);
+  border-radius: 999px;
+  transition: width 180ms ease, height 180ms ease, margin 180ms ease, background 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.fb-cursor-ring[data-state='interactive'],
+.fb-cursor-ring[data-state='button'] {
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  background: rgba(22, 138, 69, 0.08);
+  border-color: rgba(22, 138, 69, 0.75);
+  box-shadow: 0 0 22px rgba(22, 138, 69, 0.15);
+}
+
+.fb-cursor-ring[data-state='card'] {
+  width: 52px;
+  height: 52px;
+  margin: -26px 0 0 -26px;
+  background: rgba(22, 138, 69, 0.06);
+}
+
+.cursor-click .fb-cursor-ring {
+  width: 52px;
+  height: 52px;
+  margin: -26px 0 0 -26px;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-  .button-glow::after { animation: none; background: linear-gradient(90deg, rgba(221, 233, 223, 0.7), rgba(22, 138, 69, 0.7), rgba(221, 233, 223, 0.7)); }
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .button-glow::after {
+    animation: none;
+    background: linear-gradient(90deg, rgba(221, 233, 223, 0.7), rgba(22, 138, 69, 0.7), rgba(221, 233, 223, 0.7));
+  }
 }
-@media (pointer: coarse) { .fb-cursor-dot, .fb-cursor-ring { display: none; } }
 
-.auth-pixel-snow { position: absolute !important; inset: 0; z-index: 0; pointer-events: none; opacity: 0.18; mix-blend-mode: multiply; }
-.auth-pixel-snow-sage { opacity: 0.12; }
-.auth-background-wash { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(180deg, rgba(255, 248, 214, 0.18), rgba(255, 253, 243, 0.38)); }
+@media (pointer: coarse) {
 
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(18, 55, 42, 0.20); border-radius: 9999px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(22, 138, 69, 0.46); }
+  .fb-cursor-dot,
+  .fb-cursor-ring {
+    display: none;
+  }
+}
+
+.auth-pixel-snow {
+  position: absolute !important;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  mix-blend-mode: multiply;
+}
+
+.auth-pixel-snow-sage {
+  opacity: 0.12;
+}
+
+.auth-background-wash {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 248, 214, 0.18), rgba(255, 253, 243, 0.38));
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(18, 55, 42, 0.20);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(22, 138, 69, 0.46);
+}
 
 :is(.portal-theme, .public-theme, .auth-theme).dark,
 :is(.portal-theme-dark, .public-theme-dark, .auth-theme-dark) {

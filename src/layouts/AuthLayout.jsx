@@ -10,7 +10,7 @@ const AUTH_THEME_STORAGE_KEY = 'foodbridge.public.theme';
 
 export function AuthLayout({ children }) {
   const { pathname } = useLocation();
-  const showBackground = pathname === '/auth/login' || pathname === '/auth/register';
+  const showBackground = pathname.startsWith('/auth');
 
   const [theme, setTheme] = useState(() => {
     try {
