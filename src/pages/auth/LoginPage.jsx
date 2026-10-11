@@ -5,12 +5,13 @@ import { AuthCard } from '@/components/auth';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/forms/Input';
 import { ArrowRight, Lock, Mail } from 'lucide-react';
-import { findDemoAccount, setPrototypeAuth } from '@/constants/authData';
+import { apiClient } from '@/services/api';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function LoginPage() {
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -25,19 +26,69 @@ export function LoginPage() {
     },
   });
 
-  const handleLogin = ({ email, password }) => {
-    const account = findDemoAccount(email, password);
-
-    if (!account) {
-      setError('root', {
-        type: 'credentials',
-        message: 'Invalid demo credentials. Please check your email and password.',
+  const handleLogin = async ({ email, password }) => {
+    try {
+      const response = await apiClient.post('/auth/login', {
+        email: email.trim(),
+        password,
       });
-      return;
-    }
 
-    setPrototypeAuth(account);
-    navigate(account.redirectTo, { replace: true });
+      const user = response.data?.user;
+      const token = response.data?.token;
+
+      if (!user) {
+        setError('root', {
+          type: 'server',
+          message:
+            'The server did not return user details. Please check the backend.',
+        });
+        return;
+      }
+
+      if (!token) {
+        setError('root', {
+          type: 'server',
+          message:
+            'The server did not return an authentication token. Please check the backend.',
+        });
+        return;
+      }
+
+      const role = String(user.role || '').toUpperCase();
+
+      if (!['DONOR', 'NGO', 'ADMIN'].includes(role)) {
+        setError('root', {
+          type: 'role',
+          message: 'Your account role is not recognized.',
+        });
+        return;
+      }
+
+      // Save the JWT token for authenticated API requests.
+      sessionStorage.setItem('foodbridgeToken', token);
+
+      // Preserve the existing login session information.
+      sessionStorage.setItem('foodbridgeUser', JSON.stringify(user));
+      sessionStorage.setItem('foodbridgeLoggedIn', 'true');
+
+      if (role === 'ADMIN') {
+        navigate('/admin', { replace: true });
+      } else if (role === 'NGO') {
+        navigate('/ngo', { replace: true });
+      } else {
+        navigate('/donor', { replace: true });
+      }
+    } catch (error) {
+      const message =
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        'Unable to sign in. Check your email and password and ensure the backend is running.';
+
+      setError('root', {
+        type: 'server',
+        message,
+      });
+    }
   };
 
   return (
@@ -56,7 +107,11 @@ export function LoginPage() {
         </>
       }
     >
-      <form onSubmit={handleSubmit(handleLogin)} className="space-y-4" noValidate>
+      <form
+        onSubmit={handleSubmit(handleLogin)}
+        className="space-y-4"
+        noValidate
+      >
         <Input
           id="login-email"
           label="Organization Email"
@@ -88,7 +143,10 @@ export function LoginPage() {
         />
 
         {errors.root?.message && (
-          <p role="alert" className="rounded-lg border border-danger/20 bg-danger/5 px-3 py-2 text-xs font-medium text-danger">
+          <p
+            role="alert"
+            className="rounded-lg border border-danger/20 bg-danger/5 px-3 py-2 text-xs font-medium text-danger"
+          >
             {errors.root.message}
           </p>
         )}
@@ -120,7 +178,7 @@ export function LoginPage() {
           rightIcon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}
           className="mt-1"
         >
-          Sign In
+          {isSubmitting ? 'Signing in...' : 'Sign In'}
         </Button>
       </form>
     </AuthCard>
