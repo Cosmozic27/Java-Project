@@ -1,168 +1,272 @@
 /**
  * AuthBackground.css
  *
- * Lightweight CSS-only animated background for FoodBridge Login & Register pages.
- * Replaces the Three.js PixelSnow WebGL renderer for dramatically better performance.
+ * Local SVG/CSS topographic contour background for FoodBridge Auth pages (Login & Register).
+ * Provides a rich, organic topographic contour effect with smooth undulating ambient drift.
+ * Completely self-contained: no external third-party scripts, zero watermarks.
  *
- * Uses:
- *   - CSS gradient animation (transform/opacity — GPU friendly)
- *   - Floating soft orb blobs
- *   - Subtle floating node network metaphor (CSS only, no canvas/WebGL)
- *
- * Respects prefers-reduced-motion.
+ * Color palette:
+ *   Light: Warm cream base (#FFFDF3) with pale/mid sage green contour lines (#4E8855, #7AAB80).
+ *   Dark:  Deep forest-black base (#060D06) with emerald/forest green contour lines (#2A6E30, #3BA044).
  */
 
-/* ── Animated gradient base ──────────────────────────────────────── */
+/* ── Root container ──────────────────────────────────────────────── */
 .auth-bg-root {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
+  --topo-line-base: #4E8855;
+  --topo-line-subtle: #7AAB80;
+  --topo-glow: rgba(122, 171, 128, 0.14);
 }
 
-/* Soft gradient wash that shifts hue gently */
+/* ── Light Mode Base Gradient ────────────────────────────────────── */
 .auth-bg-gradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    135deg,
-    #fff8d6 0%,
-    #fffdf3 30%,
-    #dde9df 60%,
-    #fff1a8 85%,
-    #fff8d6 100%
+  background: radial-gradient(
+    ellipse at 50% 25%,
+    rgba(255, 253, 243, 0.98) 0%,
+    rgba(247, 251, 247, 0.90) 50%,
+    rgba(223, 236, 225, 0.65) 100%
   );
-  background-size: 300% 300%;
-  animation: auth-bg-shift 18s ease-in-out infinite alternate;
-  opacity: 1;
+  transition: background 300ms ease;
 }
 
-@keyframes auth-bg-shift {
-  0%   { background-position: 0% 0%; }
-  50%  { background-position: 80% 40%; }
-  100% { background-position: 30% 100%; }
-}
-
-/* ── Floating orbs (blurred blobs) ───────────────────────────────── */
-.auth-bg-orbs {
+/* ── Topographic Contour SVG Layers ──────────────────────────────── */
+.auth-topo-layer {
   position: absolute;
-  inset: 0;
+  inset: -5%;
+  width: 110%;
+  height: 110%;
+  pointer-events: none;
 }
 
-.auth-bg-orb {
+.auth-topo-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Contour line properties */
+.auth-contour {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+  stroke: var(--topo-line-base);
+  transition: stroke 300ms ease, opacity 300ms ease;
+}
+
+.contour-lvl-1 {
+  stroke-width: 1.1px;
+  opacity: 0.22;
+}
+
+.contour-lvl-2 {
+  stroke-width: 1.2px;
+  opacity: 0.32;
+}
+
+.contour-lvl-3 {
+  stroke-width: 1.4px;
+  opacity: 0.42;
+}
+
+.contour-lvl-4 {
+  stroke-width: 1.6px;
+  opacity: 0.50;
+}
+
+.contour-ring {
+  stroke-dasharray: 6 3;
+}
+
+.contour-ring-1 {
+  stroke-width: 1.1px;
+  opacity: 0.25;
+}
+
+.contour-ring-2 {
+  stroke-width: 1.2px;
+  opacity: 0.35;
+}
+
+.contour-ring-3 {
+  stroke-width: 1.4px;
+  opacity: 0.45;
+}
+
+.contour-ring-4 {
+  stroke-width: 1.6px;
+  stroke-dasharray: none;
+  opacity: 0.55;
+}
+
+.contour-subtle {
+  stroke: var(--topo-line-subtle);
+  stroke-width: 1px;
+  opacity: 0.16;
+  stroke-dasharray: 3 6;
+}
+
+/* ── Undulating Organic Drift Animations ─────────────────────────── */
+.auth-topo-group {
+  animation: auth-topo-drift 24s ease-in-out infinite alternate;
+  transform-origin: 50% 50%;
+}
+
+.auth-topo-group-secondary {
+  animation: auth-topo-drift-counter 30s ease-in-out infinite alternate;
+  transform-origin: 50% 50%;
+}
+
+@keyframes auth-topo-drift {
+  0% {
+    transform: translate(0px, 0px) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate(14px, -10px) scale(1.02) rotate(0.4deg);
+  }
+  100% {
+    transform: translate(-10px, 12px) scale(0.99) rotate(-0.3deg);
+  }
+}
+
+@keyframes auth-topo-drift-counter {
+  0% {
+    transform: translate(0px, 0px) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate(-16px, 12px) scale(1.015) rotate(-0.5deg);
+  }
+  100% {
+    transform: translate(12px, -8px) scale(0.985) rotate(0.3deg);
+  }
+}
+
+/* ── Ambient Illumination Glows ──────────────────────────────────── */
+.auth-bg-glow {
   position: absolute;
-  border-radius: 50%;
-  filter: blur(60px);
-  opacity: 0;
-  animation: auth-orb-float 20s ease-in-out infinite;
-  will-change: transform, opacity;
-}
-
-.auth-bg-orb-1 {
-  width: 340px;
-  height: 340px;
-  background: radial-gradient(circle, rgba(22, 138, 69, 0.18) 0%, transparent 70%);
-  top: -10%;
-  left: -8%;
-  animation-delay: 0s;
-  animation-duration: 22s;
-}
-
-.auth-bg-orb-2 {
-  width: 260px;
-  height: 260px;
-  background: radial-gradient(circle, rgba(255, 241, 168, 0.55) 0%, transparent 70%);
-  bottom: 5%;
-  right: -5%;
-  animation-delay: -6s;
-  animation-duration: 18s;
-}
-
-.auth-bg-orb-3 {
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(22, 138, 69, 0.10) 0%, transparent 70%);
-  top: 40%;
-  right: 15%;
-  animation-delay: -12s;
-  animation-duration: 25s;
-}
-
-.auth-bg-orb-4 {
-  width: 180px;
-  height: 180px;
-  background: radial-gradient(circle, rgba(255, 241, 168, 0.35) 0%, transparent 70%);
-  top: 20%;
+  top: -15%;
   left: 50%;
-  animation-delay: -4s;
-  animation-duration: 20s;
+  transform: translateX(-50%);
+  width: 750px;
+  height: 550px;
+  background: radial-gradient(
+    circle,
+    var(--topo-glow) 0%,
+    rgba(168, 201, 171, 0.06) 45%,
+    transparent 72%
+  );
+  filter: blur(60px);
+  transition: background 300ms ease;
+  animation: auth-glow-pulse 14s ease-in-out infinite alternate;
 }
 
-@keyframes auth-orb-float {
-  0%   { opacity: 0.6; transform: translate(0, 0) scale(1); }
-  33%  { opacity: 0.9; transform: translate(16px, -24px) scale(1.04); }
-  66%  { opacity: 0.5; transform: translate(-12px, 18px) scale(0.97); }
-  100% { opacity: 0.7; transform: translate(8px, -10px) scale(1.02); }
-}
-
-/* ── Floating nodes (tiny glowing dots) ──────────────────────────── */
-.auth-bg-nodes {
+.auth-bg-glow-secondary {
   position: absolute;
-  inset: 0;
+  bottom: -10%;
+  right: 10%;
+  width: 500px;
+  height: 400px;
+  background: radial-gradient(
+    circle,
+    rgba(78, 136, 85, 0.08) 0%,
+    transparent 68%
+  );
+  filter: blur(50px);
+  transition: background 300ms ease;
 }
 
-.auth-bg-node {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: rgba(22, 138, 69, 0.55);
-  box-shadow: 0 0 10px rgba(22, 138, 69, 0.35);
-  animation: auth-node-pulse 4s ease-in-out infinite;
-  will-change: transform, opacity;
+@keyframes auth-glow-pulse {
+  0% {
+    opacity: 0.8;
+    transform: translateX(-50%) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.05);
+  }
 }
 
-/* Position each node individually */
-.auth-bg-node:nth-child(1)  { top: 15%; left: 10%;  animation-delay: 0s;    animation-duration: 5s;  }
-.auth-bg-node:nth-child(2)  { top: 25%; left: 38%;  animation-delay: -1s;   animation-duration: 6s;  }
-.auth-bg-node:nth-child(3)  { top: 12%; left: 68%;  animation-delay: -2s;   animation-duration: 4.5s; }
-.auth-bg-node:nth-child(4)  { top: 40%; left: 82%;  animation-delay: -0.5s; animation-duration: 7s;  }
-.auth-bg-node:nth-child(5)  { top: 62%; left: 22%;  animation-delay: -3s;   animation-duration: 5.5s; }
-.auth-bg-node:nth-child(6)  { top: 72%; left: 55%;  animation-delay: -1.5s; animation-duration: 6.5s; }
-.auth-bg-node:nth-child(7)  { top: 85%; left: 75%;  animation-delay: -2.5s; animation-duration: 4s;  }
-.auth-bg-node:nth-child(8)  { top: 50%; left: 46%;  animation-delay: -0.8s; animation-duration: 8s;  }
-
-/* Accent yellow nodes */
-.auth-bg-node:nth-child(3),
-.auth-bg-node:nth-child(6) {
-  background: rgba(217, 154, 34, 0.60);
-  box-shadow: 0 0 8px rgba(217, 154, 34, 0.35);
+/* ── DARK MODE PALETTE ───────────────────────────────────────────── */
+.auth-bg-root--dark {
+  --topo-line-base: #3BA044;
+  --topo-line-subtle: #22c55e;
+  --topo-glow: rgba(34, 197, 94, 0.16);
 }
 
-@keyframes auth-node-pulse {
-  0%, 100% { opacity: 0.5; transform: scale(1); }
-  50%       { opacity: 1.0; transform: scale(1.35); }
+.auth-bg-root--dark .auth-bg-gradient {
+  background: radial-gradient(
+    ellipse at 50% 25%,
+    #060D06 0%,
+    #091309 52%,
+    #0E2010 100%
+  );
 }
 
-/* ── Connector lines between nodes (static, CSS only) ─────────────── */
-.auth-bg-connector {
-  position: absolute;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(22, 138, 69, 0.18), transparent);
-  transform-origin: left center;
-  animation: auth-connector-fade 6s ease-in-out infinite;
+.auth-bg-root--dark .contour-lvl-1 {
+  opacity: 0.26;
 }
 
-@keyframes auth-connector-fade {
-  0%, 100% { opacity: 0; }
-  40%, 60%  { opacity: 1; }
+.auth-bg-root--dark .contour-lvl-2 {
+  opacity: 0.38;
 }
 
-/* ── Reduced motion override ──────────────────────────────────────── */
+.auth-bg-root--dark .contour-lvl-3 {
+  opacity: 0.48;
+}
+
+.auth-bg-root--dark .contour-lvl-4 {
+  opacity: 0.58;
+}
+
+.auth-bg-root--dark .contour-ring-1 {
+  opacity: 0.28;
+}
+
+.auth-bg-root--dark .contour-ring-2 {
+  opacity: 0.40;
+}
+
+.auth-bg-root--dark .contour-ring-3 {
+  opacity: 0.52;
+}
+
+.auth-bg-root--dark .contour-ring-4 {
+  opacity: 0.65;
+}
+
+.auth-bg-root--dark .auth-bg-glow-secondary {
+  background: radial-gradient(
+    circle,
+    rgba(34, 197, 94, 0.10) 0%,
+    transparent 68%
+  );
+}
+
+/* Document-level class response */
+:is(.auth-theme, .portal-theme, .public-theme).dark .auth-bg-root {
+  --topo-line-base: #3BA044;
+  --topo-line-subtle: #22c55e;
+  --topo-glow: rgba(34, 197, 94, 0.16);
+}
+
+:is(.auth-theme, .portal-theme, .public-theme).dark .auth-bg-gradient {
+  background: radial-gradient(
+    ellipse at 50% 25%,
+    #060D06 0%,
+    #091309 52%,
+    #0E2010 100%
+  );
+}
+
+/* ── Accessibility: Reduced Motion Support ───────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .auth-bg-gradient       { animation: none; background-position: 0% 0%; }
-  .auth-bg-orb            { animation: none; opacity: 0.5; }
-  .auth-bg-node           { animation: none; opacity: 0.4; }
-  .auth-bg-connector      { animation: none; opacity: 0.3; }
+  .auth-topo-group,
+  .auth-topo-group-secondary,
+  .auth-bg-glow {
+    animation: none !important;
+  }
 }

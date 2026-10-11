@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Menu, X } from 'lucide-react';
 import { Logo } from '@/components/common/Logo';
+import { SwitchMode } from '@/components/switch-mode';
 
 const NAV_ITEMS = [
   { label: 'How It Works', to: '/#how-it-works' },
@@ -10,7 +11,7 @@ const NAV_ITEMS = [
   { label: 'For NGOs', to: '/#ngos' },
 ];
 
-export function LandingNavbar() {
+export function LandingNavbar({ theme = 'light', onToggleTheme }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const menuToggleRef = useRef(null);
@@ -42,20 +43,28 @@ export function LandingNavbar() {
             {NAV_ITEMS.map((item) => <Link key={item.label} to={item.to} onClick={() => setMenuOpen(false)}>{item.label}</Link>)}
           </div>
           <div className="fb-navbar-actions">
+            {onToggleTheme && (
+              <SwitchMode theme={theme} onToggle={onToggleTheme} />
+            )}
             <Link className="fb-login-link" to="/auth/login">Login</Link>
             <Link className="fb-get-started" to="/auth/register">Get Started <ArrowRight size={15} aria-hidden="true" /></Link>
           </div>
-          <button
-            ref={menuToggleRef}
-            className="fb-menu-toggle"
-            type="button"
-            aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-            aria-expanded={menuOpen}
-            aria-controls="fb-mobile-menu"
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            {menuOpen ? <X size={19} aria-hidden="true" /> : <Menu size={19} aria-hidden="true" />}
-          </button>
+          <div className="flex items-center gap-2 md:hidden">
+            {onToggleTheme && (
+              <SwitchMode theme={theme} onToggle={onToggleTheme} />
+            )}
+            <button
+              ref={menuToggleRef}
+              className="fb-menu-toggle"
+              type="button"
+              aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={menuOpen}
+              aria-controls="fb-mobile-menu"
+              onClick={() => setMenuOpen((open) => !open)}
+            >
+              {menuOpen ? <X size={19} aria-hidden="true" /> : <Menu size={19} aria-hidden="true" />}
+            </button>
+          </div>
         </div>
         {menuOpen && (
           <div className="fb-mobile-menu" id="fb-mobile-menu">

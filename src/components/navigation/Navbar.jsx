@@ -3,6 +3,7 @@ import { NavLink, Link, useLocation } from 'react-router-dom';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import { Logo } from '@/components/common/Logo';
 import { Button } from '@/components/common/Button';
+import { SwitchMode } from '@/components/switch-mode';
 import { PUBLIC_NAV } from '@/constants/navigation';
 import { cn } from '@/utils/cn';
 
@@ -61,6 +62,8 @@ export function Navbar({
   userMenu,
   sticky = true,
   className = '',
+  theme = 'light',
+  onToggleTheme,
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -90,8 +93,11 @@ export function Navbar({
             </div>
           </div>
 
-          {/* Desktop Right Actions (Auth / User) */}
+          {/* Desktop Right Actions (Auth / User / Theme) */}
           <div className="hidden md:flex items-center gap-3">
+            {onToggleTheme && (
+              <SwitchMode theme={theme} onToggle={onToggleTheme} />
+            )}
             {user ? (
               userMenu || (
                 <div className="flex items-center gap-2">
@@ -125,6 +131,9 @@ export function Navbar({
 
           {/* Mobile Menu Toggle Button */}
           <div className="flex md:hidden items-center gap-2">
+            {onToggleTheme && (
+              <SwitchMode theme={theme} onToggle={onToggleTheme} />
+            )}
             <Button
               variant="outline"
               size="icon"
@@ -156,6 +165,12 @@ export function Navbar({
           </div>
 
           <div className="pt-3 border-t border-border flex flex-col gap-2">
+            {onToggleTheme && (
+              <div className="flex items-center justify-between px-1 py-1">
+                <span className="text-xs font-semibold text-text-secondary">Theme Mode</span>
+                <SwitchMode theme={theme} onToggle={onToggleTheme} />
+              </div>
+            )}
             <Link
               to="/auth/login"
               onClick={() => setMobileMenuOpen(false)}

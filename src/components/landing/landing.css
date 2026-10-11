@@ -170,3 +170,74 @@
   .fb-progress-fill { transition: none !important; }
   .fb-story-copy { animation: none !important; }
 }
+
+/* Dark mode theme adaptations for the public cinematic landing navbar & footer */
+.public-theme.dark .fb-navbar {
+  color: #f6f3ea;
+  background: rgba(17, 26, 22, 0.88);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+}
+.public-theme.dark .fb-navbar-wrap.is-scrolled .fb-navbar {
+  background: rgba(17, 26, 22, 0.95);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+.public-theme.dark .fb-navbar-links a,
+.public-theme.dark .fb-login-link {
+  color: #c5d6c8;
+}
+.public-theme.dark .fb-navbar-links a:hover,
+.public-theme.dark .fb-login-link:hover {
+  color: #ffffff;
+  background: rgba(34, 197, 94, 0.18);
+}
+.public-theme.dark .fb-get-started {
+  color: #06150b;
+  background: #39ff14;
+  border-color: #39ff14;
+}
+.public-theme.dark .fb-get-started:hover {
+  background: #25d40e;
+  box-shadow: 0 8px 20px rgba(57, 255, 20, 0.25);
+}
+.public-theme.dark .fb-menu-toggle {
+  background: rgba(27, 38, 31, 0.85);
+  color: #f6f3ea;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+.public-theme.dark .fb-mobile-menu {
+  background: rgba(17, 26, 22, 0.96);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+.public-theme.dark .fb-mobile-menu > a {
+  color: #c5d6c8;
+}
+.public-theme.dark .fb-mobile-menu > a:hover {
+  background: rgba(34, 197, 94, 0.15);
+  color: #ffffff;
+}
+.public-theme.dark .fb-mobile-menu-actions > a:first-child {
+  color: #f6f3ea;
+  border-color: rgba(255, 255, 255, 0.18);
+}
+.public-theme.dark .fb-footer {
+  background: #090e0b;
+  color: #e2ede5;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.public-theme.dark .fb-footer-brand p {
+  color: #8fa093;
+}
+.public-theme.dark .fb-footer-column h2 {
+  color: #f0f7f2;
+}
+.public-theme.dark .fb-footer-column a {
+  color: #9cb0a2;
+}
+.public-theme.dark .fb-footer-column a:hover {
+  color: #39ff14;
+}
+.public-theme.dark .fb-footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: #7b8e81;
+}

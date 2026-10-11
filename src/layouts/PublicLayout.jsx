@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Navbar } from '@/components/navigation/Navbar';
 import { Logo } from '@/components/common/Logo';
@@ -6,14 +6,64 @@ import { PUBLIC_FOOTER_NAV } from '@/constants/navigation';
 import { Heart, Globe } from 'lucide-react';
 import { LandingNavbar } from '@/components/landing/LandingNavbar';
 import { LandingFooter } from '@/components/landing/LandingFooter';
+import { cn } from '@/utils/cn';
+
+const PUBLIC_THEME_STORAGE_KEY = 'foodbridge.public.theme';
 
 export function PublicLayout({ children }) {
   const { pathname } = useLocation();
   const isLandingPage = pathname === '/';
+
+  const [theme, setTheme] = useState(() => {
+    try {
+      return window.localStorage.getItem(PUBLIC_THEME_STORAGE_KEY) === 'dark' ? 'dark' : 'light';
+    } catch {
+      return 'light';
+    }
+  });
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(PUBLIC_THEME_STORAGE_KEY, theme);
+    } catch {
+      // Keep in-memory if storage is restricted
+    }
+
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.body.classList.add('dark');
+      document.documentElement.style.colorScheme = 'dark';
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark');
+      document.documentElement.style.colorScheme = 'light';
+    }
+
+    return () => {
+      document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark');
+      document.documentElement.style.colorScheme = '';
+    };
+  }, [theme]);
+
+  const handleToggleTheme = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
+
   return (
-    <div className={`min-h-screen bg-background text-text-primary flex flex-col font-sans ${isLandingPage ? 'fb-public-shell' : ''}`}>
-      {/* Sticky Top Navbar */}
-      {isLandingPage ? <LandingNavbar /> : <Navbar sticky />}
+    <div
+      className={cn(
+        'public-theme min-h-screen bg-background text-text-primary flex flex-col font-sans transition-colors duration-200',
+        isLandingPage && 'fb-public-shell',
+        theme === 'dark' && 'dark'
+      )}
+    >
+      {/* Sticky Top Navbar with Theme Toggle */}
+      {isLandingPage ? (
+        <LandingNavbar theme={theme} onToggleTheme={handleToggleTheme} />
+      ) : (
+        <Navbar sticky theme={theme} onToggleTheme={handleToggleTheme} />
+      )}
 
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col">

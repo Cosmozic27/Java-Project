@@ -1,32 +1,84 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Logo } from '@/components/common/Logo';
 import { AuthBackground } from '@/components/auth/AuthBackground';
+import { SwitchMode } from '@/components/switch-mode';
 import { ShieldCheck, ArrowLeft, HeartHandshake } from 'lucide-react';
+import { cn } from '@/utils/cn';
+
+const AUTH_THEME_STORAGE_KEY = 'foodbridge.public.theme';
 
 export function AuthLayout({ children }) {
   const { pathname } = useLocation();
   const showBackground = pathname === '/auth/login' || pathname === '/auth/register';
 
+  const [theme, setTheme] = useState(() => {
+    try {
+      return window.localStorage.getItem(AUTH_THEME_STORAGE_KEY) === 'dark' ? 'dark' : 'light';
+    } catch {
+      return 'light';
+    }
+  });
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(AUTH_THEME_STORAGE_KEY, theme);
+    } catch {
+      // Keep in-memory if storage is restricted
+    }
+
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.body.classList.add('dark');
+      document.documentElement.style.colorScheme = 'dark';
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark');
+      document.documentElement.style.colorScheme = 'light';
+    }
+
+    return () => {
+      document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark');
+      document.documentElement.style.colorScheme = '';
+    };
+  }, [theme]);
+
+  const handleToggleTheme = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
+
   return (
-    <div className="relative isolate min-h-screen overflow-x-hidden bg-background flex flex-col justify-between font-sans selection:bg-primary/20 selection:text-primary-dark">
-      {/* Lightweight CSS animated background — replaces Three.js PixelSnow */}
-      {showBackground && <AuthBackground />}
+    <div
+      className={cn(
+        'auth-theme relative isolate min-h-screen overflow-x-hidden bg-background flex flex-col justify-between font-sans selection:bg-primary/20 selection:text-primary-dark transition-colors duration-200',
+        theme === 'dark' && 'dark'
+      )}
+    >
+      {/* Topographic Contour Animated Background */}
+      {showBackground && <AuthBackground theme={theme} />}
 
       <div className="auth-background-wash" aria-hidden="true" />
 
-      {/* Top Header with Back Link & Logo */}
-      <header className="relative z-10 w-full px-4 py-5 sm:px-8">
+      {/* Top Header with Back Link, Logo & Top-Right Dark Mode Toggle */}
+      <header className="relative z-10 w-full px-4 py-4 sm:px-8 sm:py-5">
         <div className="mx-auto flex w-full items-center justify-between gap-4">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-1.5 rounded p-1 text-xs font-semibold text-text-secondary transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
-            <span>Back to Home</span>
-          </Link>
+          <div className="flex items-center gap-3 sm:gap-6">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-1.5 rounded p-1 text-xs font-semibold text-text-secondary transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+              <span>Back to Home</span>
+            </Link>
 
-          <Logo size="md" />
+            <Logo size="md" />
+          </div>
+
+          {/* Clearly visible theme toggle in the top-right corner */}
+          <div className="flex items-center">
+            <SwitchMode theme={theme} onToggle={handleToggleTheme} />
+          </div>
         </div>
       </header>
 
