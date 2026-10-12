@@ -8,7 +8,7 @@ import { cn } from '@/utils/cn';
 export function Skeleton({ className = '', ...props }) {
   return (
     <div
-      className={cn('animate-pulse rounded-lg bg-slate-200/80', className)}
+      className={cn('animate-pulse rounded-lg bg-surface-muted', className)}
       {...props}
     />
   );

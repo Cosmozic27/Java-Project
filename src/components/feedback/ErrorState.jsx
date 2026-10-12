@@ -17,7 +17,7 @@ export function ErrorState({
       <div
         role="alert"
         className={cn(
-          'flex items-center justify-between gap-3 p-4 rounded-xl border border-red-200 bg-red-50 text-red-800 text-xs sm:text-sm',
+          'flex items-center justify-between gap-3 p-4 rounded-xl border border-danger/30 bg-danger/10 text-danger text-xs sm:text-sm',
           className
         )}
       >
@@ -48,11 +48,11 @@ export function ErrorState({
     <div
       role="alert"
       className={cn(
-        'flex flex-col items-center justify-center text-center rounded-2xl border border-red-200/80 bg-red-50/40 p-8 sm:p-12 transition-colors',
+        'flex flex-col items-center justify-center text-center rounded-2xl border border-danger/30 bg-danger/10 p-8 sm:p-12 transition-colors',
         className
       )}
     >
-      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-100 text-danger shadow-2xs mb-4">
+      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-danger/15 text-danger shadow-2xs mb-4">
         <AlertTriangle className="h-6 w-6 stroke-[1.75]" aria-hidden="true" />
       </div>
 

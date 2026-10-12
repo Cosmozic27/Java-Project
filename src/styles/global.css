@@ -41,6 +41,67 @@
   --fb-info: #3F72AF;
 }
 
+.auth-theme {
+  --color-background: #FFFDF3;
+  --color-background-subtle: #FFFBEA;
+  --color-surface: #FFFDF3;
+  --color-surface-muted: #FFFBEA;
+  --color-text-primary: #17211C;
+  --color-text-secondary: #64756B;
+  --color-text-muted: #8A9189;
+  --color-border: rgba(18, 55, 42, 0.10);
+  --color-border-strong: rgba(18, 55, 42, 0.18);
+  --color-border-subtle: rgba(18, 55, 42, 0.06);
+}
+
+.auth-theme.dark {
+  --color-background: #050705;
+  --color-background-subtle: #081109;
+  --color-surface: #0B160D;
+  --color-surface-muted: #102211;
+  --color-text-primary: #F3FFF2;
+  --color-text-secondary: #A9BBAA;
+  --color-text-muted: #7C907E;
+  --color-border: rgba(115, 190, 125, 0.20);
+  --color-border-strong: rgba(115, 190, 125, 0.38);
+  --color-border-subtle: rgba(115, 190, 125, 0.12);
+}
+
+.fb-theme-switch__track {
+  position: relative;
+  display: inline-block;
+  width: 2rem;
+  height: 1.25rem;
+  flex: 0 0 auto;
+  border: 1px solid rgba(18, 55, 42, 0.22);
+  border-radius: 9999px;
+  background: #D9E2DA;
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+
+.fb-theme-switch[aria-pressed='true'] .fb-theme-switch__track {
+  border-color: #3F8150;
+  background: #173D25;
+}
+
+.fb-theme-switch__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: #FFFFFF;
+  box-shadow: 0 1px 3px rgba(18, 55, 42, 0.30);
+  transform: translateX(0);
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.fb-theme-switch[aria-pressed='true'] .fb-theme-switch__thumb {
+  background: #F8E99B;
+  transform: translateX(12px);
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;

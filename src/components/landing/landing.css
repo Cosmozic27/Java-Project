@@ -1039,7 +1039,7 @@ html:not(.dark) #root {
   background-color: transparent;
 }
 
-.fb-landing .bg-white {
+.public-theme:not(.dark) .fb-landing .bg-white {
   background-color: #FFFDF3;
 }
 
@@ -1066,23 +1066,23 @@ html:not(.dark) #root {
   background: #FFFDF3 !important;
 }
 
-.fb-landing {
+.public-theme:not(.dark) .fb-landing {
   background: #FFFDF3 !important;
   color: #17211C;
   min-height: 100vh;
 }
 
-.fb-landing>section {
+.public-theme:not(.dark) .fb-landing>section {
   background-color: #FFF8E5 !important;
   color: #17211C;
 }
 
-.fb-landing>section:nth-of-type(even) {
+.public-theme:not(.dark) .fb-landing>section:nth-of-type(even) {
   background-color: #FFFDF3 !important;
 }
 
 /* Keep cards subtly lighter than the surrounding cream */
-.fb-landing .bg-surface {
+.public-theme:not(.dark) .fb-landing .bg-surface {
   background-color: #FFFDF3;
 }
 

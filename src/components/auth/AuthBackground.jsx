@@ -221,6 +221,11 @@ export function AuthBackground({ theme = 'light' }) {
   const isDark = theme === 'dark';
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
+  const themeRef = useRef(isDark);
+  const applyPaletteRef = useRef(null);
+  const [externalRuntimeReady, setExternalRuntimeReady] = useState(() =>
+    typeof window !== 'undefined' && Boolean(window.AIFX?.register)
+  );
   const [webglSupported] = useState(() => {
     if (typeof window === 'undefined') return true;
     try {
@@ -232,9 +237,23 @@ export function AuthBackground({ theme = 'light' }) {
   });
 
   useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+
+    const handleRuntimeReady = () => setExternalRuntimeReady(true);
+    window.addEventListener('aifx:runtime-ready', handleRuntimeReady);
+
+    return () => window.removeEventListener('aifx:runtime-ready', handleRuntimeReady);
+  }, []);
+
+  useEffect(() => {
+    themeRef.current = isDark;
+    applyPaletteRef.current?.();
+  }, [isDark]);
+
+  useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
-    if (!canvas || !container) return;
+    if (externalRuntimeReady || !canvas || !container) return undefined;
 
     let gl = null;
     try {
@@ -322,7 +341,7 @@ export function AuthBackground({ theme = 'light' }) {
 
     // Configure theme-based palettes
     function applyThemePalette() {
-      if (isDark) {
+      if (themeRef.current) {
         // Dark theme: Near-black base (#050705) with restrained fluorescent-green contours (#39FF14)
         const bg = hexToRgb('#050705');
         const ink0 = hexToRgb('#16A34A'); // Subtle emerald regular contours
@@ -383,6 +402,7 @@ export function AuthBackground({ theme = 'light' }) {
       set1f('u_mouseStr', 0.65);
     }
 
+    applyPaletteRef.current = applyThemePalette;
     applyThemePalette();
 
     const prefersReducedMotion =
@@ -482,8 +502,9 @@ export function AuthBackground({ theme = 'light' }) {
       window.removeEventListener('pointermove', handlePointerMove);
       if (observer) observer.disconnect();
       if (resizeObserver) resizeObserver.disconnect();
+      applyPaletteRef.current = null;
     };
-  }, [isDark]);
+  }, [externalRuntimeReady]);
 
   return (
     <div
@@ -496,12 +517,20 @@ export function AuthBackground({ theme = 'light' }) {
       {/* AIDesigner effect integration hook */}
       <div
         data-aifx="topo-lines"
+        data-aifx-bg={isDark ? '#050705' : '#FFFDF3'}
+        data-aifx-colors={isDark ? '#070E07,#0B170B,#102211,#162F18' : '#F1F7EE,#DFEBE0,#CDE0CE,#B8D4BB'}
+        data-aifx-ink={isDark ? '#16A34A,#39FF14' : '#4A7C52,#275333'}
+        data-aifx-bg-alpha="1"
+        data-aifx-speed="0.32"
+        data-aifx-density="24"
+        data-aifx-line-weight="1.25"
+        data-aifx-mouse="0.65"
         className="absolute inset-0 -z-10 pointer-events-none"
         aria-hidden="true"
       />
 
       {/* WebGL Procedural Topographic Canvas */}
-      {webglSupported ? (
+      {!externalRuntimeReady && webglSupported ? (
         <canvas
           ref={canvasRef}
           className="auth-topo-canvas absolute inset-0 w-full h-full block pointer-events-none"

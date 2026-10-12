@@ -19,7 +19,7 @@ const buttonVariants = {
   danger:
     'bg-danger text-white hover:bg-danger/90 active:bg-danger/95 shadow-sm focus-visible:ring-danger/30',
   'subtle-danger':
-    'bg-red-50 text-danger border border-red-200 hover:bg-red-100/70 focus-visible:ring-danger/20',
+    'bg-danger/10 text-danger border border-danger/30 hover:bg-danger/20 focus-visible:ring-danger/20',
 };
 
 const buttonSizes = {
