@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import { motion, useAnimationControls, useInView } from 'motion/react';
+import React, { useMemo, useRef } from 'react';
+import { motion, useInView } from 'motion/react';
 
 function splitText(text, animateBy) {
   if (animateBy === 'words') {
@@ -17,32 +17,34 @@ function splitText(text, animateBy) {
   }));
 }
 
-function BlurTextPart({ value, axis, offset, active, isInView, delay, index, stepDuration, stagger }) {
-  const controls = useAnimationControls();
-
-  useEffect(() => {
-    if (!active || !isInView) return undefined;
-
-    controls.start({
-      opacity: 1,
-      filter: 'blur(0px)',
-      [axis]: 0,
-      transition: {
-        duration: stepDuration,
-        delay: delay / 1000 + index * stagger,
-        ease: [0.22, 1, 0.36, 1],
-      },
-    });
-
-    return undefined;
-  }, [active, axis, controls, delay, index, isInView, offset, stagger, stepDuration]);
-
+function BlurTextPart({
+  value,
+  axis,
+  offset,
+  active,
+  isInView,
+  delay,
+  index,
+  stepDuration,
+  stagger,
+  onAnimationComplete,
+}) {
   return (
     <motion.span
       aria-hidden="true"
       className="fb-blur-text__part"
       initial={{ opacity: 0, filter: 'blur(4px)', [axis]: offset }}
-      animate={controls}
+      animate={active && isInView ? {
+        opacity: 1,
+        filter: 'blur(0px)',
+        [axis]: 0,
+      } : undefined}
+      transition={{
+        duration: stepDuration,
+        delay: delay / 1000 + index * stagger,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      onAnimationComplete={onAnimationComplete}
     >
       {value}
     </motion.span>
@@ -64,7 +66,6 @@ export function BlurText({
   active = true,
 }) {
   const ref = useRef(null);
-  const controls = useAnimationControls();
   const isInView = useInView(ref, {
     once: true,
     amount: threshold,
@@ -75,31 +76,16 @@ export function BlurText({
   const MotionTag = motion[as] || motion.span;
   const offset = direction === 'bottom' ? 18 : direction === 'left' ? 18 : direction === 'right' ? -18 : -18;
   const axis = direction === 'left' || direction === 'right' ? 'x' : 'y';
-
-  useEffect(() => {
-    if (!active || !isInView) return undefined;
-
-    controls.start({
-      opacity: 1,
-      filter: 'blur(0px)',
-      [axis]: 0,
-      transition: {
-        duration: stepDuration,
-        delay: delay / 1000,
-        ease: [0.22, 1, 0.36, 1],
-      },
-    }).then(() => onAnimationComplete?.());
-
-    return undefined;
-  }, [active, axis, controls, delay, isInView, onAnimationComplete, stepDuration]);
+  const lastAnimatedIndex = parts.reduce(
+    (lastIndex, part, index) => part.isWhitespace ? lastIndex : index,
+    -1,
+  );
 
   return (
     <MotionTag
       ref={ref}
       className={`fb-blur-text ${className}`.trim()}
       aria-label={text}
-      initial={{ opacity: 0, filter: 'blur(6px)', [axis]: offset }}
-      animate={controls}
     >
       {parts.map(({ value, key, isWhitespace }, index) =>
         isWhitespace ? (
@@ -116,6 +102,7 @@ export function BlurText({
             index={index}
             stepDuration={stepDuration}
             stagger={stagger}
+            onAnimationComplete={index === lastAnimatedIndex ? onAnimationComplete : undefined}
           />
         )
       )}

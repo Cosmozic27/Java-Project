@@ -111,7 +111,9 @@ export function MoltenMetal({
     const lowPower = navigator.hardwareConcurrency ? navigator.hardwareConcurrency <= 4 : false;
     const dprCap = coarsePointer ? 0.65 : lowPower ? 0.72 : 0.85;
     const targetFrameMs = coarsePointer || lowPower ? 33.3 : 0;
-    const canUseWebgl2 = Boolean(document.createElement('canvas').getContext('webgl2'));
+    const probe = document.createElement('canvas');
+    const canUseWebgl2 = Boolean(probe.getContext('webgl2'));
+    probe.remove();
     if (!canUseWebgl2) {
       host.classList.add('is-fallback');
       return undefined;
@@ -143,6 +145,7 @@ export function MoltenMetal({
     const program = new Program(gl, { vertex, fragment, uniforms, transparent: true, depthTest: false, depthWrite: false });
     const mesh = new Mesh(gl, { geometry, program });
     const mouse = new Vec2(0.5, 0.5);
+    let bounds = { left: 0, top: 0, width: 1, height: 1 };
     let frame = 0;
     let visible = true;
     let pageVisible = !document.hidden;
@@ -151,8 +154,9 @@ export function MoltenMetal({
 
     const resize = () => {
       const rect = host.getBoundingClientRect();
-      renderer.setSize(Math.max(1, rect.width), Math.max(1, rect.height));
-      uniforms.uResolution.value.set(Math.max(1, rect.width), Math.max(1, rect.height));
+      bounds = { left: rect.left, top: rect.top, width: Math.max(1, rect.width), height: Math.max(1, rect.height) };
+      renderer.setSize(bounds.width, bounds.height);
+      uniforms.uResolution.value.set(bounds.width, bounds.height);
     };
     const render = (time) => {
       frame = 0;
@@ -175,8 +179,10 @@ export function MoltenMetal({
     };
     const onPointerMove = (event) => {
       if (!mouseInteraction) return;
-      const rect = host.getBoundingClientRect();
-      mouse.set((event.clientX - rect.left) / rect.width, 1 - (event.clientY - rect.top) / rect.height);
+      mouse.set(
+        (event.clientX - bounds.left) / bounds.width,
+        1 - (event.clientY - bounds.top) / bounds.height,
+      );
     };
     const observer = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
