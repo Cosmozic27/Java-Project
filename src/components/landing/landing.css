@@ -1102,3 +1102,66 @@ html.dark .fb-landing>section {
 html.dark .fb-landing>section:nth-of-type(even) {
   background-color: #050505 !important;
 }
+
+/* Hero effect layer: decorative only, never above interactive content. */
+.fb-hero-section {
+  isolation: isolate;
+}
+
+.fb-hero-section .fb-blur-text {
+  display: inline;
+  white-space: normal;
+}
+
+.fb-hero-section .fb-blur-text__part {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fb-hero-section .fb-blur-text__part,
+  .fb-hero-section .fb-blur-text {
+    filter: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* The startup loader reveals the already-mounted hero in one coordinated handoff. */
+.fb-hero-reveal-item {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 520ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fb-hero-section[data-startup-reveal='hero-revealing'] .fb-hero-reveal-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fb-hero-section[data-startup-reveal='hero-revealing'] .fb-hero-reveal-item--copy,
+.fb-hero-section[data-startup-reveal='hero-revealing'] .fb-hero-reveal-item--network {
+  transition-delay: 0ms;
+}
+
+.fb-hero-supporting {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 520ms ease 360ms, transform 520ms cubic-bezier(0.22, 1, 0.36, 1) 360ms;
+}
+
+.fb-hero-section[data-startup-reveal='hero-revealing'] .fb-hero-supporting {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fb-hero-reveal-item,
+  .fb-hero-section[data-startup-reveal='hero-revealing'] .fb-hero-reveal-item,
+  .fb-hero-supporting,
+  .fb-hero-section[data-startup-reveal='hero-revealing'] .fb-hero-supporting {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

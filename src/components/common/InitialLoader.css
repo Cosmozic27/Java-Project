@@ -1,0 +1,249 @@
+.fb-initial-loader {
+  --loader-bg: #fffdf3;
+  --loader-surface: rgba(255, 249, 236, 0.82);
+  --loader-ink: #12372a;
+  --loader-muted: #64756b;
+  --loader-accent: #2f8f46;
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: var(--loader-ink);
+  background: var(--loader-bg);
+  animation: fb-loader-reveal 560ms ease-out both;
+  transition: opacity 620ms ease, transform 620ms ease, filter 620ms ease;
+  will-change: opacity, transform, filter;
+}
+
+.fb-initial-loader.is-exiting {
+  opacity: 0;
+  transform: scale(1.008);
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+.fb-initial-loader--dark {
+  --loader-bg: #050705;
+  --loader-surface: rgba(11, 22, 13, 0.86);
+  --loader-ink: #f3fff2;
+  --loader-muted: #a9bbaa;
+  --loader-accent: #66ff4d;
+}
+
+.fb-initial-loader__glow {
+  position: absolute;
+  inset: -25%;
+  pointer-events: none;
+  opacity: 0.7;
+  background:
+    radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--loader-accent) 20%, transparent), transparent 28%),
+    radial-gradient(circle at 15% 80%, color-mix(in srgb, var(--loader-accent) 13%, transparent), transparent 34%);
+  animation: fb-loader-glow 7s ease-in-out infinite alternate;
+}
+
+.fb-initial-loader__content {
+  position: relative;
+  width: min(440px, calc(100vw - 40px));
+  text-align: center;
+}
+
+.fb-initial-loader__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: clamp(1.25rem, 2vw, 1.55rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  animation: fb-loader-brand-in 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.fb-initial-loader__mark {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  color: var(--loader-bg);
+  background: var(--loader-accent);
+  border-radius: 13px;
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--loader-accent) 25%, transparent);
+}
+
+.fb-initial-loader__mark svg {
+  width: 25px;
+  height: 25px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.5;
+}
+
+.fb-initial-loader__visual {
+  height: 132px;
+  margin: 38px 0 26px;
+  color: var(--loader-accent);
+  opacity: 0.92;
+}
+
+.fb-initial-loader__visual svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.fb-initial-loader__route {
+  fill: none;
+  stroke: url(#fb-loader-path);
+  stroke-width: 1.5;
+  stroke-dasharray: 7 8;
+  animation: fb-loader-route 3.8s linear infinite;
+}
+
+.fb-initial-loader__route--secondary {
+  animation-direction: reverse;
+  opacity: 0.62;
+}
+
+.fb-initial-loader__hub {
+  fill: var(--loader-accent);
+  filter: drop-shadow(0 0 12px color-mix(in srgb, var(--loader-accent) 70%, transparent));
+  animation: fb-loader-hub 2.4s ease-in-out infinite;
+}
+
+.fb-initial-loader__particle {
+  fill: var(--loader-accent);
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--loader-accent) 55%, transparent));
+}
+
+.fb-initial-loader__particle--one { animation: fb-loader-particle-one 2.9s ease-in-out infinite; }
+.fb-initial-loader__particle--two { animation: fb-loader-particle-two 3.2s ease-in-out infinite; }
+.fb-initial-loader__particle--three { animation: fb-loader-particle-three 3.1s ease-in-out infinite; }
+.fb-initial-loader__particle--four { animation: fb-loader-particle-four 2.7s ease-in-out infinite; }
+
+.fb-initial-loader__tagline {
+  margin: 0;
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.fb-initial-loader__status {
+  margin: 10px 0 0;
+  color: var(--loader-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.fb-initial-loader__progress {
+  position: relative;
+  width: min(260px, 70vw);
+  height: 2px;
+  margin: 26px auto 0;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--loader-accent) 18%, transparent);
+  border-radius: 999px;
+}
+
+.fb-initial-loader__progress span {
+  display: block;
+  width: 35%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--loader-accent), transparent);
+  animation: fb-loader-progress 1.5s ease-in-out infinite;
+}
+
+.fb-initial-loader__error p {
+  margin: 10px 0 12px;
+  color: var(--loader-muted);
+  font-size: 0.82rem;
+}
+
+.fb-initial-loader__error button {
+  min-height: 38px;
+  padding: 0 18px;
+  color: var(--loader-bg);
+  background: var(--loader-accent);
+  border: 0;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+@keyframes fb-loader-reveal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fb-loader-brand-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes fb-loader-glow {
+  from { transform: scale(0.95) translate3d(-1%, 1%, 0); opacity: 0.55; }
+  to { transform: scale(1.05) translate3d(1%, -1%, 0); opacity: 0.9; }
+}
+
+@keyframes fb-loader-route {
+  to { stroke-dashoffset: -60; }
+}
+
+@keyframes fb-loader-hub {
+  0%, 100% { opacity: 0.72; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+
+@keyframes fb-loader-progress {
+  from { transform: translateX(-140%); }
+  to { transform: translateX(420%); }
+}
+
+@keyframes fb-loader-particle-one {
+  0%, 100% { transform: translate(0, 0); opacity: 0.45; }
+  50% { transform: translate(55px, -32px); opacity: 1; }
+}
+
+@keyframes fb-loader-particle-two {
+  0%, 100% { transform: translate(0, 0); opacity: 0.45; }
+  50% { transform: translate(-62px, 33px); opacity: 1; }
+}
+
+@keyframes fb-loader-particle-three {
+  0%, 100% { transform: translate(0, 0); opacity: 0.45; }
+  50% { transform: translate(60px, 30px); opacity: 1; }
+}
+
+@keyframes fb-loader-particle-four {
+  0%, 100% { transform: translate(0, 0); opacity: 0.45; }
+  50% { transform: translate(-55px, -30px); opacity: 1; }
+}
+
+@media (max-width: 640px) {
+  .fb-initial-loader__visual {
+    height: 108px;
+    margin-top: 30px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fb-initial-loader,
+  .fb-initial-loader__brand,
+  .fb-initial-loader__glow,
+  .fb-initial-loader__route,
+  .fb-initial-loader__hub,
+  .fb-initial-loader__particle,
+  .fb-initial-loader__progress span {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .fb-initial-loader {
+    transition-duration: 0.01ms;
+  }
+}
