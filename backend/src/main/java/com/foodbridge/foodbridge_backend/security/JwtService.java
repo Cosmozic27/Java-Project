@@ -3,6 +3,7 @@ package com.foodbridge.foodbridge_backend.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -12,17 +13,15 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    // Temporary development secret.
-    // Replace this with a secure environment variable before deployment.
-    private static final String SECRET_KEY =
-            "FoodBridgeDevelopmentSecretKey2026SecureKey";
+    @Value("${JWT_SECRET}")
+    private String secretKey;
 
     // Token validity: 24 hours
     private static final long EXPIRATION_TIME = 24 * 60 * 60 * 1000L;
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(
-                SECRET_KEY.getBytes(StandardCharsets.UTF_8)
+                secretKey.getBytes(StandardCharsets.UTF_8)
         );
     }
 
