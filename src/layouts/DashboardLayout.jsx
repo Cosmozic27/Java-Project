@@ -177,8 +177,6 @@ export function DashboardLayout({
               />
             }
             onMenuClick={() => setMobileNavOpen(true)}
-            onNotificationClick={() => toast.info('You have 2 pending notifications')}
-            notificationCount={2}
             onLogout={requestLogout}
           />
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Bell, User, Settings, HelpCircle, LogOut } from 'lucide-react';
+import { Menu, User, Settings, HelpCircle, LogOut } from 'lucide-react';
 import { Avatar } from '@/components/data-display/Avatar';
 import { Dropdown } from '@/components/common/Dropdown';
 import { SearchBar } from '@/components/forms/SearchBar';
@@ -15,8 +15,6 @@ export function DashboardHeader({
   searchPlaceholder = 'Search dashboard...',
   onSearch,
   onMenuClick,
-  notificationCount = 0,
-  onNotificationClick,
   userInfo = {
     name: 'FoodBridge User',
     role: 'Partner',
@@ -32,9 +30,12 @@ export function DashboardHeader({
   const portalId = resolvePortalId(portal ?? userInfo.portal ?? userInfo.roleId);
 
   const defaultUserMenu = [
-    { label: userInfo.name, disabled: true },
-    { label: userInfo.email, disabled: true },
-    { divider: true },
+    {
+      header: true,
+      name: userInfo.name,
+      role: userInfo.role,
+      email: userInfo.email,
+    },
     { label: 'My Profile', icon: <User className="h-4 w-4" />, to: `/${portalId}/profile` },
     { label: 'Settings', icon: <Settings className="h-4 w-4" />, to: `/${portalId}/settings` },
     { label: 'Help & FAQs', icon: <HelpCircle className="h-4 w-4" />, to: `/${portalId}/support` },
@@ -45,7 +46,7 @@ export function DashboardHeader({
   return (
     <header
       className={cn(
-        'sticky top-0 z-30 flex flex-col w-full max-w-full overflow-hidden border-b border-border/70 bg-surface/80 backdrop-blur-xl transition-colors shadow-[0_6px_24px_rgba(18,55,42,0.04)]',
+        'sticky top-0 z-30 flex flex-col w-full max-w-full border-b border-border/70 bg-surface/80 backdrop-blur-xl transition-colors shadow-[0_6px_24px_rgba(18,55,42,0.04)]',
         className
       )}
     >
@@ -69,7 +70,7 @@ export function DashboardHeader({
           </div>
         </div>
 
-        {/* Right Side: Search, Notifications, Actions, User Dropdown */}
+        {/* Right Side: Search, Actions, User Dropdown (Notification removed globally) */}
         <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
           {/* Quick Search */}
           <div className="hidden lg:block w-64 xl:w-80">
@@ -81,23 +82,8 @@ export function DashboardHeader({
             />
           </div>
 
-          {/* Action slots */}
+          {/* Action slots (e.g. Dark Mode Toggle) */}
           {actions}
-
-          {/* Notification Button */}
-          <button
-            type="button"
-            onClick={onNotificationClick}
-            aria-label="Notifications"
-            className="relative p-2 rounded-xl text-text-secondary hover:text-text-primary hover:bg-background-subtle border border-border/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors cursor-pointer"
-          >
-            <Bell className="h-4 w-4" />
-            {notificationCount > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-danger text-[9px] font-bold text-white shadow-2xs">
-                {notificationCount > 9 ? '9+' : notificationCount}
-              </span>
-            )}
-          </button>
 
           {/* User Profile Dropdown */}
           <Dropdown

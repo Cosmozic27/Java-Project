@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/utils/cn';
 
@@ -12,27 +12,9 @@ export function Dropdown({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    }
-
-    function handleKeyDown(event) {
-      if (event.key === 'Escape' && isOpen) {
-        setIsOpen(false);
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    document.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isOpen]);
+  const triggerRef = useRef(null);
+  const menuRef = useRef(null);
+  const [focusedIndex, setFocusedIndex] = useState(-1);
 
   const alignmentClasses = {
     left: 'left-0 origin-top-left',
@@ -40,31 +22,120 @@ export function Dropdown({
     center: 'left-1/2 -translate-x-1/2 origin-top',
   };
 
+  const closeDropdown = useCallback(() => {
+    setIsOpen(false);
+    setFocusedIndex(-1);
+  }, []);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        closeDropdown();
+      }
+    }
+
+    function handleKeyDown(event) {
+      if (!isOpen) return;
+
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        event.stopPropagation();
+        closeDropdown();
+        triggerRef.current?.focus();
+        return;
+      }
+
+      if (items && items.length > 0) {
+        const actionableElements = menuRef.current
+          ? Array.from(menuRef.current.querySelectorAll('[role="menuitem"]:not([disabled])'))
+          : [];
+
+        if (actionableElements.length === 0) return;
+
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          setFocusedIndex((prev) => (prev + 1) % actionableElements.length);
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          setFocusedIndex((prev) => (prev <= 0 ? actionableElements.length - 1 : prev - 1));
+        } else if (event.key === 'Tab') {
+          closeDropdown();
+        }
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown, true);
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown, true);
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [isOpen, items, closeDropdown]);
+
+  useEffect(() => {
+    if (focusedIndex >= 0 && menuRef.current) {
+      const actionableElements = menuRef.current.querySelectorAll(
+        '[role="menuitem"]:not([disabled])'
+      );
+      if (actionableElements[focusedIndex]) {
+        actionableElements[focusedIndex].focus();
+      }
+    }
+  }, [focusedIndex]);
+
+  const toggleDropdown = () => {
+    setIsOpen((prev) => !prev);
+    setFocusedIndex(-1);
+  };
+
   return (
     <div ref={dropdownRef} className={cn('relative inline-block text-left', className)}>
-      <div
-        role="button"
-        tabIndex={0}
-        onClick={() => setIsOpen((prev) => !prev)}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            setIsOpen((prev) => !prev);
-          }
-        }}
-        aria-haspopup="menu"
-        aria-expanded={isOpen}
-        className="cursor-pointer inline-flex items-center"
-      >
-        {trigger}
-      </div>
+      {React.isValidElement(trigger) ? (
+        React.cloneElement(trigger, {
+          ref: triggerRef,
+          onClick: (e) => {
+            trigger.props.onClick?.(e);
+            toggleDropdown();
+          },
+          onKeyDown: (e) => {
+            trigger.props.onKeyDown?.(e);
+            if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+              if (!isOpen) {
+                e.preventDefault();
+                setIsOpen(true);
+                setFocusedIndex(0);
+              }
+            } else if (e.key === 'Escape' && isOpen) {
+              e.preventDefault();
+              closeDropdown();
+            }
+          },
+          'aria-haspopup': 'menu',
+          'aria-expanded': isOpen,
+        })
+      ) : (
+        <button
+          ref={triggerRef}
+          type="button"
+          onClick={toggleDropdown}
+          aria-haspopup="menu"
+          aria-expanded={isOpen}
+          className="cursor-pointer inline-flex items-center"
+        >
+          {trigger}
+        </button>
+      )}
 
       {isOpen && (
         <div
+          ref={menuRef}
           role="menu"
           aria-orientation="vertical"
           className={cn(
-            'absolute z-50 mt-2 min-w-[200px] rounded-xl bg-surface border border-border p-1.5 shadow-md transition-all duration-150 ease-out focus:outline-none animate-in fade-in zoom-in-95',
+            'absolute z-50 mt-2 min-w-[220px] rounded-xl bg-surface border border-border/80 p-1.5 shadow-xl transition-all duration-150 ease-out focus:outline-none animate-in fade-in zoom-in-95',
             alignmentClasses[align] || alignmentClasses.right,
             menuClassName
           )}
@@ -81,12 +152,35 @@ export function Dropdown({
                 );
               }
 
+              if (item.header) {
+                return (
+                  <div
+                    key={`header-${index}`}
+                    className="px-3 py-2 border-b border-border/60 mb-1 select-none"
+                  >
+                    <p className="text-xs font-semibold text-text-primary truncate">
+                      {item.name || item.label}
+                    </p>
+                    {item.role && (
+                      <p className="text-[11px] text-text-secondary truncate mt-0.5">
+                        {item.role}
+                      </p>
+                    )}
+                    {item.email && (
+                      <p className="text-[11px] text-text-muted truncate mt-0.5">
+                        {item.email}
+                      </p>
+                    )}
+                  </div>
+                );
+              }
+
               const itemClass = cn(
-                'group flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium transition-colors cursor-pointer select-none text-left',
+                'group flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium transition-colors cursor-pointer select-none text-left focus:outline-none focus:bg-background-subtle focus:ring-1 focus:ring-primary/20',
                 item.danger
                   ? 'text-danger hover:bg-danger/10 active:bg-danger/15'
                   : 'text-text-primary hover:bg-background-subtle active:bg-border/30',
-                item.disabled && 'opacity-40 cursor-not-allowed pointer-events-none'
+                item.disabled && 'opacity-60 cursor-default pointer-events-none'
               );
 
               const innerContent = (
@@ -118,7 +212,7 @@ export function Dropdown({
                     role="menuitem"
                     onClick={() => {
                       if (!item.disabled) {
-                        setIsOpen(false);
+                        closeDropdown();
                         item.onClick?.();
                       }
                     }}
@@ -137,7 +231,7 @@ export function Dropdown({
                   disabled={item.disabled}
                   onClick={() => {
                     if (!item.disabled) {
-                      setIsOpen(false);
+                      closeDropdown();
                       item.onClick?.();
                     }
                   }}

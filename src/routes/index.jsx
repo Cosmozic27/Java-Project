@@ -144,6 +144,7 @@ export const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       { index: true, element: <NgoDashboard /> },
+      { path: 'dashboard', element: <NgoDashboard /> },
       { path: 'available-food', element: <NgoAvailableFoodPage /> },
       { path: 'food/:donationId', element: <FoodDetailsPage /> },
       { path: 'claims', element: <MyClaimsPage /> },
@@ -167,6 +168,7 @@ export const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       { index: true, element: <AdminDashboard /> },
+      { path: 'dashboard', element: <AdminDashboard /> },
       { path: 'users', element: <UsersPage /> },
       { path: 'users/:userId', element: <UserDetailsPage /> },
       { path: 'ngos', element: <NGOManagementPage /> },
