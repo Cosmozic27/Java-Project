@@ -71,7 +71,7 @@ function StepCard({ step }) {
     <Card
       variant="default"
       padding="none"
-      className="relative z-10 flex flex-col h-full rounded-2xl border border-border bg-surface p-6 sm:p-7 shadow-xs hover:shadow-sm hover:border-primary/40 transition-all duration-200"
+      className="landing-glass-card relative z-10 flex flex-col h-full rounded-2xl border border-border bg-surface p-6 sm:p-7 shadow-xs hover:shadow-sm hover:border-primary/40 transition-all duration-200"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-primary-light text-primary-dark">

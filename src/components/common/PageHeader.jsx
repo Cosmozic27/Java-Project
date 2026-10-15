@@ -14,30 +14,30 @@ export function PageHeader({
   return (
     <header
       className={cn(
-        'flex flex-col gap-4 pb-6 animate-in fade-in slide-in-from-bottom-2 duration-500',
+        'flex flex-col gap-4 pb-6 w-full max-w-full min-w-0 animate-in fade-in slide-in-from-bottom-2 duration-500',
         divider && 'border-b border-border mb-6',
         className
       )}
     >
       {breadcrumbs && <nav className="text-xs text-text-muted">{breadcrumbs}</nav>}
 
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between min-w-0">
         <div className="space-y-1.5 min-w-0">
           <div className="flex items-center gap-2.5 flex-wrap">
-            <h1 className="text-2xl font-bold tracking-tight text-text-primary sm:text-3xl">
+            <h1 className="text-2xl font-bold tracking-tight text-text-primary sm:text-3xl break-words">
               {title}
             </h1>
             {badge && <div>{badge}</div>}
           </div>
           {description && (
-            <p className="text-sm text-text-secondary max-w-3xl leading-relaxed">
+            <p className="text-sm text-text-secondary max-w-3xl leading-relaxed break-words">
               {description}
             </p>
           )}
         </div>
 
         {actions && (
-          <div className="flex items-center gap-3 shrink-0 flex-wrap">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0 flex-wrap">
             {actions}
           </div>
         )}

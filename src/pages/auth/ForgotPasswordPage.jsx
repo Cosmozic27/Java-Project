@@ -70,6 +70,7 @@ export function ForgotPasswordPage() {
           fullWidth
           disabled={isSubmitting}
           rightIcon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}
+          className="btn-glass-primary"
         >
           Send Reset Link
         </Button>
@@ -77,7 +78,7 @@ export function ForgotPasswordPage() {
 
       <Link
         to="/auth/login"
-        className="mt-4 inline-flex min-h-8 items-center gap-1.5 text-xs font-semibold text-text-secondary hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+        className="btn-glass-secondary mt-4 inline-flex min-h-8 items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-semibold text-text-secondary hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
       >
         <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
         Back to sign in

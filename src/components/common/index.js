@@ -4,4 +4,7 @@ export { PageHeader, default as PageHeaderComponent } from './PageHeader';
 export { PageSection, default as PageSectionComponent } from './PageSection';
 export { PageContent, default as PageContentComponent } from './PageContent';
 export { Logo, default as LogoComponent } from './Logo';
+export { InitialLoader, default as InitialLoaderComponent } from './InitialLoader';
+export { StartupRevealProvider } from './StartupRevealContext';
+export { useStartupReveal } from './useStartupReveal';
 export { Dropdown, default as DropdownComponent } from './Dropdown';

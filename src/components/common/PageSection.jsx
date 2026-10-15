@@ -11,17 +11,17 @@ export function PageSection({
   headerClassName = '',
 }) {
   return (
-    <section className={cn('space-y-4', divider && 'pb-8 border-b border-border/80', className)}>
+    <section className={cn('space-y-4 w-full max-w-full min-w-0', divider && 'pb-8 border-b border-border/80', className)}>
       {(title || description || action) && (
-        <div className={cn('flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5', headerClassName)}>
-          <div className="space-y-0.5">
+        <div className={cn('flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 min-w-0', headerClassName)}>
+          <div className="space-y-0.5 min-w-0">
             {title && (
-              <h2 className="text-base sm:text-lg font-bold tracking-tight text-text-primary">
+              <h2 className="text-base sm:text-lg font-bold tracking-tight text-text-primary break-words">
                 {title}
               </h2>
             )}
             {description && (
-              <p className="text-xs sm:text-sm text-text-secondary leading-relaxed">
+              <p className="text-xs sm:text-sm text-text-secondary leading-relaxed break-words">
                 {description}
               </p>
             )}

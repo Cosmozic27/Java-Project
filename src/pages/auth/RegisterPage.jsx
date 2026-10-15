@@ -67,17 +67,28 @@ export function RegisterPage() {
         registrationData
       );
 
-      setSuccessMessage(
-        response.data?.message || 'Registration successful!'
-      );
+      const successMessage = response.data?.message || 'Registration successful!';
+      setSuccessMessage(`${successMessage} Redirecting you to sign in…`);
 
-      // Give the user time to read the success message.
-      setTimeout(() => {
-        navigate('/auth/login', {
-          state: { email: registrationData.email },
-        });
-      }, 1500);
+      navigate('/auth/login', {
+        replace: true,
+        state: {
+          email: registrationData.email,
+          registrationMessage: successMessage,
+        },
+      });
     } catch (error) {
+      const backendUnavailable =
+        error.code === 'ERR_NETWORK' ||
+        [502, 503, 504].includes(error.response?.status);
+
+      if (backendUnavailable) {
+        setServerError(
+          'The FoodBridge API is unavailable right now. Check the backend deployment and VITE_API_BASE_URL, then try again.'
+        );
+        return;
+      }
+
       const message =
         error.response?.data?.error ||
         error.response?.data?.message ||
@@ -154,7 +165,7 @@ export function RegisterPage() {
                     })}
                   />
 
-                  <span className="flex min-h-[104px] flex-col gap-2 rounded-xl border border-border bg-surface p-3 transition-colors hover:border-border-strong peer-checked:border-primary peer-checked:bg-primary/5 peer-focus-visible:ring-2 peer-focus-visible:ring-primary/30">
+                  <span className="flex min-h-[104px] flex-col gap-2 rounded-xl border border-border bg-surface/75 backdrop-blur-md p-3 transition-all hover:border-border-strong peer-checked:border-primary peer-checked:bg-primary/10 peer-focus-visible:ring-2 peer-focus-visible:ring-primary/30 shadow-xs">
                     <span className="flex items-center gap-2 text-sm font-semibold text-text-primary">
                       <Icon
                         className="h-4 w-4 text-primary"
@@ -245,7 +256,7 @@ export function RegisterPage() {
         {successMessage && (
           <p
             role="status"
-            className="rounded-lg bg-green-50 p-3 text-sm text-green-700"
+            className="rounded-lg border border-success/20 bg-success/10 p-3 text-sm text-success"
           >
             {successMessage}
           </p>
@@ -258,7 +269,7 @@ export function RegisterPage() {
           fullWidth
           disabled={isSubmitting}
           rightIcon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}
-          className="mt-1"
+          className="mt-1 btn-glass-primary"
         >
           {isSubmitting ? 'Creating Account...' : 'Create Account'}
         </Button>

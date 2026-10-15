@@ -41,6 +41,303 @@
   --fb-info: #3F72AF;
 }
 
+/* Mobile Safe Viewport & Horizontal Overflow Prevention */
+html {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: clip;
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: clip;
+  -webkit-overflow-scrolling: touch;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+#root {
+  width: 100%;
+  max-width: 100vw;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-theme {
+  --color-background: #FFFDF3;
+  --color-background-subtle: #FFFBEA;
+  --color-surface: #FFFDF3;
+  --color-surface-muted: #FFFBEA;
+  --color-text-primary: #17211C;
+  --color-text-secondary: #64756B;
+  --color-text-muted: #8A9189;
+  --color-border: rgba(18, 55, 42, 0.10);
+  --color-border-strong: rgba(18, 55, 42, 0.18);
+  --color-border-subtle: rgba(18, 55, 42, 0.06);
+}
+
+.auth-theme.dark {
+  --color-primary: #16D928;
+  --color-primary-dark: #087A28;
+  --color-primary-light: #103D20;
+  --color-background: #030A05;
+  --color-background-subtle: #07140A;
+  --color-surface: #07140A;
+  --color-surface-muted: #0A1E0F;
+  --color-text-primary: #F3FFF2;
+  --color-text-secondary: #9EB5A2;
+  --color-text-muted: #5C7762;
+  --color-border: rgba(22, 217, 40, 0.20);
+  --color-border-strong: rgba(22, 217, 40, 0.38);
+  --color-border-subtle: rgba(22, 217, 40, 0.10);
+  background-color: #030A05 !important;
+  color: #F3FFF2;
+}
+
+/* Dashboard Light Mode: Soft, eye-friendly palette (Warm off-white, muted cream, soft sage, subtle warm grey) */
+.portal-theme:not(.dark) {
+  --color-background: #F4F2EB;
+  --color-background-subtle: #ECE8DD;
+  --color-surface: #FAF9F4;
+  --color-surface-muted: #EAE6DB;
+  --color-text-primary: #152219;
+  --color-text-secondary: #48584D;
+  --color-text-muted: #6B7B70;
+  --color-border: rgba(22, 48, 34, 0.11);
+  --color-border-strong: rgba(22, 48, 34, 0.20);
+  --color-border-subtle: rgba(22, 48, 34, 0.06);
+  --color-primary: #257A3E;
+  --color-primary-dark: #134421;
+  --color-primary-light: #DEEBDE;
+  --color-accent: #EFE49B;
+  --color-accent-hover: #E4D57E;
+  --color-accent-light: #FAF7E8;
+
+  --fb-primary: #257A3E;
+  --fb-primary-dark: #134421;
+  --fb-bg: #F4F2EB;
+  --fb-surface: #FAF9F4;
+  --fb-text-primary: #152219;
+  --fb-text-secondary: #48584D;
+  --fb-border: rgba(22, 48, 34, 0.11);
+}
+
+/* Structural tonal separation for Dashboard Light Mode */
+.portal-theme:not(.dark) aside {
+  background-color: #EFECE3;
+  border-right-color: rgba(22, 48, 34, 0.12);
+}
+
+.portal-theme:not(.dark) header.sticky {
+  background-color: rgba(250, 249, 244, 0.88);
+  border-bottom-color: rgba(22, 48, 34, 0.10);
+  box-shadow: 0 4px 20px rgba(22, 48, 34, 0.03);
+}
+
+.portal-theme:not(.dark) .bg-surface\/90,
+.portal-theme:not(.dark) .bg-surface {
+  background-color: #FAF9F4;
+  border-color: rgba(22, 48, 34, 0.11);
+  box-shadow: 0 1px 3px rgba(22, 48, 34, 0.03), 0 6px 18px -4px rgba(22, 48, 34, 0.04);
+}
+
+.portal-theme:not(.dark) table thead {
+  background-color: #EAE6DB;
+  border-bottom-color: rgba(22, 48, 34, 0.12);
+  color: #48584D;
+}
+
+.portal-theme:not(.dark) table tbody tr:hover {
+  background-color: rgba(236, 232, 221, 0.60);
+}
+
+.portal-theme:not(.dark) input:not([type="checkbox"]):not([type="radio"]),
+.portal-theme:not(.dark) select,
+.portal-theme:not(.dark) textarea {
+  background-color: #FAF9F4;
+  border-color: rgba(22, 48, 34, 0.13);
+  color: #152219;
+}
+
+.portal-theme:not(.dark) input:not([type="checkbox"]):not([type="radio"]):focus,
+.portal-theme:not(.dark) select:focus,
+.portal-theme:not(.dark) textarea:focus {
+  border-color: #257A3E;
+  box-shadow: 0 0 0 2px rgba(37, 122, 62, 0.18);
+}
+
+.portal-theme:not(.dark) input:disabled,
+.portal-theme:not(.dark) select:disabled,
+.portal-theme:not(.dark) textarea:disabled {
+  background-color: #EAE6DB;
+  color: #6B7B70;
+  border-color: rgba(22, 48, 34, 0.09);
+}
+
+.portal-theme:not(.dark) [role="dialog"],
+.portal-theme:not(.dark) .modal-card,
+.portal-theme:not(.dark) [role="menu"] {
+  background-color: #FAF9F4;
+  border-color: rgba(22, 48, 34, 0.13);
+  box-shadow: 0 16px 40px -8px rgba(22, 48, 34, 0.10);
+}
+
+/* Glassmorphic Auth Card */
+.auth-glass-card {
+  background: rgba(255, 253, 245, 0.85);
+  backdrop-filter: blur(20px) saturate(130%);
+  -webkit-backdrop-filter: blur(20px) saturate(130%);
+  border: 1px solid rgba(18, 55, 42, 0.12);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.85), 0 20px 48px -8px rgba(18, 55, 42, 0.12);
+}
+
+.dark .auth-glass-card,
+.auth-theme.dark .auth-glass-card {
+  background: rgba(7, 20, 10, 0.94) !important;
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  border: 1px solid rgba(22, 217, 40, 0.20) !important;
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.08), 0 24px 56px -8px rgba(0, 0, 0, 0.85) !important;
+}
+
+/* Glassmorphic Buttons for Landing and Authentication Pages only (NEVER dashboard) */
+:is(.fb-landing, .auth-theme) .btn-glass-primary,
+:is(.fb-landing, .auth-theme) button[class*="bg-primary"],
+:is(.fb-landing, .auth-theme) a[class*="bg-primary"]:not(.fb-navbar a),
+:is(.fb-landing, .auth-theme) button[class~="bg-primary"],
+:is(.fb-landing, .auth-theme) a[class~="bg-primary"]:not(.fb-navbar a) {
+  background: linear-gradient(180deg, rgba(37, 143, 70, 0.90) 0%, rgba(20, 95, 48, 0.96) 100%) !important;
+  backdrop-filter: blur(12px) saturate(130%);
+  -webkit-backdrop-filter: blur(12px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.28) !important;
+  color: #FFFFFF !important;
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.35), 0 4px 14px -2px rgba(22, 101, 52, 0.28);
+  transition: all 220ms ease;
+}
+
+:is(.fb-landing, .auth-theme) .btn-glass-primary:hover,
+:is(.fb-landing, .auth-theme) button[class*="bg-primary"]:hover:not(:disabled),
+:is(.fb-landing, .auth-theme) a[class*="bg-primary"]:hover:not(.fb-navbar a),
+:is(.fb-landing, .auth-theme) button[class~="bg-primary"]:hover:not(:disabled),
+:is(.fb-landing, .auth-theme) a[class~="bg-primary"]:hover:not(.fb-navbar a) {
+  background: linear-gradient(180deg, rgba(44, 160, 78, 0.95) 0%, rgba(18, 86, 43, 1) 100%) !important;
+  border-color: rgba(255, 255, 255, 0.42) !important;
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.48), 0 6px 20px -2px rgba(22, 101, 52, 0.38) !important;
+  transform: translateY(-1px);
+}
+
+:is(.fb-landing, .auth-theme) .btn-glass-primary:active,
+:is(.fb-landing, .auth-theme) button[class*="bg-primary"]:active:not(:disabled),
+:is(.fb-landing, .auth-theme) a[class*="bg-primary"]:active:not(.fb-navbar a) {
+  transform: translateY(0);
+  box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.22), 0 2px 6px -1px rgba(22, 101, 52, 0.22) !important;
+}
+
+/* Secondary & Outline Glass Buttons for Landing and Auth */
+:is(.fb-landing, .auth-theme) .btn-glass-secondary,
+:is(.fb-landing, .auth-theme) button[class*="border-border"],
+:is(.fb-landing, .auth-theme) a[class*="border-border"]:not(.fb-navbar a):not([role="menuitem"]),
+:is(.fb-landing, .auth-theme) button[class*="variant-outline"] {
+  background: rgba(255, 252, 245, 0.65) !important;
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border: 1px solid rgba(22, 101, 52, 0.18) !important;
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.8), 0 2px 8px -2px rgba(16, 32, 24, 0.05);
+  color: var(--color-text-primary) !important;
+  transition: all 220ms ease;
+}
+
+:is(.fb-landing, .auth-theme) .btn-glass-secondary:hover,
+:is(.fb-landing, .auth-theme) button[class*="border-border"]:hover:not(:disabled),
+:is(.fb-landing, .auth-theme) a[class*="border-border"]:hover:not(.fb-navbar a):not([role="menuitem"]),
+:is(.fb-landing, .auth-theme) button[class*="variant-outline"]:hover:not(:disabled) {
+  background: rgba(255, 254, 250, 0.88) !important;
+  border-color: rgba(34, 197, 94, 0.42) !important;
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.95), 0 4px 14px -2px rgba(22, 101, 52, 0.12) !important;
+  transform: translateY(-1px);
+}
+
+/* Dark mode Glass Buttons for Landing and Auth */
+:is(.dark .fb-landing, .dark.fb-landing, .dark .auth-theme, .dark.auth-theme) button[class*="bg-primary"],
+:is(.dark .fb-landing, .dark.fb-landing, .dark .auth-theme, .dark.auth-theme) a[class*="bg-primary"]:not(.fb-navbar a),
+:is(.dark .fb-landing, .dark.fb-landing, .dark .auth-theme, .dark.auth-theme) .btn-glass-primary {
+  background: linear-gradient(180deg, rgba(46, 204, 88, 0.90) 0%, rgba(22, 138, 69, 0.95) 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.32) !important;
+  color: #06150C !important;
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.35), 0 4px 16px -2px rgba(0, 0, 0, 0.5), 0 0 14px rgba(46, 204, 88, 0.22);
+}
+
+:is(.dark .fb-landing, .dark.fb-landing, .dark .auth-theme, .dark.auth-theme) button[class*="bg-primary"]:hover:not(:disabled),
+:is(.dark .fb-landing, .dark.fb-landing, .dark .auth-theme, .dark.auth-theme) a[class*="bg-primary"]:hover:not(.fb-navbar a),
+:is(.dark .fb-landing, .dark.fb-landing, .dark .auth-theme, .dark.auth-theme) .btn-glass-primary:hover {
+  background: linear-gradient(180deg, rgba(57, 222, 100, 0.96) 0%, rgba(26, 155, 78, 1) 100%) !important;
+  border-color: rgba(255, 255, 255, 0.45) !important;
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.45), 0 6px 24px -2px rgba(0, 0, 0, 0.6), 0 0 22px rgba(46, 204, 88, 0.35) !important;
+}
+
+:is(.dark .fb-landing, .dark.fb-landing, .dark .auth-theme, .dark.auth-theme) button[class*="border-border"],
+:is(.dark .fb-landing, .dark.fb-landing, .dark .auth-theme, .dark.auth-theme) a[class*="border-border"]:not(.fb-navbar a):not([role="menuitem"]),
+:is(.dark .fb-landing, .dark.fb-landing, .dark .auth-theme, .dark.auth-theme) .btn-glass-secondary {
+  background: rgba(18, 28, 20, 0.65) !important;
+  border-color: rgba(74, 222, 128, 0.24) !important;
+  color: #F5FFF5 !important;
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.12), 0 2px 8px -2px rgba(0, 0, 0, 0.4);
+}
+
+:is(.dark .fb-landing, .dark.fb-landing, .dark .auth-theme, .dark.auth-theme) button[class*="border-border"]:hover:not(:disabled),
+:is(.dark .fb-landing, .dark.fb-landing, .dark .auth-theme, .dark.auth-theme) a[class*="border-border"]:hover:not(.fb-navbar a):not([role="menuitem"]),
+:is(.dark .fb-landing, .dark.fb-landing, .dark .auth-theme, .dark.auth-theme) .btn-glass-secondary:hover {
+  background: rgba(24, 38, 27, 0.85) !important;
+  border-color: rgba(74, 222, 128, 0.50) !important;
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.18), 0 4px 16px -2px rgba(0, 0, 0, 0.5), 0 0 14px rgba(74, 222, 128, 0.15) !important;
+}
+
+/* Accessible focus visible */
+:is(.fb-landing, .auth-theme) button:focus-visible,
+:is(.fb-landing, .auth-theme) a:focus-visible {
+  outline: 2px solid #257A3E !important;
+  outline-offset: 2px !important;
+}
+
+.fb-theme-switch__track {
+  position: relative;
+  display: inline-block;
+  width: 2rem;
+  height: 1.25rem;
+  flex: 0 0 auto;
+  border: 1px solid rgba(18, 55, 42, 0.22);
+  border-radius: 9999px;
+  background: #D9E2DA;
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+
+.fb-theme-switch[aria-pressed='true'] .fb-theme-switch__track {
+  border-color: #3F8150;
+  background: #173D25;
+}
+
+.fb-theme-switch__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: #FFFFFF;
+  box-shadow: 0 1px 3px rgba(18, 55, 42, 0.30);
+  transform: translateX(0);
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.fb-theme-switch[aria-pressed='true'] .fb-theme-switch__thumb {
+  background: #F8E99B;
+  transform: translateX(12px);
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
@@ -63,7 +360,7 @@ body.dark {
 }
 
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 ::selection {
@@ -231,6 +528,11 @@ body {
   background: linear-gradient(180deg, rgba(255, 248, 214, 0.18), rgba(255, 253, 243, 0.38));
 }
 
+.dark .auth-background-wash,
+.auth-theme.dark .auth-background-wash {
+  display: none !important;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -249,8 +551,8 @@ body {
   background: rgba(22, 138, 69, 0.46);
 }
 
-:is(.portal-theme, .public-theme, .auth-theme).dark,
-:is(.portal-theme-dark, .public-theme-dark, .auth-theme-dark) {
+:is(.portal-theme, .public-theme).dark,
+:is(.portal-theme-dark, .public-theme-dark) {
   color-scheme: dark;
   --color-background: #050505;
   --color-background-subtle: #090D09;
@@ -286,13 +588,13 @@ body {
   --fb-info: #8BC8FF;
 }
 
-:is(.portal-theme, .public-theme, .auth-theme).dark [class~="bg-primary"],
-:is(.portal-theme-dark, .public-theme-dark, .auth-theme-dark) [class~="bg-primary"] {
+:is(.portal-theme, .public-theme).dark [class~="bg-primary"],
+:is(.portal-theme-dark, .public-theme-dark) [class~="bg-primary"] {
   color: #050505;
 }
 
-:is(.portal-theme, .public-theme, .auth-theme).dark .glass-surface,
-:is(.portal-theme-dark, .public-theme-dark, .auth-theme-dark) .glass-surface {
+:is(.portal-theme, .public-theme).dark .glass-surface,
+:is(.portal-theme-dark, .public-theme-dark) .glass-surface {
   background: rgba(18, 24, 18, 0.96);
   border-color: #1B2B1B;
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
@@ -429,4 +731,84 @@ body {
 :is(.portal-theme-dark, .public-theme-dark, .auth-theme-dark) select {
   background-color: #090D09;
   color: #F5FFF5;
+}
+/* Dedicated Auth Dark Theme Controls */
+.auth-theme.dark input:not([type="checkbox"]):not([type="radio"]),
+.auth-theme.dark select,
+.auth-theme.dark textarea {
+  background-color: #051008 !important;
+  border: 1px solid rgba(22, 217, 40, 0.22) !important;
+  color: #F3FFF2 !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.40) !important;
+}
+
+.auth-theme.dark input:not([type="checkbox"]):not([type="radio"])::placeholder,
+.auth-theme.dark select::placeholder,
+.auth-theme.dark textarea::placeholder {
+  color: #5C7762 !important;
+}
+
+.auth-theme.dark input:not([type="checkbox"]):not([type="radio"]):hover,
+.auth-theme.dark select:hover,
+.auth-theme.dark textarea:hover {
+  border-color: rgba(22, 217, 40, 0.40) !important;
+}
+
+.auth-theme.dark input:not([type="checkbox"]):not([type="radio"]):focus,
+.auth-theme.dark select:focus,
+.auth-theme.dark textarea:focus {
+  background-color: #07150B !important;
+  border-color: #16D928 !important;
+  box-shadow: 0 0 0 2px rgba(22, 217, 40, 0.28) !important;
+  outline: none !important;
+}
+
+.auth-theme.dark label {
+  color: #F3FFF2 !important;
+}
+
+.auth-theme.dark button[type="submit"],
+.auth-theme.dark .btn-glass-primary {
+  background: linear-gradient(180deg, #16D928 0%, #087A28 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.32) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.40), 0 4px 16px -2px rgba(22, 217, 40, 0.38), 0 0 16px rgba(22, 217, 40, 0.25) !important;
+}
+
+.auth-theme.dark button[type="submit"]:hover:not(:disabled),
+.auth-theme.dark .btn-glass-primary:hover {
+  background: linear-gradient(180deg, #1EF034 0%, #0A9232 100%) !important;
+  border-color: rgba(255, 255, 255, 0.50) !important;
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.55), 0 6px 24px -2px rgba(22, 217, 40, 0.50), 0 0 24px rgba(22, 217, 40, 0.40) !important;
+  color: #FFFFFF !important;
+  transform: translateY(-1px);
+}
+
+.auth-theme.dark button[type="submit"]:active:not(:disabled),
+.auth-theme.dark .btn-glass-primary:active {
+  background: linear-gradient(180deg, #087A28 0%, #05501A 100%) !important;
+  transform: translateY(0);
+}
+
+.auth-theme.dark .btn-glass-secondary {
+  background: rgba(7, 20, 10, 0.75) !important;
+  border: 1px solid rgba(22, 217, 40, 0.25) !important;
+  color: #F3FFF2 !important;
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.10), 0 2px 8px -2px rgba(0, 0, 0, 0.5) !important;
+}
+
+.auth-theme.dark .btn-glass-secondary:hover {
+  background: rgba(11, 28, 14, 0.90) !important;
+  border-color: rgba(22, 217, 40, 0.45) !important;
+  color: #FFFFFF !important;
+}
+
+.auth-theme.dark a[class*="text-primary"],
+.auth-theme.dark .text-primary {
+  color: #16D928 !important;
+}
+
+.auth-theme.dark a[class*="text-primary"]:hover {
+  color: #26EB3A !important;
 }

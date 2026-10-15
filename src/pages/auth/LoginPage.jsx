@@ -1,15 +1,22 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthCard } from '@/components/auth';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/forms/Input';
 import { ArrowRight, Lock, Mail } from 'lucide-react';
 import { apiClient } from '@/services/api';
+import { findDemoAccount } from '@/constants/authData';
+import {
+  authenticateDemoAdmin,
+  startDemoAdminSession,
+  isDemoModeAvailable,
+} from '@/services/demoAuthService';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function LoginPage() {
+  const location = useLocation();
   const navigate = useNavigate();
 
   const {
@@ -22,40 +29,31 @@ export function LoginPage() {
     defaultValues: {
       email: '',
       password: '',
-      rememberMe: false,
     },
   });
 
-  const handleLogin = async ({ email, password }) => {
+  const onSubmit = async ({ email, password }) => {
+    const normalizedEmail = email.trim();
+
+    // 1. Attempt normal real backend authentication first
     try {
       const response = await apiClient.post('/auth/login', {
-        email: email.trim(),
+        email: normalizedEmail,
         password,
       });
 
       const user = response.data?.user;
       const token = response.data?.token;
 
-      if (!user) {
+      if (!user || !token) {
         setError('root', {
           type: 'server',
-          message:
-            'The server did not return user details. Please check the backend.',
-        });
-        return;
-      }
-
-      if (!token) {
-        setError('root', {
-          type: 'server',
-          message:
-            'The server did not return an authentication token. Please check the backend.',
+          message: 'Unable to authenticate. Please check the backend service.',
         });
         return;
       }
 
       const role = String(user.role || '').toUpperCase();
-
       if (!['DONOR', 'NGO', 'ADMIN'].includes(role)) {
         setError('root', {
           type: 'role',
@@ -64,13 +62,13 @@ export function LoginPage() {
         return;
       }
 
-      // Save the JWT token for authenticated API requests.
+      // Preserve existing JWT/session handling for real accounts
       sessionStorage.setItem('foodbridgeToken', token);
-
-      // Preserve the existing login session information.
+      sessionStorage.removeItem('foodbridgeIsDemoAdmin');
       sessionStorage.setItem('foodbridgeUser', JSON.stringify(user));
       sessionStorage.setItem('foodbridgeLoggedIn', 'true');
 
+      // Route automatically based on user's actual role from the backend response
       if (role === 'ADMIN') {
         navigate('/admin', { replace: true });
       } else if (role === 'NGO') {
@@ -78,11 +76,43 @@ export function LoginPage() {
       } else {
         navigate('/donor', { replace: true });
       }
+      return;
     } catch (error) {
+      // 2. If backend authentication fails, check isolated demo Admin credentials only when demo mode is enabled
+      if (isDemoModeAvailable()) {
+        const demoResult = authenticateDemoAdmin(normalizedEmail, password);
+        if (demoResult.success) {
+          startDemoAdminSession(demoResult.user);
+          navigate('/admin', { replace: true });
+          return;
+        }
+      }
+
+      // 3. Fallback for offline prototype accounts (when backend is unavailable)
+      const demoAccount = findDemoAccount(normalizedEmail, password);
+      const backendUnavailable =
+        !error.response || [404, 502, 503, 504].includes(error.response.status);
+
+      if (backendUnavailable && demoAccount) {
+        const prototypeUser = {
+          email: demoAccount.email,
+          role: demoAccount.role.toUpperCase(),
+          label: demoAccount.label,
+        };
+
+        sessionStorage.setItem('foodbridgeToken', 'prototype-demo-token');
+        sessionStorage.setItem('foodbridgeUser', JSON.stringify(prototypeUser));
+        sessionStorage.setItem('foodbridgeLoggedIn', 'true');
+
+        navigate(demoAccount.redirectTo, { replace: true });
+        return;
+      }
+
+      // 4. Reject invalid credentials with a clear, user-friendly error
       const message =
         error.response?.data?.error ||
         error.response?.data?.message ||
-        'Unable to sign in. Check your email and password and ensure the backend is running.';
+        'Unable to sign in. Please verify your email and password.';
 
       setError('root', {
         type: 'server',
@@ -107,24 +137,29 @@ export function LoginPage() {
         </>
       }
     >
-      <form
-        onSubmit={handleSubmit(handleLogin)}
-        className="space-y-4"
-        noValidate
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
+        {location.state?.registrationMessage && (
+          <p
+            role="status"
+            className="rounded-lg border border-success/20 bg-success/10 px-3 py-2 text-sm font-medium text-success"
+          >
+            {location.state.registrationMessage} Please sign in to continue.
+          </p>
+        )}
+
         <Input
           id="login-email"
-          label="Organization Email"
+          label="Email"
           type="email"
-          placeholder="name@organization.org"
+          placeholder="Enter your email"
           autoComplete="email"
           leftIcon={<Mail className="h-4 w-4" aria-hidden="true" />}
           error={errors.email?.message}
           {...register('email', {
-            required: 'Organization email is required.',
+            required: 'Email is required.',
             pattern: {
               value: EMAIL_PATTERN,
-              message: 'Enter a valid organization email.',
+              message: 'Enter a valid email address.',
             },
           })}
         />
@@ -151,32 +186,15 @@ export function LoginPage() {
           </p>
         )}
 
-        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 pt-1 text-xs">
-          <label className="inline-flex min-h-8 cursor-pointer select-none items-center gap-2 text-text-secondary">
-            <input
-              type="checkbox"
-              className="h-4 w-4 rounded border-border text-primary accent-primary focus:ring-2 focus:ring-primary/20"
-              {...register('rememberMe')}
-            />
-            <span>Remember me</span>
-          </label>
-
-          <Link
-            to="/auth/forgot-password"
-            className="inline-flex min-h-8 items-center font-semibold text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
-          >
-            Forgot password?
-          </Link>
-        </div>
-
         <Button
           type="submit"
+          id="btn-login-submit"
           variant="primary"
           size="lg"
           fullWidth
           disabled={isSubmitting}
           rightIcon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}
-          className="mt-1"
+          className="mt-2 btn-glass-primary"
         >
           {isSubmitting ? 'Signing in...' : 'Sign In'}
         </Button>

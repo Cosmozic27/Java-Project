@@ -51,7 +51,7 @@ function SafetyItem({ item }) {
     <Card
       variant="default"
       padding="none"
-      className="flex flex-col h-full rounded-2xl border border-border bg-surface p-6 shadow-xs hover:border-primary/40 transition-colors"
+      className="landing-glass-card flex flex-col h-full rounded-2xl border border-border bg-surface p-6 shadow-xs hover:border-primary/40 transition-colors"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center justify-center h-11 w-11 rounded-xl bg-primary-light text-primary-dark">

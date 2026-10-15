@@ -9,6 +9,12 @@ export function SmoothScroll({ children }) {
   useEffect(() => {
     if (reducedMotion) return undefined;
 
+    // Do not hijack mobile touch scrolling — preserve native momentum scrolling
+    const isTouchOrMobile =
+      typeof window !== 'undefined' &&
+      (window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches);
+    if (isTouchOrMobile) return undefined;
+
     const lenis = new Lenis({
       duration: 1.05,
       smoothWheel: true,

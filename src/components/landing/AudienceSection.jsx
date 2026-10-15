@@ -82,7 +82,7 @@ function AudiencePanel({ panel }) {
       id={panel.id}
       variant="default"
       padding="none"
-      className="fb-audience-card flex flex-col h-full rounded-2xl border border-border bg-surface p-6 sm:p-8 shadow-xs transition-all duration-200"
+      className="landing-glass-card fb-audience-card flex flex-col h-full rounded-2xl border border-border bg-surface p-6 sm:p-8 shadow-xs transition-all duration-200"
     >
       <div className="flex items-center justify-between gap-3">
         <div className={`flex items-center justify-center h-12 w-12 rounded-xl shrink-0 ${panel.headerAccentClass}`}>
@@ -151,7 +151,7 @@ function AudiencePanel({ panel }) {
       </ul>
 
       <div className="mt-auto pt-6 border-t border-border-subtle">
-        <Button asChild variant={panel.ctaVariant} size="lg" fullWidth>
+        <Button asChild variant={panel.ctaVariant} size="lg" fullWidth className={panel.ctaVariant === 'primary' ? 'btn-glass-primary' : 'btn-glass-secondary'}>
           <Link to={panel.ctaLink} className="flex items-center justify-center">
             <span>{panel.ctaText}</span>
             <ArrowRight className="h-4 w-4 ml-2 shrink-0" aria-hidden="true" />

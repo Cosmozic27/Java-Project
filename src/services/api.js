@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
+  baseURL: (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_BASE_URL) || '/api',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
@@ -11,10 +11,23 @@ export const apiClient = axios.create({
 // Automatically attach the JWT token to API requests.
 apiClient.interceptors.request.use(
   (config) => {
+    // If running in demo admin mode, explicitly ensure NO authorization token is attached.
+    // This prevents fake credentials or placeholder tokens from hitting protected endpoints.
+    const isDemoAdmin = sessionStorage.getItem('foodbridgeIsDemoAdmin') === 'true';
+    if (isDemoAdmin) {
+      if (config.headers?.Authorization) {
+        delete config.headers.Authorization;
+      }
+      return config;
+    }
+
     const token = sessionStorage.getItem('foodbridgeToken');
 
-    if (token) {
+    // Only attach real backend JWT tokens; never placeholder or demo tokens
+    if (token && token !== 'prototype-demo-token') {
       config.headers.Authorization = `Bearer ${token}`;
+    } else if (config.headers?.Authorization) {
+      delete config.headers.Authorization;
     }
 
     return config;
