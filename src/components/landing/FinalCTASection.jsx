@@ -40,7 +40,7 @@ export function FinalCTASection() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5 pt-2">
-              <Button asChild variant="primary" size="lg" className="shadow-sm font-semibold hover:bg-primary-dark">
+              <Button asChild variant="primary" size="lg" className="btn-glass-primary shadow-sm font-semibold hover:bg-primary-dark">
                 <Link to="/auth/register" className="flex items-center justify-center">
                   <span>Get Started</span>
                   <ArrowRight className="h-4 w-4 ml-2 shrink-0" aria-hidden="true" />
@@ -49,9 +49,8 @@ export function FinalCTASection() {
 
               <Button
                 asChild
-                variant="outline"
                 size="lg"
-                className="bg-transparent border-slate-700 text-white hover:bg-white/10 hover:border-slate-500 font-medium"
+                className="fb-final-cta-login-btn font-semibold"
               >
                 <Link to="/auth/login" className="flex items-center justify-center">
                   <span>Login</span>

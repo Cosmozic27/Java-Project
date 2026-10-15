@@ -25,11 +25,13 @@ export function MobileNav({
     if (isOpen) {
       document.addEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
     }
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
     };
   }, [isOpen, onClose]);
 
@@ -61,7 +63,7 @@ export function MobileNav({
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-            className="glass-surface relative flex w-72 max-w-[85vw] flex-col bg-surface/90 shadow-2xl z-10 h-full"
+            className="glass-surface relative flex w-72 max-w-[85vw] flex-col bg-surface/90 shadow-2xl z-10 h-full max-h-[100dvh] overflow-hidden"
           >
             {/* Top Close Button */}
             <div className="absolute top-3.5 right-3.5 z-20">

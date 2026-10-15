@@ -66,7 +66,7 @@ export function AuthLayout({ children }) {
           <div className="flex items-center gap-3 sm:gap-6">
             <Link
               to="/"
-              className="inline-flex items-center gap-1.5 rounded p-1 text-xs font-semibold text-text-secondary transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+              className="btn-glass-secondary inline-flex items-center gap-1.5 rounded-lg border border-border/70 px-3 py-1.5 text-xs font-semibold text-text-secondary transition-all hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-xs"
             >
               <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
               <span>Back to Home</span>

@@ -12,9 +12,9 @@ const cardVariants = {
 
 const paddingVariants = {
   none: '',
-  sm: 'p-3.5 sm:p-4',
-  md: 'p-5 sm:p-6',
-  lg: 'p-6 sm:p-8',
+  sm: 'p-3 sm:p-4',
+  md: 'p-4 sm:p-6',
+  lg: 'p-4 sm:p-6 lg:p-8',
 };
 
 export const Card = forwardRef(function Card(
@@ -32,7 +32,7 @@ export const Card = forwardRef(function Card(
     <Component
       ref={ref}
       className={cn(
-        'rounded-2xl border transition-all duration-200',
+        'rounded-2xl border transition-all duration-200 max-w-full min-w-0',
         cardVariants[variant] || cardVariants.default,
         paddingVariants[padding],
         className

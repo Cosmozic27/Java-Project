@@ -45,12 +45,12 @@ export function DashboardHeader({
   return (
     <header
       className={cn(
-        'sticky top-0 z-30 flex flex-col border-b border-border/70 bg-surface/80 backdrop-blur-xl transition-colors shadow-[0_6px_24px_rgba(18,55,42,0.04)]',
+        'sticky top-0 z-30 flex flex-col w-full max-w-full overflow-hidden border-b border-border/70 bg-surface/80 backdrop-blur-xl transition-colors shadow-[0_6px_24px_rgba(18,55,42,0.04)]',
         className
       )}
     >
       {/* Top Bar Navigation Area */}
-      <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 gap-4">
+      <div className="flex h-16 items-center justify-between px-3 sm:px-6 lg:px-8 gap-2.5 sm:gap-4 max-w-full">
         {/* Left Side: Mobile Menu Button & Breadcrumbs / Title */}
         <div className="flex items-center gap-3 min-w-0 flex-1">
           {onMenuClick && (
@@ -126,13 +126,13 @@ export function DashboardHeader({
 
       {/* Sub-header title banner (if title provided) */}
       {title && (
-        <div className="px-4 sm:px-6 lg:px-8 py-3.5 bg-background/60 border-t border-border/40 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-          <div>
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-text-primary">
+        <div className="px-3 sm:px-6 lg:px-8 py-3 bg-background/60 border-t border-border/40 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 max-w-full">
+          <div className="min-w-0">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-text-primary break-words">
               {title}
             </h1>
             {description && (
-              <p className="text-xs text-text-secondary mt-0.5 max-w-2xl">
+              <p className="text-xs text-text-secondary mt-0.5 max-w-2xl break-words">
                 {description}
               </p>
             )}

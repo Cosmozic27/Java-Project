@@ -18,7 +18,7 @@ function loadAifxRuntime() {
     window.dispatchEvent(new CustomEvent('aifx:runtime-ready'))
   }
   script.onerror = () => {
-    console.warn('[FoodBridge] Optional topo runtime unavailable; using the local auth background fallback.')
+    console.warn('[FoodBridge] Optional AIDesigner topo-lines runtime failed to load.')
   }
   document.head.appendChild(script)
 }

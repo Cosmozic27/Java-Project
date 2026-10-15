@@ -105,7 +105,7 @@ function LandingHero() {
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Link
                 to="/auth/register"
-               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 font-semibold text-white shadow-lg shadow-primary/15 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/20 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                className="btn-glass-primary inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 font-semibold text-white shadow-lg shadow-primary/15 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/20 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               >
                 Donate Surplus Food
                 <ArrowRight size={18} />
@@ -113,7 +113,7 @@ function LandingHero() {
 
               <Link
                 to="/auth/login"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-border bg-surface px-6 py-3 font-semibold text-text-primary transition-all duration-300 ease-out hover:-translate-y-1 hover:border-primary/40 hover:bg-primary/5 hover:shadow-lg hover:shadow-primary/10 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                className="btn-glass-secondary inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-border bg-surface px-6 py-3 font-semibold text-text-primary transition-all duration-300 ease-out hover:-translate-y-1 hover:border-primary/40 hover:bg-primary/5 hover:shadow-lg hover:shadow-primary/10 active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               >
                 Find Food
                 <ArrowRight size={18} />
@@ -143,7 +143,7 @@ function LandingHero() {
             aria-hidden="true"
           />
 
-          <div className="relative overflow-hidden rounded-3xl border border-border bg-surface p-6 shadow-2xl shadow-black/5 sm:p-8">
+          <div className="landing-glass-card relative overflow-hidden rounded-3xl border border-border bg-surface p-6 shadow-2xl shadow-black/5 sm:p-8">
             <div className="flex items-center justify-between gap-4">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">

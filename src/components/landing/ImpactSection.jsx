@@ -115,7 +115,7 @@ export function ImpactSection() {
         </div>
 
         {/* Impact Metrics Container */}
-        <div className="mt-12 sm:mt-16 rounded-2xl border border-border bg-surface shadow-xs overflow-hidden">
+        <div className="landing-glass-card mt-12 sm:mt-16 rounded-2xl border border-border bg-surface shadow-xs overflow-hidden">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x sm:divide-y-reverse divide-border">
             {IMPACT_METRICS.map((metric, idx) => (
               <ImpactMetricCard

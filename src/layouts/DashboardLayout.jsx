@@ -8,6 +8,7 @@ import { getNavigationForRole, resolvePortalId } from '@/constants/navigation';
 import { useToast } from '@/components/feedback';
 import { cn } from '@/utils/cn';
 import { clearPrototypeAuth } from '@/constants/authData';
+import { clearDemoAdminSession } from '@/services/demoAuthService';
 import { SwitchMode } from '@/components/switch-mode';
 
 const PORTAL_THEME_STORAGE_KEY = 'foodbridge.portal.theme';
@@ -40,7 +41,42 @@ export function DashboardLayout({
     } catch {
       // Keep the in-memory theme if storage is unavailable.
     }
+
+    const root = document.documentElement;
+    const body = document.body;
+
+    if (theme === 'dark') {
+      root.classList.add('dark');
+      body.classList.add('dark');
+      root.style.colorScheme = 'dark';
+    } else {
+      root.classList.remove('dark');
+      body.classList.remove('dark');
+      root.style.colorScheme = 'light';
+    }
+
+    root.classList.add('portal-theme');
+    body.classList.add('portal-theme');
+
+    return () => {
+      root.classList.remove('portal-theme');
+      body.classList.remove('portal-theme');
+    };
   }, [theme]);
+
+  // Ensure mobile navigation drawer closes and body scrolling is restored on route changes
+  const [prevPath, setPrevPath] = useState(location.pathname);
+  if (prevPath !== location.pathname) {
+    setPrevPath(location.pathname);
+    if (mobileNavOpen) {
+      setMobileNavOpen(false);
+    }
+  }
+
+  useEffect(() => {
+    document.body.style.overflow = '';
+    document.body.style.touchAction = '';
+  }, [location.pathname]);
 
   // Derive role automatically from route path if not passed explicitly: /donor, /ngo, /admin
   const derivedRole = resolvePortalId(
@@ -49,24 +85,33 @@ export function DashboardLayout({
 
   const activeNav = explicitNav || getNavigationForRole(derivedRole);
 
+
+  let storedUser = null;
+  try {
+    const raw = sessionStorage.getItem('foodbridgeUser');
+    if (raw) storedUser = JSON.parse(raw);
+  } catch {
+    storedUser = null;
+  }
+
   const roleUserMap = {
     donor: {
-      name: 'Central Hostel & Canteen',
+      name: storedUser?.name || 'Central Hostel & Canteen',
       role: 'Food Donor',
       portal: 'donor',
-      email: 'canteen@campus.edu',
+      email: storedUser?.email || 'canteen@campus.edu',
     },
     ngo: {
-      name: 'Hope Community Kitchen',
+      name: storedUser?.name || 'Hope Community Kitchen',
       role: 'NGO Partner',
       portal: 'ngo',
-      email: 'contact@hopekitchen.org',
+      email: storedUser?.email || 'contact@hopekitchen.org',
     },
     admin: {
-      name: 'System Governance',
+      name: storedUser?.name || 'System Governance',
       role: 'Platform Administrator',
       portal: 'admin',
-      email: 'admin@foodbridge.org',
+      email: storedUser?.email || 'admin@foodbridge.org',
     },
   };
 
@@ -74,9 +119,13 @@ export function DashboardLayout({
 
   const handleLogout = () => {
     setLogoutModalOpen(false);
+    sessionStorage.removeItem('foodbridgeToken');
+    sessionStorage.removeItem('foodbridgeUser');
+    sessionStorage.removeItem('foodbridgeLoggedIn');
+    clearDemoAdminSession();
     clearPrototypeAuth();
     toast.info('Logged out from dashboard', 'Session Ended');
-    navigate('/', { replace: true });
+    navigate('/auth/login', { replace: true });
   };
 
   const requestLogout = (e) => {
@@ -87,7 +136,7 @@ export function DashboardLayout({
 
   return (
     <>
-      <div className={cn('portal-theme min-h-screen w-full bg-background font-sans text-text-primary md:flex', theme === 'dark' && 'dark')}>
+      <div className={cn('portal-theme min-h-screen min-h-[100dvh] w-full max-w-full overflow-x-clip bg-background font-sans text-text-primary md:flex', theme === 'dark' && 'dark')}>
         {/* 1. Desktop Persistent Sidebar */}
         <div className="hidden shrink-0 md:block">
           <div className="sticky top-0 h-screen">
@@ -114,7 +163,7 @@ export function DashboardLayout({
         />
 
         {/* 3. Main Content Column */}
-        <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex min-w-0 flex-1 flex-col w-full max-w-full">
           {/* Top Dashboard Header */}
           <DashboardHeader
             title={headerTitle}
@@ -136,7 +185,7 @@ export function DashboardLayout({
           {/* Scrollable Main Application Content */}
           <main
             className={cn(
-              'min-w-0 p-4 sm:p-6 lg:p-8',
+              'min-w-0 flex-1 p-3.5 sm:p-6 lg:p-8 w-full max-w-full',
               'focus:outline-none'
             )}
           >

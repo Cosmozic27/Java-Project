@@ -9,15 +9,24 @@ export function StatCard({
   icon: Icon,
   trend,
   description,
-  variant = 'default', // 'default' | 'primary' | 'accent' | 'warning'
+  variant = 'default',
   className = '',
+  iconContainerClassName = '',
 }) {
   const iconVariants = {
-    default: 'bg-primary-light text-primary-dark',
-    primary: 'bg-primary text-white',
-    accent: 'bg-accent/20 text-accent-hover',
-    warning: 'bg-amber-100 text-amber-700',
-    info: 'bg-blue-100 text-blue-700',
+    // Deliberate forest green / sage / gold hierarchy
+    sage: 'bg-[#E2EEE3] text-[#194D2C] border border-[#237A43]/15 dark:bg-[#142C1D] dark:text-[#7BDFA0] dark:border-[#237A43]/30',
+    'sage-strong': 'bg-[#D6E8D8] text-[#194D2C] border border-[#237A43]/20 dark:bg-[#1A3D27] dark:text-[#88E5AC] dark:border-[#237A43]/35',
+    'sage-pale': 'bg-[#EBF3EC] text-[#237A43] border border-[#237A43]/12 dark:bg-[#122719] dark:text-[#72DC97] dark:border-[#237A43]/25',
+    gold: 'bg-[#F7F1D9] text-[#876B1F] border border-[#C8AC4C]/30 dark:bg-[#2B2410] dark:text-[#F0D268] dark:border-[#C8AC4C]/35',
+    'forest-solid': 'bg-[#237A43] text-white border border-[#194D2C]/30 dark:bg-[#237A43] dark:text-white dark:border-[#7BDFA0]/30',
+
+    // Cohesive fallback & shared variants
+    default: 'bg-[#E2EEE3] text-[#194D2C] border border-[#237A43]/15 dark:bg-[#142C1D] dark:text-[#7BDFA0] dark:border-[#237A43]/30',
+    primary: 'bg-[#237A43] text-white border border-[#194D2C]/30 dark:bg-[#237A43] dark:text-white dark:border-[#7BDFA0]/30',
+    accent: 'bg-[#F7F1D9] text-[#876B1F] border border-[#C8AC4C]/30 dark:bg-[#2B2410] dark:text-[#F0D268] dark:border-[#C8AC4C]/35',
+    warning: 'bg-[#F7F1D9] text-[#876B1F] border border-[#C8AC4C]/30 dark:bg-[#2B2410] dark:text-[#F0D268] dark:border-[#C8AC4C]/35',
+    info: 'bg-[#E8EFF7] text-[#527DA8] border border-[#527DA8]/20 dark:bg-[#152332] dark:text-[#8BB3DE] dark:border-[#527DA8]/30',
   };
 
   return (
@@ -42,11 +51,16 @@ export function StatCard({
         {Icon && (
           <div
             className={cn(
-              'flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-transform duration-200 group-hover:scale-105 shadow-xs',
-              iconVariants[variant] || iconVariants.default
+              'flex h-12 w-12 sm:h-[50px] sm:w-[50px] shrink-0 items-center justify-center rounded-[13px] transition-colors',
+              iconVariants[variant] || iconVariants.default,
+              iconContainerClassName
             )}
           >
-            {React.isValidElement(Icon) ? Icon : <Icon className="h-5 w-5" aria-hidden="true" />}
+            {React.isValidElement(Icon) ? (
+              Icon
+            ) : (
+              <Icon className="h-5 w-5 shrink-0" strokeWidth={2} aria-hidden="true" />
+            )}
           </div>
         )}
       </div>
@@ -59,8 +73,8 @@ export function StatCard({
                 className={cn(
                   'inline-flex items-center gap-0.5 rounded px-1.5 py-0.5 font-semibold text-[11px]',
                   trend.isPositive
-                    ? 'bg-green-50 text-green-700 border border-green-200'
-                    : 'bg-red-50 text-red-700 border border-red-200'
+                    ? 'bg-green-50 text-green-700 border border-green-200 dark:bg-green-950/40 dark:text-green-300 dark:border-green-800/40'
+                    : 'bg-red-50 text-red-700 border border-red-200 dark:bg-red-950/40 dark:text-red-300 dark:border-red-800/40'
                 )}
               >
                 {trend.isPositive ? (

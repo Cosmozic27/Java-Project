@@ -70,7 +70,7 @@ export function LandingNavbar({ theme = 'light', onToggleTheme }) {
           <div className="fb-mobile-menu" id="fb-mobile-menu">
             {NAV_ITEMS.map((item) => <Link key={item.label} to={item.to} onClick={() => setMenuOpen(false)}>{item.label}</Link>)}
             <div className="fb-mobile-menu-actions">
-              <Link to="/auth/login" onClick={() => setMenuOpen(false)}>Login</Link>
+              <Link className="fb-login-link" to="/auth/login" onClick={() => setMenuOpen(false)}>Login</Link>
               <Link className="fb-get-started" to="/auth/register" onClick={() => setMenuOpen(false)}>Get Started <ArrowRight size={15} aria-hidden="true" /></Link>
             </div>
           </div>

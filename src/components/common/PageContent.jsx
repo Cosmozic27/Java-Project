@@ -13,7 +13,7 @@ export function PageContent({
   };
 
   return (
-    <div className={cn('w-full', spacingMap[spacing] || spacingMap.normal, className)}>
+    <div className={cn('w-full max-w-full min-w-0', spacingMap[spacing] || spacingMap.normal, className)}>
       {children}
     </div>
   );

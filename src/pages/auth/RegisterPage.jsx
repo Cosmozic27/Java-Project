@@ -165,7 +165,7 @@ export function RegisterPage() {
                     })}
                   />
 
-                  <span className="flex min-h-[104px] flex-col gap-2 rounded-xl border border-border bg-surface p-3 transition-colors hover:border-border-strong peer-checked:border-primary peer-checked:bg-primary/5 peer-focus-visible:ring-2 peer-focus-visible:ring-primary/30">
+                  <span className="flex min-h-[104px] flex-col gap-2 rounded-xl border border-border bg-surface/75 backdrop-blur-md p-3 transition-all hover:border-border-strong peer-checked:border-primary peer-checked:bg-primary/10 peer-focus-visible:ring-2 peer-focus-visible:ring-primary/30 shadow-xs">
                     <span className="flex items-center gap-2 text-sm font-semibold text-text-primary">
                       <Icon
                         className="h-4 w-4 text-primary"
@@ -269,7 +269,7 @@ export function RegisterPage() {
           fullWidth
           disabled={isSubmitting}
           rightIcon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}
-          className="mt-1"
+          className="mt-1 btn-glass-primary"
         >
           {isSubmitting ? 'Creating Account...' : 'Create Account'}
         </Button>
