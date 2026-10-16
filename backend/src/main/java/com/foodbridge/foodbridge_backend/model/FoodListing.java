@@ -1,4 +1,5 @@
 package com.foodbridge.foodbridge_backend.model;
+
 import com.foodbridge.foodbridge_backend.model.enmus.ListingStatus;
 
 import jakarta.persistence.*;
@@ -59,6 +60,10 @@ public class FoodListing {
 
     @Column(name = "description")
     private String description;
+
+    // Uploaded food image URL from Cloudinary
+    @Column(name = "image_url", length = 1000)
+    private String imageUrl;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -199,6 +204,14 @@ public class FoodListing {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public ListingStatus getStatus() {
