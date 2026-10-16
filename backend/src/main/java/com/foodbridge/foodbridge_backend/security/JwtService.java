@@ -3,6 +3,7 @@ package com.foodbridge.foodbridge_backend.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -12,18 +13,37 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    // Temporary development secret.
-    // Replace this with a secure environment variable before deployment.
-    private static final String SECRET_KEY =
-            "FoodBridgeDevelopmentSecretKey2026SecureKey";
+    private final SecretKey signingKey;
 
     // Token validity: 24 hours
     private static final long EXPIRATION_TIME = 24 * 60 * 60 * 1000L;
 
+    public JwtService(@Value("${JWT_SECRET:#{null}}") String secretKey) {
+        if (secretKey == null || secretKey.trim().isEmpty()) {
+            throw new IllegalStateException(
+                    "JWT_SECRET environment variable is missing. A secure 256-bit (minimum 32 bytes) signing key is required."
+            );
+        }
+
+        byte[] keyBytes = secretKey.trim().getBytes(StandardCharsets.UTF_8);
+        if (keyBytes.length < 32) {
+            throw new IllegalStateException(
+                    "JWT_SECRET environment variable is too weak. The configured HMAC-SHA algorithm requires at least 256 bits (32 bytes)."
+            );
+        }
+
+        try {
+            this.signingKey = Keys.hmacShaKeyFor(keyBytes);
+        } catch (Exception exception) {
+            throw new IllegalStateException(
+                    "JWT_SECRET environment variable is invalid for the configured signing algorithm.",
+                    exception
+            );
+        }
+    }
+
     private SecretKey getSigningKey() {
-        return Keys.hmacShaKeyFor(
-                SECRET_KEY.getBytes(StandardCharsets.UTF_8)
-        );
+        return signingKey;
     }
 
     public String generateToken(Integer userId, String email, String role) {

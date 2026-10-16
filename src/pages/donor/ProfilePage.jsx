@@ -16,6 +16,7 @@ import { Button } from '@/components/common/Button';
 import { Card } from '@/components/cards/Card';
 import { Avatar } from '@/components/data-display/Avatar';
 import apiClient from '@/services/api';
+import { formatApiError } from '@/utils/apiError';
 
 export function ProfilePage() {
   const toast = useToast();
@@ -75,8 +76,10 @@ export function ProfilePage() {
       });
     } catch (error) {
       toast.error(
-        error.response?.data?.error ||
+        formatApiError(
+          error,
           'Could not load your profile. Please log in again.'
+        )
       );
     } finally {
       setLoading(false);
@@ -127,8 +130,10 @@ export function ProfilePage() {
       toast.success('Profile updated successfully!');
     } catch (error) {
       toast.error(
-        error.response?.data?.error ||
+        formatApiError(
+          error,
           'Could not update your profile. Please try again.'
+        )
       );
     } finally {
       setSaving(false);

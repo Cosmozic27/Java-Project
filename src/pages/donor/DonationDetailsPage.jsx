@@ -16,6 +16,7 @@ import { Card } from '@/components/cards/Card';
 import { StatusBadge } from '@/components/data-display/StatusBadge';
 import { DonationStatusTimeline } from '@/components/donor';
 import { apiClient } from '@/services/api';
+import { formatApiError, safeRenderString } from '@/utils/apiError';
 
 export function DonationDetailsPage() {
   const { donationId } = useParams();
@@ -72,9 +73,10 @@ export function DonationDetailsPage() {
 
         if (!cancelled) {
           setError(
-            err.response?.data?.message ||
-              err.message ||
+            formatApiError(
+              err,
               'Unable to load donation details.'
+            )
           );
         }
       } finally {
@@ -105,7 +107,7 @@ export function DonationDetailsPage() {
         <PageHeader title="Donation details" />
         <Card padding="lg">
           <p className="text-red-600">
-            {error || 'Donation not found.'}
+            {safeRenderString(error, 'Donation not found.')}
           </p>
 
           <Button asChild variant="primary" className="mt-4">

@@ -1,6 +1,7 @@
 import React, { forwardRef, useId } from 'react';
 import { ChevronDown, AlertCircle } from 'lucide-react';
 import { cn } from '@/utils/cn';
+import { safeRenderString } from '@/utils/apiError';
 
 export const Select = forwardRef(function Select(
   {
@@ -88,7 +89,7 @@ export const Select = forwardRef(function Select(
 
       {error ? (
         <p id={errorId} role="alert" className="text-xs text-danger font-medium mt-1">
-          {error}
+          {safeRenderString(error)}
         </p>
       ) : helperText ? (
         <p id={helperId} className="text-xs text-text-secondary mt-1">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
 ArrowLeft,
 ImagePlus,
@@ -17,6 +17,7 @@ import { Input } from '@/components/forms/Input';
 import { Select } from '@/components/forms/Select';
 import { DONATION_CATEGORIES } from '@/constants/donorData';
 import { apiClient } from '@/services/api';
+import { formatApiError, safeRenderString } from '@/utils/apiError';
 
 const dietaryOptions = [
 { value: 'Vegetarian', label: 'Vegetarian' },
@@ -50,8 +51,6 @@ const [submitted, setSubmitted] = useState(false);
 const [photoPreview, setPhotoPreview] = useState('');
 const [submitError, setSubmitError] = useState('');
 const [createdDonationId, setCreatedDonationId] = useState(null);
-
-const navigate = useNavigate();
 
 const {
 register,
@@ -196,9 +195,10 @@ try {
   console.error('Create donation error:', error);
 
   setSubmitError(
-    error.response?.data?.error ||
-      error.response?.data?.message ||
+    formatApiError(
+      error,
       'Unable to create the donation. Please check that the backend is running and try again.'
+    )
   );
 }
 
@@ -258,7 +258,7 @@ Donor form </span>
       role="alert"
       className="rounded-lg border border-danger/20 bg-danger/5 px-4 py-3 text-sm text-danger"
     >
-      {submitError}
+      {safeRenderString(submitError)}
     </div>
   )}
 

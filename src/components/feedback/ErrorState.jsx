@@ -2,6 +2,7 @@ import React from 'react';
 import { AlertTriangle, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/common/Button';
 import { cn } from '@/utils/cn';
+import { safeRenderString } from '@/utils/apiError';
 
 export function ErrorState({
   title = 'Something went wrong',
@@ -24,8 +25,8 @@ export function ErrorState({
         <div className="flex items-center gap-2.5 min-w-0">
           <AlertTriangle className="h-4 w-4 text-danger shrink-0" aria-hidden="true" />
           <div className="truncate">
-            <span className="font-semibold">{title}</span>
-            {description && <span className="ml-1.5 opacity-90">{description}</span>}
+            <span className="font-semibold">{safeRenderString(title)}</span>
+            {description && <span className="ml-1.5 opacity-90">{safeRenderString(description)}</span>}
           </div>
         </div>
 
@@ -57,12 +58,12 @@ export function ErrorState({
       </div>
 
       <h3 className="text-base font-bold text-text-primary tracking-tight">
-        {title}
+        {safeRenderString(title)}
       </h3>
 
       {description && (
         <p className="mt-1.5 text-xs sm:text-sm text-text-secondary max-w-md leading-relaxed">
-          {description}
+          {safeRenderString(description)}
         </p>
       )}
 

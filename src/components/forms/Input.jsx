@@ -1,6 +1,7 @@
 import React, { forwardRef, useId } from 'react';
 import { AlertCircle } from 'lucide-react';
 import { cn } from '@/utils/cn';
+import { safeRenderString } from '@/utils/apiError';
 
 export const Input = forwardRef(function Input(
   {
@@ -90,7 +91,7 @@ export const Input = forwardRef(function Input(
 
       {error ? (
         <p id={errorId} role="alert" className="text-xs text-danger font-medium flex items-center gap-1 mt-1">
-          {error}
+          {safeRenderString(error)}
         </p>
       ) : helperText ? (
         <p id={helperId} className="text-xs text-text-secondary mt-1">

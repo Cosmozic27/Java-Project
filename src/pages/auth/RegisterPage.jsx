@@ -5,6 +5,7 @@ import { AuthCard } from '@/components/auth';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/forms/Input';
 import { apiClient } from '@/services/api';
+import { formatApiError, safeRenderString } from '@/utils/apiError';
 import {
   ArrowRight,
   Building2,
@@ -89,12 +90,12 @@ export function RegisterPage() {
         return;
       }
 
-      const message =
-        error.response?.data?.error ||
-        error.response?.data?.message ||
-        (error.response
+      const message = formatApiError(
+        error,
+        error.response
           ? `Registration failed (HTTP ${error.response.status}).`
-          : 'Cannot connect to the server. Please check that the backend is running.');
+          : 'Cannot connect to the server. Please check that the backend is running.'
+      );
 
       setServerError(message);
     }
@@ -249,7 +250,7 @@ export function RegisterPage() {
             role="alert"
             className="rounded-lg bg-danger/10 p-3 text-sm text-danger"
           >
-            {serverError}
+            {safeRenderString(serverError)}
           </p>
         )}
 
@@ -258,7 +259,7 @@ export function RegisterPage() {
             role="status"
             className="rounded-lg border border-success/20 bg-success/10 p-3 text-sm text-success"
           >
-            {successMessage}
+            {safeRenderString(successMessage)}
           </p>
         )}
 

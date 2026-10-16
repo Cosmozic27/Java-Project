@@ -8,6 +8,7 @@ import { Button } from '@/components/common/Button';
 import { EmptyState } from '@/components/feedback/EmptyState';
 import { DonationCard, DonationFilters } from '@/components/donor';
 import apiClient from '@/services/api';
+import { formatApiError, safeRenderString } from '@/utils/apiError';
 
 export function MyDonationsPage() {
   const [search, setSearch] = useState('');
@@ -47,9 +48,10 @@ export function MyDonationsPage() {
         if (!cancelled) {
           console.error('Failed to load donations:', err);
           setError(
-            err.response?.data?.message ||
-              err.message ||
+            formatApiError(
+              err,
               'Unable to load donations. Please try again.'
+            )
           );
         }
       } finally {
@@ -129,7 +131,7 @@ export function MyDonationsPage() {
             <p className="py-8 text-center">Loading your donations...</p>
           ) : error ? (
             <div className="rounded-lg border border-red-300 p-4 text-red-700">
-              <p>{error}</p>
+              <p>{safeRenderString(error)}</p>
               <Button
                 type="button"
                 variant="primary"

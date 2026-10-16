@@ -7,6 +7,7 @@ import com.foodbridge.foodbridge_backend.security.JwtService;
 import com.foodbridge.foodbridge_backend.service.AuthService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,8 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = {
     "http://localhost:5173",
-    "http://localhost:5174"
+    "http://localhost:5174",
+    "https://foodbridge-topaz.vercel.app"
 })
 public class AuthController {
 
@@ -64,8 +66,13 @@ public class AuthController {
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
+            String errorMessage = e.getMessage() != null ? e.getMessage() : "Unable to authenticate.";
+            if (errorMessage.toLowerCase().contains("invalid email or password")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("error", errorMessage));
+            }
             return ResponseEntity.badRequest()
-                    .body(Map.of("error", e.getMessage()));
+                    .body(Map.of("error", errorMessage));
         }
     }
 

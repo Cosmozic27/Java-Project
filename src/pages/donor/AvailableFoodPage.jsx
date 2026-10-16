@@ -8,6 +8,7 @@ import { EmptyState } from '@/components/feedback/EmptyState';
 import { DonationCard, DonationFilters } from '@/components/donor';
 import { filterDonations } from '@/utils/donor';
 import apiClient from '@/services/api';
+import { formatApiError, safeRenderString } from '@/utils/apiError';
 
 export function AvailableFoodPage() {
   const [donations, setDonations] = useState([]);
@@ -53,8 +54,10 @@ export function AvailableFoodPage() {
       } catch (err) {
         console.error('Failed to load available food:', err);
         setError(
-          err.response?.data?.error ||
-          'Unable to load available food. Check that the backend is running.'
+          formatApiError(
+            err,
+            'Unable to load available food. Check that the backend is running.'
+          )
         );
       } finally {
         setLoading(false);
@@ -114,7 +117,7 @@ export function AvailableFoodPage() {
             </p>
           ) : error ? (
             <div className="rounded-xl border border-red-200 p-5 text-center">
-              <p className="text-sm text-red-600">{error}</p>
+              <p className="text-sm text-red-600">{safeRenderString(error)}</p>
               <button
                 type="button"
                 className="mt-3 rounded-lg border px-4 py-2 text-sm"

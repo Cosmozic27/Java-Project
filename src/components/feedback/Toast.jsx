@@ -9,6 +9,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { ToastContext } from './ToastContext';
 import { cn } from '@/utils/cn';
+import { formatApiError, safeRenderString } from '@/utils/apiError';
 
 const toastVariants = {
   success: {
@@ -63,12 +64,12 @@ export function ToastItem({ toast, onDismiss }) {
       <div className="flex-1 min-w-0 pr-2">
         {toast.title && (
           <h4 className="text-xs sm:text-sm font-semibold text-text-primary tracking-tight">
-            {toast.title}
+            {safeRenderString(toast.title)}
           </h4>
         )}
         {toast.message && (
           <p className="text-xs text-text-secondary mt-0.5 leading-relaxed">
-            {toast.message}
+            {safeRenderString(toast.message)}
           </p>
         )}
       </div>
@@ -95,7 +96,9 @@ export function ToastProvider({ children }) {
   const show = useCallback(
     ({ title, message, type = 'info', duration = 4000 }) => {
       const id = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-      const newToast = { id, title, message, type };
+      const safeTitle = safeRenderString(title);
+      const safeMessage = typeof message === 'string' ? message : formatApiError(message);
+      const newToast = { id, title: safeTitle, message: safeMessage, type };
 
       setToasts((prev) => [...prev, newToast]);
 

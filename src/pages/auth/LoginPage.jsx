@@ -7,6 +7,7 @@ import { Input } from '@/components/forms/Input';
 import { ArrowRight, Lock, Mail } from 'lucide-react';
 import { apiClient } from '@/services/api';
 import { findDemoAccount } from '@/constants/authData';
+import { formatApiError, safeRenderString } from '@/utils/apiError';
 import {
   authenticateDemoAdmin,
   startDemoAdminSession,
@@ -109,10 +110,10 @@ export function LoginPage() {
       }
 
       // 4. Reject invalid credentials with a clear, user-friendly error
-      const message =
-        error.response?.data?.error ||
-        error.response?.data?.message ||
-        'Unable to sign in. Please verify your email and password.';
+      const message = formatApiError(
+        error,
+        'Unable to sign in. Please verify your email and password.'
+      );
 
       setError('root', {
         type: 'server',
@@ -143,7 +144,7 @@ export function LoginPage() {
             role="status"
             className="rounded-lg border border-success/20 bg-success/10 px-3 py-2 text-sm font-medium text-success"
           >
-            {location.state.registrationMessage} Please sign in to continue.
+            {safeRenderString(location.state.registrationMessage)} Please sign in to continue.
           </p>
         )}
 
@@ -182,7 +183,7 @@ export function LoginPage() {
             role="alert"
             className="rounded-lg border border-danger/20 bg-danger/5 px-3 py-2 text-xs font-medium text-danger"
           >
-            {errors.root.message}
+            {safeRenderString(errors.root.message)}
           </p>
         )}
 

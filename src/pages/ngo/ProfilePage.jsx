@@ -17,6 +17,7 @@ import { Button } from '@/components/common/Button';
 import { Card } from '@/components/cards/Card';
 import { Avatar } from '@/components/data-display/Avatar';
 import apiClient from '@/services/api';
+import { formatApiError, safeRenderString } from '@/utils/apiError';
 
 export function ProfilePage() {
   const toast = useToast();
@@ -53,9 +54,10 @@ export function ProfilePage() {
           phone: user.phone || '',
         });
       } catch (err) {
-        const message =
-          err.response?.data?.error ||
-          'Unable to load your profile. Please log in again if your session has expired.';
+        const message = formatApiError(
+          err,
+          'Unable to load your profile. Please log in again if your session has expired.'
+        );
 
         setError(message);
         toast.error(message, 'Profile unavailable');
@@ -140,9 +142,10 @@ export function ProfilePage() {
       setIsEditing(false);
       toast.success('Your profile has been saved.', 'Profile updated');
     } catch (err) {
-      const message =
-        err.response?.data?.error ||
-        'Could not save your profile. Please try again.';
+      const message = formatApiError(
+        err,
+        'Could not save your profile. Please try again.'
+      );
 
       toast.error(message, 'Update failed');
     } finally {
@@ -178,7 +181,7 @@ export function ProfilePage() {
 
         <Card padding="lg">
           <p className="text-sm text-text-secondary">
-            {error || 'Your profile could not be loaded.'}
+            {safeRenderString(error, 'Your profile could not be loaded.')}
           </p>
           <p className="mt-2 text-sm text-text-secondary">
             Check that you are logged in and that the backend is running.
